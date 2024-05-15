@@ -42,7 +42,31 @@ questions = [
     {name_question: '¿De que nacionalidad es el actual piloto Sergio "Checo" Perez?', level: easy, theme: pilot , id_q: 23},
     {name_question: '¿Actualmente hay algun piloto argentino en la F1?', level: normal, theme: pilot , id_q: 24},
     {name_question: '¿Cuantas carreras gano el piloto Michael Schumacher?', level: difficult, theme: pilot , id_q: 25},
-    
+    {name_question: '¿Cuántos circuitos han albergado carreras del campeonato mundial de F1?', level: normal, theme: circuit, id_q:26}
+    {name_question: '¿En qué circuito se llevó a cabo la primera carrera de F1?', level: easy, theme: circuit, id_q:27}
+    {name_question: '¿Cuál es el circuito más largo utilizado en la historia de la F1?', level: easy, theme: circuit, id_q:28}
+    {name_question: '¿Cuánto mide el circuito más largo utilizado en la historia de la F1?', level: normal, theme: circuit, id_q:29}
+    {name_question: '¿Cuál es el circuito que más ediciones tuvo?', level: easy, theme: circuit, id_q:30}
+    {name_question: '¿Cuántas ediciones tuvo el circuito que más se utilizó?', level: easy, theme: circuit, id_q:31}
+    {name_question: 'Cuales de los siguientes NO es un tipo de circuito:', level: normal, theme: circuit, id_q:32}
+    {name_question: '¿Cuál fue el último circuito agregado a día de hoy?', level: normal, theme: circuit, id_q:33}
+    {name_question: '¿Cuál es el país con más circuitos en su territorio?', level: easy, theme: circuit, id_q:34}
+    {name_question: '¿Cuál es el circuito más corto utilizado en la historia de la F1?', level: difficult, theme: circuit, id_q:35}
+    {name_question: '¿Cómo se llama el tramo del circuito de Pescara donde Guy Moll falleció durante 1934?', level: difficult, theme: circuit, id_q:36}
+    {name_question: '¿Durante qué años estuvo activo el circuito callejero de Adelaida (Australia)?', level: imposible, theme: circuit, id_q:37}
+    {name_question: '¿Como se llama el único circuito argentino que estuvo en F1?', level: normal, theme: circuit, id_q:38}
+    {name_question: '¿Qué circuito es completamente ovalado en su forma?', level: easy, theme: circuit, id_q:39}
+    {name_question: '¿Cuántos circuitos se corren en la actualidad?', level: easy, theme: circuit, id_q:40}
+    {name_question: '¿Qué circuito no se corrió dentro del siglo XXI?', level: difficult, theme: circuit, id_q:41}
+    {name_question: '¿Qué capacidad aproximada de espectadores posee el circuito de Mónaco?', level: imposible, theme: circuit, id_q:42}
+    {name_question: '¿Quién tiene el récord por la vuelta más rápida en el circuito de Mónaco?', level: difficult, theme: circuit, id_q:43}
+    {name_question: '¿Cuántas curvas tiene el circuito de Mónaco?', level: difficult, theme: circuit, id_q:44}
+    {name_question: '¿Qué tipos de eventos NO forman parte del circuito de Mónaco?, dejando de lado la F1', level: normal, theme: circuit, id_q:45}
+    {name_question: '¿Qué tipo de escapatorias NO tiene el circuito de Monza?', level: difficult, theme: circuit, id_q:46}
+    {name_question: '¿Cuál es el circuito con mayor capacidad de personas?', level: normal, theme: circuit, id_q:47}
+    {name_question: '¿Qué circuito tiene más de 100 años desde su primera carrera?', level: difficult, theme: circuit, id_q:48}
+    {name_question: '¿Cuántos circuitos que estuvieron en F1 se encuentran en sudamérica?', level: normal, theme: circuit, id_q:49}
+    {name_question: '¿Cuál es el continente con mayor cantidad de circuitos corridos en la F1?', level: easy, theme: circuit, id_q:50}
 ]
 
 questions.each do |u|
