@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gamemodes</title>
+</head>
+<body>
+    <ul>
+        <% @gamemodes.each do |g| %>
+            <li><%= g.name %></li>
+        <% end %>
+    </ul>
+</body>
+</html>

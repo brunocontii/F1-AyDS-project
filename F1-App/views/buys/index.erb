@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buys</title>
+</head>
+<body>
+    <ul>
+        <% @buys.each do |a| %>
+            <li><%= a.cant_coins_spent %></li>
+        <% end %>
+    </ul>
+</body>
+</html>

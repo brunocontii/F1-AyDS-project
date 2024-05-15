@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Answers</title>
+</head>
+<body>
+    <ul>
+        <% @answers.each do |a| %>
+            <li><%= a.text %></li>
+        <% end %>
+    </ul>
+</body>
+</html>

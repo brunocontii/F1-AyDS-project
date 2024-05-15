@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profiles</title>
+</head>
+<body>
+    <ul>
+        <% @profiles.each do |p| %>
+            <li><%= p.description %></li>
+        <% end %>
+    </ul>
+</body>
+</html>
