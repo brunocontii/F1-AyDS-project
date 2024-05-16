@@ -1,5 +1,5 @@
 users = [
-    { username: 'Jon Doe', password: 'jondoe', cant_life: 3, cant_coins: 0},
+    { username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 0},
     { username: 'Bruno', password: 'messi', cant_life: 2, cant_coins: 999},
     { username: 'Juan', password: 'mbappe', cant_life: 3, cant_coins: 500},
     { username: 'Erich', password: 'ronaldo7', cant_life: 3, cant_coins: 750},
@@ -11,8 +11,9 @@ end
 
 profiles = [
     {name: 'juan', lastName: 'cru', description: 'f1 lover', age: 22},
-    {name: 'bruno', lastName: 'cti', description: '@brunnoconti attractive boy', age: 21},
+    {name: 'bruno', lastName: 'cti', description: 'messi lover', age: 21},
     {name: 'erich', lastName: 'vollenweider', description: 'KTM Group', age: 25},
+    {name: 'joaco', lastName: 'mzza', description: 'intento de programador', age: 23},
 ]
 
 profiles.each do |u|

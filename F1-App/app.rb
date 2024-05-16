@@ -3,6 +3,8 @@ require 'sinatra/base'
 require 'sinatra/activerecord'
 
 set :database_file, './config/database.yml'
+set :public_folder, File.dirname(__FILE__) + '/public'
+
 
 require './models/user'
 require './models/profile'
@@ -24,6 +26,10 @@ class App < Sinatra::Application
 
     get '/' do
         'Welcome'
+    end
+
+    get '/login' do
+        erb :'login/login'
     end
 
     get '/users' do
