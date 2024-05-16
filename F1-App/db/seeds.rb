@@ -2,6 +2,7 @@ users = [
     { username: 'Jon Doe', password: 'jondoe', cant_life: 3, cant_coins: 0},
     { username: 'Bruno', password: 'messi', cant_life: 2, cant_coins: 999},
     { username: 'Juan', password: 'mbappe', cant_life: 3, cant_coins: 500},
+    { username: 'Erich', password: 'ronaldo7', cant_life: 3, cant_coins: 750},
 ]
 
 users.each do |u|
@@ -11,6 +12,7 @@ end
 profiles = [
     {name: 'juan', lastName: 'cru', description: 'f1 lover', age: 22},
     {name: 'bruno', lastName: 'cti', description: '@brunnoconti attractive boy', age: 21},
+    {name: 'erich', lastName: 'vollenweider', description: 'KTM Group', age: 25},
 ]
 
 profiles.each do |u|
@@ -92,6 +94,25 @@ questions = [
     {name_question: '¿Quien fue el fundador de Ferrari?', level: normal, theme: team, id_q: 73},
     {name_question: '¿Cual fue la mejor posición en el Campeonato del Mundo de Constructores de Ferrari?', level: normal, theme: team, id_q: 74},
     {name_question: '¿Cual fue la mejor posición en el Campeonato del Mundo de Pilotos de Ferrari?', level: normal, theme: team, id_q: 75},
+    {name_question: '¿Qué indica la bandera a cuadros?', level: easy, theme: career, id_q: 76},
+    {name_question: '¿Qué indica la bandera verde?', level: easy, theme: career, id_q: 77},
+    {name_question: '¿Qué indica la bandera amarilla?', level: normal, theme: career, id_q: 78},
+    {name_question: '¿Qué indica la bandera amarilla con Safety Car?', level: difficult, theme: career, id_q: 79},
+    {name_question: '¿Qué indica la bandera amarilla con Virtual Safety Car?', level: impossible, theme: career, id_q: 80},
+    {name_question: '¿Qué indica la bandera roja', level: easy, theme: career, id_q: 81},
+    {name_question: '¿Qué indica la bandera negra junto al número del piloto?', level: difficult, theme: career, id_q: 82},
+    {name_question: '¿Qué indica la bandera negra con un círculo naranja junto al número del piloto?', level: impossible, theme: career, id_q: 83},
+    {name_question: '¿Qué indica la bandera dividida (blanca y negra) junto al dorsal?', level: impossible, theme: career, id_q: 84},
+    {name_question: '¿Qué indica la bandera azul?', level: normal, theme: career, id_q: 85},
+    {name_question: '¿Qué indica la bandera amarilla con franjas rojas?', level: impossible, theme: career, id_q: 86},
+    {name_question: '¿Qué indica la bandera blanca?', level: easy, theme: career, id_q: 87},
+    {name_question: '¿Cuál es el sistema de clasificación utilizado en la Fórmula 1 para determinar el orden de salida en la carrera?', level: difficult, theme: career, id_q: 88},
+    {name_question: '¿Cuál es el límite máximo de vueltas permitidas en una carrera de Fórmula 1?', level: normal, theme: career, id_q: 89},
+    {name_question: '¿Cuál es la duración aproximada de una carrera de Fórmula 1?', level: normal, theme: career, id_q: 90},
+    {name_question: '¿Cuál es el límite máximo de pilotos permitidos en una parrilla de salida de Fórmula 1?', level: normal, theme: career, id_q: 91},
+    {name_question: '¿Qué sucede si un piloto excede los límites de la pista consistentemente durante la carrera?', level: difficult, theme: career, id_q: 92},
+    {name_question: '¿Cuál es la velocidad máxima permitida en el pit lane durante una carrera de Fórmula 1?', level: normal, theme: career, id_q: 93},
+    {name_question: '¿Cuál es el límite máximo de motores que un equipo puede utilizar por temporada según las regulaciones de la Fórmula 1?', level: impossible, theme: career, id_q: 94},
 ]
 
 questions.each do |u|
