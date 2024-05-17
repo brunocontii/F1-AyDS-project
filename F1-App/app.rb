@@ -24,7 +24,7 @@ class App < Sinatra::Application
     end
 
     get '/' do
-        'Welcome'
+        erb :'home/home'
     end
 
     get '/login' do
