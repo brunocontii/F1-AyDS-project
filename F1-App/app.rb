@@ -5,7 +5,6 @@ require 'sinatra/activerecord'
 set :database_file, './config/database.yml'
 set :public_folder, File.dirname(__FILE__) + '/public'
 
-
 require './models/user'
 require './models/profile'
 require './models/gamemode'
@@ -30,6 +29,20 @@ class App < Sinatra::Application
 
     get '/login' do
         erb :'login/login'
+    end
+
+    post '/login' do
+        username = params[:username]
+        password = params[:password]
+
+        user = User.find_by(username: username, password: password)
+
+        if user
+            redirect "/gamemodes"
+        else
+            @error = "Invalid username or password. Please try again."
+            erb :'login/login'
+        end
     end
 
     get '/users' do

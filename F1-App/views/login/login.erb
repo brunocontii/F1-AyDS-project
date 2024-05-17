@@ -14,18 +14,18 @@
     <section>   
         <div class="contenedor">
             <div class="formulario">
-                <form action="">
+                <form action="/login" method="post">
                     <h2>Iniciar Sesión</h2>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-envelope"></i>
-                        <input type="email" required>
-                        <label for="#">Email</label>
+                        <input type="text" name="username" required>
+                        <label for="#">User</label>
                     </div>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" required>
+                        <input type="password" name="password" required>
                         <label for="#">Contraseña</label>
                     </div>
 
@@ -37,11 +37,10 @@
                             <a href="#">Olvidé la contraseña</a>
                         </label>
                     </div>
-                </form>
 
                 <div>
-                    <button>Acceder</button>
-
+                    <button type="submit">Acceder</button>
+                </form>
                     <div class="registrar">
                         <p>No tengo cuenta <a href="#">Crear una</a></p>
                     </div>
