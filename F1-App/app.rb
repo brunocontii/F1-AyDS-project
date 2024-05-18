@@ -50,6 +50,29 @@ class App < Sinatra::Application
         erb :'users/index'
     end
 
+    get '/register' do 
+        erb :'register/index'
+    end
+
+    post '/register' do
+        username = params[:username]
+        password = params[:password]
+        rpassword = params[:repeat_password]
+
+        if User.where(username: username).exists?
+            @error = "Username already exist"
+            erb :'register/index'
+        elsif password != rpassword
+            @error = "Passwords are different"
+            erb :'register/index'
+        else
+            user = User.new(username: username, password: password)
+            session[:username] = user.username
+            redirect '/gamemodes'
+        end
+        
+    end
+
     get '/profiles' do
         @profiles = Profile.all
         erb :'profiles/index'
