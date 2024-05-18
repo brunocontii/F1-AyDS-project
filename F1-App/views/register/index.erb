@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=<>, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
     <link rel="icon" href='icon-1-50.png')>
     <link rel="stylesheet" href="styleLogin.css">
 </head>
@@ -15,8 +15,8 @@
     <section>   
         <div class="contenedor">
             <div class="formulario">
-                <form action="/login" method="post">
-                    <h2>Login</h2>
+                <form action="/register" method="post">
+                    <h2>Register</h2>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-envelope"></i>
@@ -30,20 +30,17 @@
                         <label for="#">Password</label>
                     </div>
 
-                    <div class="olvidar">
-                        <label for="#">
-                            <input type="checkbox"> Recordar  
-                        </label>
-                        <label id="forgotpass">
-                            <a href="#">Olvidé la contraseña</a>
-                        </label>
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="repeat_password" required>
+                        <label for="#">Repeat Password</label>
                     </div>
 
                 <div>
                     <button type="submit">Acceder</button>
                 </form>
                     <div class="registrar">
-                        <p><a href="/register"><u>No tengo cuenta</u></a></p>
+                        <p><a href="/login"><u>Ya tengo cuenta</u></a></p>
                     </div>
                 </div>
             </div>
