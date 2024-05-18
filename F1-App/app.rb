@@ -50,6 +50,11 @@ class App < Sinatra::Application
         erb :'users/index'
     end
 
+    before do
+        cache_control :no_cache, :no_store, :must_revalidate
+        expires 0, :public, :no_cache
+    end
+
     get '/register' do 
         erb :'register/index'
     end
