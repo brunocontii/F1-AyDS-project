@@ -55,7 +55,7 @@ class App < Sinatra::Application
         expires 0, :public, :no_cache
     end
 
-    get '/register' do 
+    get '/register' do
         erb :'register/index'
     end
 
@@ -75,7 +75,7 @@ class App < Sinatra::Application
             session[:username] = user.username
             redirect '/gamemodes'
         end
-        
+
     end
 
     get '/profiles' do
@@ -84,8 +84,7 @@ class App < Sinatra::Application
     end
 
     get '/gamemodes' do
-        @gamemodes = Gamemode.all
-        erb :'gamemodes/index'
+        erb :'gamemodes/menu'
     end
 
     get '/frees' do
