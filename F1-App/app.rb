@@ -17,6 +17,7 @@ require './models/wildcard'
 require './models/option'
 require './models/question'
 
+enable :sessions
 
 class App < Sinatra::Application
     def initialize(app = nil)
@@ -38,6 +39,7 @@ class App < Sinatra::Application
         user = User.find_by(username: username, password: password)
 
         if user
+            session[:username] = user.username # Guardar el nombre de usuario en la sesión
             redirect "/gamemodes"
         else
             @error = "Invalid username or password. Please try again."
@@ -78,13 +80,19 @@ class App < Sinatra::Application
 
     end
 
+    get '/logout' do
+        session.clear
+        redirect "/"
+    end
+    
     get '/profiles' do
         @profiles = Profile.all
         erb :'profiles/index'
     end
 
     get '/gamemodes' do
-        erb :'gamemodes/menu'
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        erb :'gamemodes/menu' , locals: { current_user: @current_user }
     end
 
     get '/frees' do

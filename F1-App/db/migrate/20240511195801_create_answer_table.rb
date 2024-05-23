@@ -4,8 +4,8 @@ class CreateAnswerTable < ActiveRecord::Migration[7.1]
       t.text :text
       t.references :question, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
-
-      t.timestamps
+      t.datetime :created_at
+      t.datetime :updated_at
     end
   end
 end

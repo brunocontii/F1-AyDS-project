@@ -7,7 +7,8 @@ class CreateQuestionTable < ActiveRecord::Migration[7.1]
       t.integer :correct_option_id
       t.integer :incorrect_option_id
 
-      t.timestamps
+      t.datetime :created_at
+      t.datetime :updated_at
     end
   end
 end

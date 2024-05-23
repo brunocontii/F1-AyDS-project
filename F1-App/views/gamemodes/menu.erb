@@ -17,11 +17,11 @@
             <div class="user-info">
                 <div class="currency">
                     <img src="coin.png" alt="Monedas" class="icon">
-                    <span><%=@user ? @user.cant_coins : 0%></span>
+                    <span><%=@current_user ? @current_user.cant_coins : 0%></span>
                 </div>
                 <div class="lives">
                     <img src="heart.png" alt="Vidas" class="icon">
-                    <span><%=@user ? @user.cant_life : 0%></span>
+                    <span><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
                 <div class="profile">
                     <img src="pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">

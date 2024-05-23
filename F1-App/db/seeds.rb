@@ -121,3 +121,4 @@ questions = [
 questions.each do |u|
     Question.create(u)
 end
+
