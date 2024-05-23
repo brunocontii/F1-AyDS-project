@@ -95,6 +95,11 @@ class App < Sinatra::Application
         erb :'gamemodes/menu' , locals: { current_user: @current_user }
     end
 
+    get '/gamemodes/progressive' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        erb :'progressives/index' , locals: { current_user: @current_user }
+    end
+
     get '/frees' do
         @frees = Free.all
         erb :'frees/index'
