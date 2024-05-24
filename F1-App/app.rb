@@ -24,6 +24,11 @@ class App < Sinatra::Application
         super()
     end
 
+    before do
+        cache_control :no_cache, :no_store, :must_revalidate
+        expires 0, :public, :no_cache
+    end
+
     get '/' do
         erb :'home/home'
     end
@@ -52,11 +57,6 @@ class App < Sinatra::Application
         erb :'users/index'
     end
 
-    before do
-        cache_control :no_cache, :no_store, :must_revalidate
-        expires 0, :public, :no_cache
-    end
-
     get '/register' do
         erb :'register/index'
     end
@@ -82,7 +82,7 @@ class App < Sinatra::Application
 
     get '/logout' do
         session.clear
-        redirect "/"
+        redirect '/'
     end
     
     get '/profiles' do
@@ -102,17 +102,17 @@ class App < Sinatra::Application
 
     get '/gamemodes/progressive/pilot' do 
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        # agrupar por team = pilot
-        @questions = Question.where(theme: 'pilot').where.not(id_q:session[:answered_questions]).order('RANDOM()').first session[:answered_questions]
-        @question.id if @question.present?
-
-
-        erb :'questions/index' , locals: { current_user: @current_user }
+        session[:answered_questions] ||= []
+        @question = Question.where(theme: 'pilot').where.not(id_q: session[:answered_questions]).order('RANDOM()').first
+        if @question.nil?
+            session[:answered_questions] = []
+            @question = Question.where(theme: 'pilot').order('RANDOM()').first
+        end
+        # OBTENER LAS OPTIONS --> @options = .....
+        erb :'questions/index' , locals: { current_user: @current_user, question: @question, options: @options }
     end    
 
     post '/gamemodes/progressive/pilot' do
-        text = params[:text]
-        texto_rta = Answer.find_by(text: text)
         
     end
 

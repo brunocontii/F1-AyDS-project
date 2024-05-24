@@ -34,10 +34,20 @@
             </div>
         </div>
     </header>
-    <ul>
-        <% @questions.each do |a| %>
-            <li><%= a.name_question %></li>
-        <% end %>
-    </ul>
+    <main>
+    <div class="question-container">
+        <h2><%= @question.name_question %></h2>
+        <form action="/gamemodes/progressive/pilot" method="post">
+            <% @options.each do |option| %>
+                <div class="option">
+                    <input type="radio" id="option_<%= option.id_o %>" name="option_id" value="<%= option.id_o %>">
+                    <label for="option_<%= option.id_o %>"><%= option.text %></label>
+                </div>
+            <% end %>
+            <input type="hidden" name="question_id" value="<%= @question.id_q %>">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</main>
 </body>
 </html>
