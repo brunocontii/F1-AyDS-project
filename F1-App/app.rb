@@ -100,6 +100,22 @@ class App < Sinatra::Application
         erb :'progressives/index' , locals: { current_user: @current_user }
     end
 
+    get '/gamemodes/progressive/pilot' do 
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        # agrupar por team = pilot
+        @questions = Question.where(theme: 'pilot').where.not(id_q:session[:answered_questions]).order('RANDOM()').first session[:answered_questions]
+        @question.id if @question.present?
+
+
+        erb :'questions/index' , locals: { current_user: @current_user }
+    end    
+
+    post '/gamemodes/progressive/pilot' do
+        text = params[:text]
+        texto_rta = Answer.find_by(text: text)
+        
+    end
+
     get '/frees' do
         @frees = Free.all
         erb :'frees/index'
