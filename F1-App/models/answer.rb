@@ -1,5 +1,6 @@
 class Answer < ActiveRecord::Base
     belongs_to :user
     has_and_belongs_to_many :gamemode
-    has_one :question
+    belongs_to :question
+    belongs_to :option
 end

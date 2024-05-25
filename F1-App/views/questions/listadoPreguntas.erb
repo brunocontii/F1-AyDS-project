@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Questions</title>
+</head>
+<body>
+    <ul>
+        <% @questions.each do |p| %>
+            <li><%= p.name_question %></li>
+        <% end %>
+    </ul>
+</body>
+</html>
