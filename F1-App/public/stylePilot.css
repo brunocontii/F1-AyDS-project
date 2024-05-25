@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: url('progressive-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.left .menu-item {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.left .menu-item:hover {
+    color: #ffcc00;
+}
+
+.right .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.currency, .lives {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.currency img, .lives img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.profile {
+    position: relative;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.profile-pic:hover {
+    transform: scale(1.1);
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: rgba(65, 63, 63, 0.8);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1;
+    width: 200px;
+}
+
+.profile-menu a, .profile-menu .change-language {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    text-decoration: none;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.profile-menu a:hover, .profile-menu .change-language:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.language-flag {
+    width: 30px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+main {
+    text-align: center;
+    padding: 50px;
+}
+
+main h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.gamemodes {
+    display: flex;
+    justify-content: center;
+}
+
+.gamemode {
+    margin: 0 20px;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.5rem;
+    transition: background 0.3s, transform 0.3s;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.gamemode:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    color: #e92727;
+}
