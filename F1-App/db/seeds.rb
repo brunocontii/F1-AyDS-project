@@ -1,3 +1,6 @@
+Question.delete_all
+ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name='questions'")
+
 users = [
     { username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 0},
     { username: 'Bruno', password: 'messi', cant_life: 2, cant_coins: 999},
@@ -121,4 +124,3 @@ questions = [
 questions.each do |u|
     Question.create(u)
 end
-
