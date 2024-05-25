@@ -40,11 +40,11 @@
         <form action="/gamemodes/progressive/pilot" method="post">
             <% @options.each do |option| %>
                 <div class="option">
-                    <input type="radio" id="option_<%= option.id_o %>" name="option_id" value="<%= option.id_o %>">
-                    <label for="option_<%= option.id_o %>"><%= option.text %></label>
+                    <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>">
+                    <label for="option_<%= option.id %>"><%= option.name_option %></label>
                 </div>
             <% end %>
-            <input type="hidden" name="question_id" value="<%= @question.id_q %>">
+            <input type="hidden" name="question_id" value="<%= @question.id %>">
             <button type="submit">Submit</button>
         </form>
     </div>

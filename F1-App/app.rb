@@ -108,7 +108,7 @@ class App < Sinatra::Application
             session[:answered_questions] = []
             @question = Question.where(theme: 'pilot').order('RANDOM()').first
         end
-        # OBTENER LAS OPTIONS --> @options = .....
+        @options = @question.options
         erb :'questions/index' , locals: { current_user: @current_user, question: @question, options: @options }
     end    
 
@@ -148,7 +148,7 @@ class App < Sinatra::Application
 
     get '/questions' do
         @questions = Question.all
-        erb :'questions/index'
+        erb :'questions/listadoPreguntas'
     end
 
     get '/options' do
