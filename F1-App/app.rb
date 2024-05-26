@@ -103,18 +103,40 @@ class App < Sinatra::Application
     get '/gamemodes/progressive/pilot' do 
         @current_user = User.find_by(username: session[:username]) if session[:username]
         session[:answered_questions] ||= []
-        @question = Question.where(theme: 'pilot').where.not(id_q: session[:answered_questions]).order('RANDOM()').first
+      
+        @question = Question.where(theme: 'pilot').where.not(id: session[:answered_questions]).order('RANDOM()').first
         if @question.nil?
-            session[:answered_questions] = []
-            @question = Question.where(theme: 'pilot').order('RANDOM()').first
+          session[:answered_questions] = []
+          @question = Question.where(theme: 'pilot').order('RANDOM()').first
         end
-        @options = @question.options
-        erb :'questions/index' , locals: { current_user: @current_user, question: @question, options: @options }
-    end    
+        @options = @question.options.shuffle
+      
+        feedback_message = session.delete(:message)
+        feedback_color = session.delete(:color)
+      
+        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color}
+    end       
 
     post '/gamemodes/progressive/pilot' do
-        
-    end
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @option = Option.find(params[:option_id].to_i)
+        @question = @option.question
+      
+        if @option.correct
+            @current_user.increment!(:cant_coins, 10)
+            session[:message] = "Correct! Well done."
+            session[:color] = "green"
+        else
+            @current_user.decrement!(:cant_life, 1)
+            session[:message] = "Incorrect!"
+            session[:color] = "red"
+        end
+      
+        session[:answered_questions] ||= []
+        session[:answered_questions] << @question.id
+      
+        redirect '/gamemodes/progressive/pilot'
+    end  
 
     get '/frees' do
         @frees = Free.all

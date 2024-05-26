@@ -126,9 +126,12 @@ questions = [
 ]
 
 questions.each do |question|
-    Question.find_or_create_by(name_question: question[:name_question]) do |u|
-        u.level = question[:level]
-        u.theme = question[:theme]
+    options = Option.where(question_id: question.id).to_a
+    correct_option = options.find(&:correct)
+    incorrect_options = options - [correct_option]
+    shuffled_options = [correct_option] + incorrect_options.shuffle
+    shuffled_options.each do |option|
+        option.save
     end
 end
 
@@ -137,15 +140,124 @@ options = [
     {name_option: 'Lewis Hamilton y Esteban Ocon' , question_id: 1, correct: false},
     {name_option: 'Lewis Hamilton y Franco Colapinto' , question_id: 1, correct: false},
     {name_option: 'Lewis Hamilton y Sergio "Checo" Perez' , question_id: 1, correct: false},
+
     {name_option: 'Fernando Alonso' , question_id: 2, correct: false},
     {name_option: 'Lewis Hamilton' , question_id: 2, correct: false},
     {name_option: 'Kimi Raikkonen' , question_id: 2, correct: true},
     {name_option: 'George Russell' , question_id: 2, correct: false},
+
+    {name_option: 'Lewis Hamilton', question_id: 3, correct: true},
+    {name_option: 'Michael Schumacher', question_id: 3, correct: false},
+    {name_option: 'Ayrton Senna', question_id: 3, correct: false},
+    {name_option: 'Sebastian Vettel', question_id: 3, correct: false},
+
+    {name_option: 'Max Verstappen', question_id: 4, correct: true},
+    {name_option: 'Sebastian Vettel', question_id: 4, correct: false},
+    {name_option: 'Fernando Alonso', question_id: 4, correct: false},
+    {name_option: 'Lewis Hamilton', question_id: 4, correct: false},
+
+    {name_option: 'Kimi Raikkonen', question_id: 5, correct: false},
+    {name_option: 'Sebastian Vettel', question_id: 5, correct: false},
+    {name_option: 'Max Verstappen', question_id: 5, correct: true},
+    {name_option: 'Lewis Hamilton', question_id: 5, correct: false},
+
+    {name_option: 'Niki Lauda', question_id: 6, correct: false},
+    {name_option: 'Alain Prost', question_id: 6, correct: true},
+    {name_option: 'Nigel Mansell', question_id: 6, correct: false},
+    {name_option: 'Jackie Stewart', question_id: 6, correct: false},
+
+    {name_option: 'George Russell', question_id: 7, correct: false},
+    {name_option: 'Lando Norris', question_id: 7, correct: false},
+    {name_option: 'Pierre Gasly', question_id: 7, correct: false},
+    {name_option: 'Carlos Sainz Jr', question_id: 7, correct: true},
+
+    {name_option: 'Daniel Ricciardo', question_id: 8, correct: true},
+    {name_option: 'Lando Norris', question_id: 8, correct: false},
+    {name_option: 'Esteban Ocon', question_id: 8, correct: false},
+    {name_option: 'Sergio Perez', question_id: 8, correct: false},
+
+    {name_option: 'Lewis Hamilton', question_id: 9, correct: false},
+    {name_option: 'Ayrton Senna', question_id: 9, correct: true},
+    {name_option: 'Michael Schumacher', question_id: 9, correct: false},
+    {name_option: 'Nico Rosberg', question_id: 9, correct: false},
+
+    {name_option: 'Sebastian Vettel', question_id: 10, correct: true},
+    {name_option: 'Lewis Hamilton', question_id: 10, correct: false},
+    {name_option: 'Fernando Alonso', question_id: 10, correct: false},
+    {name_option: 'Max Verstappen', question_id: 10, correct: false},
+
+    {name_option: 'Fernando Alonso', question_id: 11, correct: true},
+    {name_option: 'Alain Prost', question_id: 11, correct: false},
+    {name_option: 'Nigel Mansell', question_id: 11, correct: false},
+    {name_option: 'Damon Hill', question_id: 11, correct: false},
+
+    {name_option: 'José Froilán González', question_id: 12, correct: true},
+    {name_option: 'Alberto Ascari', question_id: 12, correct: false},
+    {name_option: 'Juan Manuel Fangio', question_id: 12, correct: false},
+    {name_option: 'Nino Farina', question_id: 12, correct: false},
+
+    {name_option: 'Jenson Button', question_id: 13, correct: true},
+    {name_option: 'Rubens Barrichello', question_id: 13, correct: false},
+    {name_option: 'Lewis Hamilton', question_id: 13, correct: false},
+    {name_option: 'Michael Schumacher', question_id: 13, correct: false},
+
+    {name_option: '5', question_id: 15, correct: true},
+    {name_option: '4', question_id: 15, correct: false},
+    {name_option: '3', question_id: 15, correct: false},
+    {name_option: '6', question_id: 15, correct: false},
+
+    {name_option: '1957', question_id: 16, correct: true},
+    {name_option: '1956', question_id: 16, correct: false},
+    {name_option: '1955', question_id: 16, correct: false},
+    {name_option: '1958', question_id: 16, correct: false},
+
+    {name_option: 'Brasil', question_id: 17, correct: true},
+    {name_option: 'Argentina', question_id: 17, correct: false},
+    {name_option: 'España', question_id: 17, correct: false},
+    {name_option: 'Italia', question_id: 17, correct: false},
+
+    {name_option: 'Lando Norris y Oscar Piastri', question_id: 18, correct: true},
+    {name_option: 'Carlos Sainz y Lando Norris', question_id: 18, correct: false},
+    {name_option: 'Daniel Ricciardo y Lando Norris', question_id: 18, correct: false},
+    {name_option: 'Lando Norris y Stoffel Vandoorne', question_id: 18, correct: false},
+
+    {name_option: 'Alemán', question_id: 19, correct: true},
+    {name_option: 'Austriaco', question_id: 19, correct: false},
+    {name_option: 'Suizo', question_id: 19, correct: false},
+    {name_option: 'Francés', question_id: 19, correct: false},
+
+    {name_option: '2', question_id: 20, correct: true},
+    {name_option: '1', question_id: 20, correct: false},
+    {name_option: '3', question_id: 20, correct: false},
+    {name_option: '4', question_id: 20, correct: false},
+
+    {name_option: 'Ayrton Senna', question_id: 21, correct: true},
+    {name_option: 'Roland Ratzenberger', question_id: 21, correct: false},
+    {name_option: 'Jules Bianchi', question_id: 21, correct: false},
+    {name_option: 'Gilles Villeneuve', question_id: 21, correct: false},
+
+    {name_option: 'Mexicano', question_id: 22, correct: true},
+    {name_option: 'Español', question_id: 22, correct: false},
+    {name_option: 'Brasileño', question_id: 22, correct: false},
+    {name_option: 'Argentino', question_id: 22, correct: false},
+
+    {name_option: 'No', question_id: 23, correct: true},
+    {name_option: 'Si', question_id: 23, correct: false},
+    {name_option: 'Sí, en pruebas', question_id: 23, correct: false},
+    {name_option: 'Sí, en reserva', question_id: 23, correct: false},
+
+    {name_option: '91', question_id: 24, correct: true},
+    {name_option: '85', question_id: 24, correct: false},
+    {name_option: '88', question_id: 24, correct: false},
+    {name_option: '95', question_id: 24, correct: false},
+
+    {name_option: 'Nick Heidfeld', question_id: 14, correct: true},
+    {name_option: 'Romain Grosjean', question_id: 14, correct: false},
+    {name_option: 'Nico Hulkenberg', question_id: 14, correct: false},
+    {name_option: 'Kevin Magnussen', question_id: 14, correct: false}
 ]
 
 options.each do |option|
-    Option.find_or_create_by(name_option: option[:name_option]) do |u|
-        u.question_id = option[:question_id]
-        u.correct = option[:correct]
-    end
+    existing_option = Option.find_by(name_option: option[:name_option], question_id: option[:question_id])
+    Option.create(name_option: option[:name_option], question_id: option[:question_id], correct: option[:correct]) if existing_option.nil?
 end
