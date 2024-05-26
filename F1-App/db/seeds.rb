@@ -125,17 +125,16 @@ questions = [
     {name_question: '¿Cuál es el límite máximo de motores que un equipo puede utilizar por temporada según las regulaciones de la Fórmula 1?', level: 'impossible', theme: 'career'},
 ]
 
-questions.each do |question|
-    options = Option.where(question_id: question.id).to_a
-    correct_option = options.find(&:correct)
-    incorrect_options = options - [correct_option]
-    shuffled_options = [correct_option] + incorrect_options.shuffle
-    shuffled_options.each do |option|
-        option.save
+
+questions.each do |question_data|
+    Question.find_or_create_by(name_question: question_data[:name_question]) do |q|
+        q.level = question_data[:level]
+        q.theme = question_data[:theme]
     end
 end
 
 options = [
+    ######                 PILOT                     ######
     {name_option: 'Lewis Hamilton y Michael Schumacher' , question_id: 1, correct: true},
     {name_option: 'Lewis Hamilton y Esteban Ocon' , question_id: 1, correct: false},
     {name_option: 'Lewis Hamilton y Franco Colapinto' , question_id: 1, correct: false},
@@ -256,6 +255,141 @@ options = [
     {name_option: 'Nico Hulkenberg', question_id: 14, correct: false},
     {name_option: 'Kevin Magnussen', question_id: 14, correct: false},
 
+    ######                 CIRCUIT                     ######
+
+                        ### JOACO
+
+
+
+    ######                 TEAM                     ######
+
+    {name_option: '1 piloto', question_id: 50, correct: false},
+    {name_option: '2 pilotos', question_id: 50, correct: true},
+    {name_option: '3 pilotos', question_id: 50, correct: false},
+    {name_option: '4 pilotos', question_id: 50, correct: false},
+
+    {name_option: 'Max Verstappen y Sergio Perez', question_id: 51, correct: true},
+    {name_option: 'Sergio Pérez', question_id: 51, correct: false},
+    {name_option: 'Pierre Gasly', question_id: 51, correct: false},
+    {name_option: 'Alexander Albon', question_id: 51, correct: false},
+
+    {name_option: 'Lewis Hamilton y George Russell', question_id: 52, correct: true},
+    {name_option: 'Valtteri Bottas', question_id: 52, correct: false},
+    {name_option: 'George Russell', question_id: 52, correct: false},
+    {name_option: 'Esteban Ocon', question_id: 52, correct: false},
+
+    {name_option: 'Charles Leclerc y Carlos Sainz Jr', question_id: 53, correct: true},
+    {name_option: 'Carlos Sainz Jr', question_id: 53, correct: false},
+    {name_option: 'Sebastian Vettel', question_id: 53, correct: false},
+    {name_option: 'Fernando Alonso', question_id: 53, correct: false},
+
+    {name_option: 'Lando Norris y Oscar Piastri', question_id: 54, correct: true},
+    {name_option: 'Británica', question_id: 54, correct: false},
+    {name_option: 'Austriaca', question_id: 54, correct: false},
+    {name_option: 'Italiana', question_id: 54, correct: false},
+
+    {name_option: 'Sebastian Vettel', question_id: 55, correct: false},
+    {name_option: 'Lance Stroll y Fernando Alonso', question_id: 55, correct: true},
+    {name_option: 'Nico Hülkenberg', question_id: 55, correct: false},
+    {name_option: 'Sergio Pérez', question_id: 55, correct: false},
+
+    {name_option: 'Esteban Ocon y Pierre Gasly', question_id: 56, correct: true},
+    {name_option: 'Fernando Alonso', question_id: 56, correct: false},
+    {name_option: 'Nico Rosberg', question_id: 56, correct: false},
+    {name_option: 'Sergio Pérez', question_id: 56, correct: false},
+
+    {name_option: 'Alexander Albon y Logan Sargeant', question_id: 57, correct: true},
+    {name_option: 'Nicholas Latifi', question_id: 57, correct: false},
+    {name_option: 'Jack Aitken', question_id: 57, correct: false},
+    {name_option: 'Robert Kubica', question_id: 57, correct: false},
+
+    {name_option: 'Yuki Tsunoda y Daniel Ricciardo', question_id: 58, correct: true},
+    {name_option: 'Sergio Pérez', question_id: 58, correct: false},
+    {name_option: 'Pierre Gasly', question_id: 58, correct: false},
+    {name_option: 'Alexander Albon', question_id: 58, correct: false},
+
+    {name_option: 'Valtteri Bottas y Guanyu Zhou', question_id: 59, correct: true},
+    {name_option: 'Equipo ficticio', question_id: 59, correct: false},
+    {name_option: 'No se encuentra en la Fórmula 1', question_id: 59, correct: false},
+    {name_option: 'Equipo de desarrollo', question_id: 59, correct: false},
+
+    {name_option: 'Kevin Magnussen y Nico Hulkenberg', question_id: 60, correct: true},
+    {name_option: 'Lando Norris', question_id: 60, correct: false},
+    {name_option: 'Carlos Sainz Jr.', question_id: 60, correct: false},
+    {name_option: 'Fernando Alonso', question_id: 60, correct: false},
+
+    {name_option: '1987', question_id: 61, correct: true},
+    {name_option: '1988', question_id: 61, correct: false},
+    {name_option: '1986', question_id: 61, correct: false},
+    {name_option: '1985', question_id: 61, correct: false},
+
+    {name_option: 'Dietrich Mateschitz', question_id: 62, correct: true},
+    {name_option: '2do lugar', question_id: 62, correct: false},
+    {name_option: '3er lugar', question_id: 62, correct: false},
+    {name_option: '4to lugar', question_id: 62, correct: false},
+
+    {name_option: 'Jaguar', question_id: 63, correct: true},
+    {name_option: '2do lugar', question_id: 63, correct: false},
+    {name_option: '3er lugar', question_id: 63, correct: false},
+    {name_option: '4to lugar', question_id: 63, correct: false},
+
+    {name_option: '1er lugar', question_id: 64, correct: true},
+    {name_option: '2do lugar', question_id: 64, correct: false},
+    {name_option: '3er lugar', question_id: 64, correct: false},
+    {name_option: '4to lugar', question_id: 64, correct: false},
+
+    {name_option: '1er lugar', question_id: 65, correct: true},
+    {name_option: '2do lugar', question_id: 65, correct: false},
+    {name_option: '3er lugar', question_id: 65, correct: false},
+    {name_option: '4to lugar', question_id: 65, correct: false},
+
+    {name_option: 'Austriaca', question_id: 66, correct: true},
+    {name_option: 'Alemana', question_id: 66, correct: false},
+    {name_option: 'Británica', question_id: 66, correct: false},
+    {name_option: 'Italiana', question_id: 66, correct: false},
+
+    {name_option: 'Italiana', question_id: 67, correct: false},
+    {name_option: 'Alemana', question_id: 67, correct: true},
+    {name_option: 'Británica', question_id: 67, correct: false},
+    {name_option: 'Austriaca', question_id: 67, correct: false},
+
+    {name_option: 'Karl Benz y Gottlieb Daimler', question_id: 68, correct: true},
+    {name_option: 'Gottlieb Daimler', question_id: 68, correct: false},
+    {name_option: 'Ferdinand Porsche', question_id: 68, correct: false},
+    {name_option: 'Enzo Ferrari', question_id: 68, correct: false},
+
+    {name_option: '1er lugar', question_id: 69, correct: true},
+    {name_option: '2do lugar', question_id: 69, correct: false},
+    {name_option: '3er lugar', question_id: 69, correct: false},
+    {name_option: '4to lugar', question_id: 69, correct: false},
+
+    {name_option: '1er lugar', question_id: 70, correct: true},
+    {name_option: '2do lugar', question_id: 70, correct: false},
+    {name_option: '3er lugar', question_id: 70, correct: false},
+    {name_option: '4to lugar', question_id: 70, correct: false},
+ 
+    {name_option: 'Italiana', question_id: 71, correct: true},
+    {name_option: 'Alemana', question_id: 71, correct: false},
+    {name_option: 'Británica', question_id: 71, correct: false},
+    {name_option: 'Austriaca', question_id: 71, correct: false},
+
+    {name_option: 'Enzo Ferrari', question_id: 72, correct: true},
+    {name_option: 'Piero Ferrari', question_id: 72, correct: false},
+    {name_option: 'Luigi Chinetti', question_id: 72, correct: false},
+    {name_option: 'Niki Lauda', question_id: 72, correct: false},
+
+    {name_option: '1er lugar', question_id: 73, correct: true},
+    {name_option: '2do lugar', question_id: 73, correct: false},
+    {name_option: '3er lugar', question_id: 73, correct: false},
+    {name_option: '4to lugar', question_id: 73, correct: false},
+
+    {name_option: '1er lugar', question_id: 74, correct: true},
+    {name_option: '2do lugar', question_id: 74, correct: false},
+    {name_option: '3er lugar', question_id: 74, correct: false},
+    {name_option: '4to lugar', question_id: 74, correct: false},   
+
+    ######                 CAREER                     ######
+
     {name_option: 'Indica el final de la carrera', question_id: 75, correct: true},
     {name_option: 'Indica el comienzo de la carrera', question_id: 75, correct: false},
     {name_option: 'Indica peligro en pista', question_id: 75, correct: false},
@@ -349,7 +483,8 @@ options = [
     {name_option: '5 motores por temporada', question_id: 93, correct: false},
     {name_option: '7 motores por temporada', question_id: 93, correct: true},
     {name_option: '10 motores por temporada', question_id: 93, correct: false},
-    {name_option: 'No hay límite de motores', question_id: 93, correct: false},
+    {name_option: 'No hay límite de motores', question_id: 93, correct: false}
+
 ]
 
 options.each do |option|

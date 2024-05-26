@@ -39,13 +39,13 @@
     <% if feedback_message %>
         <div style="color: <%= feedback_color %>;">
             <p><%= feedback_message %></p>
-            <form action="/gamemodes/progressive/pilot" method="get">
+            <form action="<%= @form_action %>" method="get">
                 <button type="submit">Next</button>
             </form>
         </div>
     <% else %>
         <h2><%= @question.name_question %></h2>
-        <form action="/gamemodes/progressive/pilot" method="post">
+        <form action="<%= @form_action %>" method="post">
             <% @options.each do |option| %>
                 <div class="option">
                     <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>">
