@@ -254,7 +254,102 @@ options = [
     {name_option: 'Nick Heidfeld', question_id: 14, correct: true},
     {name_option: 'Romain Grosjean', question_id: 14, correct: false},
     {name_option: 'Nico Hulkenberg', question_id: 14, correct: false},
-    {name_option: 'Kevin Magnussen', question_id: 14, correct: false}
+    {name_option: 'Kevin Magnussen', question_id: 14, correct: false},
+
+    {name_option: 'Indica el final de la carrera', question_id: 75, correct: true},
+    {name_option: 'Indica el comienzo de la carrera', question_id: 75, correct: false},
+    {name_option: 'Indica peligro en pista', question_id: 75, correct: false},
+    {name_option: 'Indica reducir la velocidad', question_id: 75, correct: false},
+
+    {name_option: 'Indica que va a salir el coche de seguridad', question_id: 76, correct: false},
+    {name_option: 'Indica el comienzo de la carrera', question_id: 76, correct: false},
+    {name_option: 'Indica que el peligro en pista ha terminado', question_id: 76, correct: true},
+    {name_option: 'Indica última vuelta', question_id: 76, correct: false},
+
+    {name_option: 'Indica que el piloto debe reducir su velocidad y no podrá adelantar al menos que tenga por delante un coche dañado', question_id: 77, correct: true},
+    {name_option: 'Indica que va a salir el coche de seguridad a pista', question_id: 77, correct: false},
+    {name_option: 'Indica peligro en pista', question_id: 77, correct: false},
+    {name_option: 'Indica reducir la velocidad', question_id: 77, correct: false},
+
+    {name_option: 'Indica el comienzo de la carrera', question_id: 78, correct: false},
+    {name_option: 'Indica reducir la velocidad', question_id: 78, correct: false},
+    {name_option: 'Indica peligro en pista', question_id: 78, correct: false},
+    {name_option: 'Indica que va a salir el coche de seguridad a pista', question_id: 78, correct: true},
+
+    {name_option: 'Indica que va a salir el coche de seguridad a pista', question_id: 79, correct: false},
+    {name_option: 'Es la misma que con un Safety Car pero no sale el coche de seguridad a pista', question_id: 79, correct: true},
+    {name_option: 'Indica reducir la velocidad', question_id: 79, correct: false},
+    {name_option: 'Indica el final de la carrera', question_id: 79, correct: false},
+
+    {name_option: 'Indica que se detiene por completo la sesión', question_id: 80, correct: true},
+    {name_option: 'Indica que va a salir el coche de seguridad a pista', question_id: 80, correct: false},
+    {name_option: 'Indica peligro en pista', question_id: 80, correct: false},
+    {name_option: 'Indica reducir la velocidad', question_id: 80, correct: false},
+
+    {name_option: 'Indica que el piloto amonestado será excluido de la sesión por una maniobra antideportiva de gravedad', question_id: 81, correct: true},
+    {name_option: 'Indica que el piloto amonestado será excluido de la sesión por exceder la velocidad', question_id: 81, correct: false},
+    {name_option: 'Indica cambio de piloto', question_id: 81, correct: false},
+    {name_option: 'Indica que ese piloto tiene que entrar al box', question_id: 81, correct: false},
+
+    {name_option: 'Indica que el piloto amonestado será excluido de la sesión por una maniobra antideportiva de gravedad', question_id: 82, correct: false},
+    {name_option: 'Indica al piloto que su monoplaza tiene severos problemas mecánicos que comprometen su seguridad y que está obligado a entrar en box y detener su vehículo lo antes posible', question_id: 82, correct: true},
+    {name_option: 'Indica al piloto que su equipo perdió comunicación con él y tiene que entrar al box para solucionarlo', question_id: 82, correct: false},
+    {name_option: 'Indica al piloto que será reemplazado por otro corredor de su equipo', question_id: 82, correct: false},
+
+    {name_option: 'Advierte a los pilotos que tiene fallas en el motor', question_id: 83, correct: false},
+    {name_option: 'Indica a los pilotos que tiene que entrar al box para llenar el tanque de combustible', question_id: 83, correct: false},
+    {name_option: 'Indica a los pilotos que tiene que entrar al box para cambiar los neumáticos', question_id: 83, correct: false},
+    {name_option: 'Advierte a los pilotos por una maniobra peligrosa o antideportiva en pista', question_id: 83, correct: true},
+
+    {name_option: 'Siempre se muestra en entrenamientos y carreras de forma estática al final del pit lane para indicar que hay coches que se aproximan por la pista', question_id: 84, correct: false},
+    {name_option: 'En la sesión de entrenamiento el piloto debe dejar pasar a un coche más rápido sin variar su trazada', question_id: 84, correct: false},
+    {name_option: 'En situación de carrera, el piloto que va a ser doblado por otro que ha realizado una vuelta de más, será alertado mediante la bandera azul para permitir el adelantamiento tan rápido como sea posible', question_id: 84, correct: false},
+    {name_option: 'Todas las opciones son correctas', question_id: 84, correct: true},
+
+    {name_option: 'Indica a los pilotos que va a salir el coche de seguridad a pista', question_id: 85, correct: false},
+    {name_option: 'Indica a los pilotos que hubo un accidente en la pista', question_id: 85, correct: false},
+    {name_option: 'Indica a los pilotos que la situación en pista no es la idónea para rodar al límite', question_id: 85, correct: true},
+    {name_option: 'Indica a los pilotos que deben regresar a los boxes', question_id: 85, correct: false},
+
+    {name_option: 'Indica que un piloto abandonó la carrera', question_id: 86, correct: false},
+    {name_option: 'Indica que hay un vehículo excesivamente lento en pista, ya sea una grúa o un coche médico', question_id: 86, correct: true},
+    {name_option: 'Indica la última vuelta de la carrera', question_id: 86, correct: false},
+    {name_option: 'Indica que todos los vehículos tienen que volver a boxes', question_id: 86, correct: false},
+
+    {name_option: 'Tiempos de práctica libres', question_id: 87, correct: false},
+    {name_option: 'Orden de llegada en la carrera anterior', question_id: 87, correct: false},
+    {name_option: 'Clasificación de pilotos según sus resultados en el campeonato', question_id: 87, correct: false},
+    {name_option: 'Sesión de clasificación de una vuelta cronometrada', question_id: 87, correct: true},
+
+    {name_option: '60 vueltas', question_id: 88, correct: false},
+    {name_option: '100 vueltas', question_id: 88, correct: false},
+    {name_option: '75 vueltas', question_id: 88, correct: false},
+    {name_option: 'No hay límite de vueltas', question_id: 88, correct: true},
+
+    {name_option: '1 hora', question_id: 89, correct: false},
+    {name_option: '2 hora ', question_id: 89, correct: false},
+    {name_option: '30 minutos', question_id: 89, correct: false},
+    {name_option: 'Depende del circuito y las condiciones de la carrera', question_id: 89, correct: true},
+
+    {name_option: '18 pilotos', question_id: 90, correct: false},
+    {name_option: '20 pilotos', question_id: 90, correct: false},
+    {name_option: '22 pilotos', question_id: 90, correct: true},
+    {name_option: '24 pilotos', question_id: 90, correct: false},
+
+    {name_option: 'Se le otorga un bono de tiempo al final de la carrera', question_id: 91, correct: false},
+    {name_option: 'Recibe una advertencia del equipo', question_id: 91, correct: false},
+    {name_option: 'Puede recibir una penalización de tiempo o un drive-through', question_id: 91, correct: true},
+    {name_option: 'No hay consecuencias', question_id: 91, correct: false},
+
+    {name_option: '80 km/h', question_id: 92, correct: true},
+    {name_option: '100 km/h', question_id: 92, correct: false},
+    {name_option: '120 km/h', question_id: 92, correct: false},
+    {name_option: '150 km/h', question_id: 92, correct: false},
+
+    {name_option: '5 motores por temporada', question_id: 93, correct: false},
+    {name_option: '7 motores por temporada', question_id: 93, correct: true},
+    {name_option: '10 motores por temporada', question_id: 93, correct: false},
+    {name_option: 'No hay límite de motores', question_id: 93, correct: false},
 ]
 
 options.each do |option|
