@@ -96,6 +96,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_202132) do
     t.string "password"
     t.integer "cant_life"
     t.integer "cant_coins"
+    t.datetime "last_life_lost_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

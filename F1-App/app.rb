@@ -27,6 +27,11 @@ class App < Sinatra::Application
     before do
         cache_control :no_cache, :no_store, :must_revalidate
         expires 0, :public, :no_cache
+
+        if session[:username]
+            current_user = User.find_by(username: session[:username])
+            current_user.regenerate_life_if_needed if current_user
+        end
     end
 
     get '/' do
@@ -86,7 +91,7 @@ class App < Sinatra::Application
     end
 
     get '/how-to-play' do
-      erb :'how-to-play/howToPlay'
+        erb :'how-to-play/howToPlay'
     end
 
     get '/profiles' do
@@ -110,8 +115,8 @@ class App < Sinatra::Application
 
         @question = Question.where(theme: 'pilot').where.not(id: session[:answered_questions]).order('RANDOM()').first
         if @question.nil?
-          session[:answered_questions] = []
-          @question = Question.where(theme: 'pilot').order('RANDOM()').first
+            session[:answered_questions] = []
+            @question = Question.where(theme: 'pilot').order('RANDOM()').first
         end
         @options = @question.options.shuffle
 
@@ -132,7 +137,7 @@ class App < Sinatra::Application
             session[:message] = "Correct! Well done."
             session[:color] = "green"
         else
-            @current_user.decrement!(:cant_life, 1)
+            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             session[:message] = "Incorrect!"
             session[:color] = "red"
         end
@@ -149,8 +154,8 @@ class App < Sinatra::Application
 
         @question = Question.where(theme: 'team').where.not(id: session[:answered_questions]).order('RANDOM()').first
         if @question.nil?
-          session[:answered_questions] = []
-          @question = Question.where(theme: 'team').order('RANDOM()').first
+            session[:answered_questions] = []
+            @question = Question.where(theme: 'team').order('RANDOM()').first
         end
         @options = @question.options.shuffle
 
@@ -171,7 +176,7 @@ class App < Sinatra::Application
             session[:message] = "Correct! Well done."
             session[:color] = "green"
         else
-            @current_user.decrement!(:cant_life, 1)
+            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             session[:message] = "Incorrect!"
             session[:color] = "red"
         end
@@ -188,8 +193,8 @@ class App < Sinatra::Application
 
         @question = Question.where(theme: 'career').where.not(id: session[:answered_questions]).order('RANDOM()').first
         if @question.nil?
-          session[:answered_questions] = []
-          @question = Question.where(theme: 'career').order('RANDOM()').first
+            session[:answered_questions] = []
+            @question = Question.where(theme: 'career').order('RANDOM()').first
         end
         @options = @question.options.shuffle
 
@@ -210,7 +215,7 @@ class App < Sinatra::Application
             session[:message] = "Correct! Well done."
             session[:color] = "green"
         else
-            @current_user.decrement!(:cant_life, 1)
+            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             session[:message] = "Incorrect!"
             session[:color] = "red"
         end
