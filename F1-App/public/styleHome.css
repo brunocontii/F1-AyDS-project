@@ -1,21 +1,28 @@
+/* General Styles */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-image: url("fondoHome.png");
+    font-family: 'Roboto', sans-serif;
+    background-image: url(f1.gif);
     background-size: cover;
     background-position: center;
-    color: white;
+    background-repeat: no-repeat;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
+/* Header Styles */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 header .logo img {
@@ -30,48 +37,73 @@ nav ul {
 }
 
 nav ul li {
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 nav ul li a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     font-size: 16px;
-    transition: color 0.3s;
+    font-weight: 500;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
 }
 
 nav ul li a:hover {
     color: #ffcc00;
+    border-bottom: 2px solid #ffcc00;
 }
 
+/* Main Content Styles */
 main {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 40px;
 }
 
 .welcome-message {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 40px;
+    border-radius: 15px;
     backdrop-filter: blur(15px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    margin: 0 20px;
 }
 
 .welcome-message h1 {
     font-size: 48px;
-    margin: 0;
+    margin: 0 0 20px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .welcome-message p {
     font-size: 24px;
-    margin: 10px 0 0;
+    margin: 0 0 20px;
+    line-height: 1.5;
 }
 
+.welcome-message .welcome-gif {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Styles */
 footer {
     text-align: center;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px 40px;
+    background-color: rgba(0, 0, 0, 0.7);
     font-size: 14px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+footer p {
+    margin: 0;
 }
