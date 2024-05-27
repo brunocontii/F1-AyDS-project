@@ -257,9 +257,130 @@ options = [
 
     ######                 CIRCUIT                     ######
 
-                        ### JOACO
+    {name_option: '74', question_id: 25, correct: true},
+    {name_option: '75', question_id: 25, correct: false},
+    {name_option: '73', question_id: 25, correct: false},
+    {name_option: '78', question_id: 25, correct: false},
 
+    {name_option: 'Albert Park', question_id: 26, correct: false},
+    {name_option: 'Silverstone', question_id: 26, correct: true},
+    {name_option: 'Fuji', question_id: 26, correct: false},
+    {name_option: 'Jerez', question_id: 26, correct: false},
+    
+    {name_option: 'Monza', question_id: 27, correct: false},
+    {name_option: 'Sochi', question_id: 27, correct: false},
+    {name_option: 'Pescara', question_id: 27, correct: true},
+    {name_option: 'Zolder', question_id: 27, correct: false},
+    
+    {name_option: '25.602km', question_id: 28, correct: false},
+    {name_option: '25.954km', question_id: 28, correct: false},
+    {name_option: '26.122km', question_id: 28, correct: false},
+    {name_option: '25.801km', question_id: 28, correct: true},
+    
+    {name_option: 'Monza', question_id: 29, correct: true},
+    {name_option: 'Mónaco', question_id: 29, correct: false},
+    {name_option: 'Silverstone', question_id: 29, correct: false},
+    {name_option: 'Hungaroring', question_id: 29, correct: false},
+    
+    {name_option: '69', question_id: 30, correct: false},
+    {name_option: '72', question_id: 30, correct: true},
+    {name_option: '57', question_id: 30, correct: false},
+    {name_option: '75', question_id: 30, correct: false},
+    
+    {name_option: 'Autódromo', question_id: 31, correct: false},
+    {name_option: 'Híbrido', question_id: 31, correct: false},
+    {name_option: 'Rural', question_id: 31, correct: true},
+    {name_option: 'Callejero', question_id: 31, correct: false},
+    
+    {name_option: 'Riverside', question_id: 31, correct: false},
+    {name_option: 'Miami', question_id: 31, correct: false},
+    {name_option: 'Mugello', question_id: 31, correct: false},
+    {name_option: 'Las Vegas', question_id: 31, correct: true},
+    
+    {name_option: 'Estados Unidos', question_id: 32, correct: true},
+    {name_option: 'España', question_id: 32, correct: false},
+    {name_option: 'Inglaterra', question_id: 32, correct: false},
+    {name_option: 'Italia', question_id: 32, correct: false},
+    
+    {name_option: 'AVUS', question_id: 33, correct: false},
+    {name_option: 'Mónaco', question_id: 33, correct: true},
+    {name_option: 'Yeda', question_id: 33, correct: false},
+    {name_option: 'Zolder', question_id: 33, correct: false},
+    
+    {name_option: 'La capilla', question_id: 34, correct: false},
+    {name_option: 'El monte Silvano', question_id: 34, correct: false},
+    {name_option: 'El kilómetro volador', question_id: 34, correct: true},
+    {name_option: 'El punto raso', question_id: 34, correct: false},
+    
+    {name_option: '1986-1992', question_id: 35, correct: false},
+    {name_option: '1999-2009', question_id: 35, correct: false},
+    {name_option: '1975-1983', question_id: 35, correct: false},
+    {name_option: '1985-1995', question_id: 35, correct: true},
 
+    {name_option: 'Oscar y Juan Gálvez', question_id: 36, correct: true},
+    {name_option: 'Juan Manuel Fangio', question_id: 36, correct: false},
+    {name_option: 'Julio Argentino Roca', question_id: 36, correct: false},
+    {name_option: 'Diego Armando Maradona', question_id: 36, correct: false},
+
+    {name_option: 'Jerez', question_id: 37, correct: false},
+    {name_option: 'Indianapolis', question_id: 37, correct: true},
+    {name_option: 'Las Vegas', question_id: 37, correct: false},
+    {name_option: 'Mónaco', question_id: 37, correct: false},
+
+    {name_option: '19', question_id: 38, correct: false},
+    {name_option: '20', question_id: 38, correct: false},
+    {name_option: '21', question_id: 38, correct: true},
+    {name_option: '22', question_id: 38, correct: false},
+
+    {name_option: 'Monza', question_id: 39, correct: false},
+    {name_option: 'Silverstone', question_id: 39, correct: false},
+    {name_option: 'Zandvoort', question_id: 39, correct: false},
+    {name_option: 'Aintree', question_id: 39, correct: true},
+
+    {name_option: '37.000', question_id: 40, correct: true},
+    {name_option: '38.000', question_id: 40, correct: false},
+    {name_option: '36.000', question_id: 40, correct: false},
+    {name_option: '40.000', question_id: 40, correct: false},
+
+    {name_option: 'Fernando Alonso', question_id: 41, correct: false},
+    {name_option: 'Lewis Hamilton', question_id: 41, correct: true},
+    {name_option: 'Rubens Barrichello', question_id: 41, correct: false},
+    {name_option: 'Max Verstappen', question_id: 41, correct: false},
+
+    {name_option: '20', question_id: 42, correct: false},
+    {name_option: '21', question_id: 43, correct: false},
+    {name_option: '19', question_id: 43, correct: true},
+    {name_option: '22', question_id: 44, correct: false},
+
+    {name_option: 'Fórmula 2', question_id: 44, correct: false},
+    {name_option: 'Fórmula 3', question_id: 44, correct: false},
+    {name_option: 'Fórmula E', question_id: 44, correct: false},
+    {name_option: 'Karting', question_id: 44, correct: true},
+
+    {name_option: 'Asfalto', question_id: 45, correct: true},
+    {name_option: 'Hierba', question_id: 45, correct: false},
+    {name_option: 'Grava', question_id: 45, correct: false},
+    {name_option: 'Hierba y grava', question_id: 45, correct: false},
+
+    {name_option: 'AVUS', question_id: 46, correct: false},
+    {name_option: 'Indianapolis', question_id: 46, correct: true},
+    {name_option: 'Mónaco', question_id: 46, correct: false},
+    {name_option: 'Enzo e Dino Ferrari', question_id: 46, correct: false},
+
+    {name_option: 'Reims-Gueux', question_id: 47, correct: false},
+    {name_option: 'Bremgarten', question_id: 47, correct: false},
+    {name_option: 'Ninguno', question_id: 47, correct: true},
+    {name_option: 'Silverstone', question_id: 47, correct: false},
+
+    {name_option: '2', question_id: 48, correct: false},
+    {name_option: '6', question_id: 48, correct: false},
+    {name_option: '4', question_id: 48, correct: false},
+    {name_option: '3', question_id: 48, correct: true},
+
+    {name_option: 'Europa', question_id: 49, correct: true},
+    {name_option: 'América', question_id: 49, correct: false},
+    {name_option: 'Asia', question_id: 49, correct: false},
+    {name_option: 'Ocenía', question_id: 49, correct: false},
 
     ######                 TEAM                     ######
 
