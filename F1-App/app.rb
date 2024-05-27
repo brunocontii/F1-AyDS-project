@@ -226,6 +226,45 @@ class App < Sinatra::Application
         redirect '/gamemodes/progressive/career'
     end
 
+    get '/gamemodes/progressive/circuit' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        session[:answered_questions] ||= []
+
+        @question = Question.where(theme: 'circuit').where.not(id: session[:answered_questions]).order('RANDOM()').first
+        if @question.nil?
+            session[:answered_questions] = []
+            @question = Question.where(theme: 'circuit').order('RANDOM()').first
+        end
+        @options = @question.options.shuffle
+
+        feedback_message = session.delete(:message)
+        feedback_color = session.delete(:color)
+        @form_action = '/gamemodes/progressive/circuit'
+
+        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color}
+    end
+
+    post '/gamemodes/progressive/circuit' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @option = Option.find(params[:option_id].to_i)
+        @question = @option.question
+
+        if @option.correct
+            @current_user.increment!(:cant_coins, 10)
+            session[:message] = "Correct! Well done."
+            session[:color] = "green"
+        else
+            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+            session[:message] = "Incorrect!"
+            session[:color] = "red"
+        end
+
+        session[:answered_questions] ||= []
+        session[:answered_questions] << @question.id
+
+        redirect '/gamemodes/progressive/circuit'
+    end
+
     get '/frees' do
         @frees = Free.all
         erb :'frees/index'
