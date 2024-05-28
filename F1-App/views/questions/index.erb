@@ -35,27 +35,35 @@
     </div>
 </header>
 <main>
-    <div class="question-container">
-    <% if feedback_message %>
-        <div style="color: <%= feedback_color %>;">
-            <p><%= feedback_message %></p>
-            <form action="<%= @form_action %>" method="get">
-                <button type="submit">Next</button>
-            </form>
+    <% if session[:message] %>
+        <div style="color: <%= session[:color] %>;">
+            <p><%= session[:message] %></p>
         </div>
-    <% else %>
-        <h2><%= @question.name_question %></h2>
-        <form action="<%= @form_action %>" method="post">
-            <% @options.each do |option| %>
-                <div class="option">
-                    <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>">
-                    <label for="option_<%= option.id %>"><%= option.name_option %></label>
-                </div>
-            <% end %>
-            <input type="hidden" name="question_id" value="<%= @question.id %>">
-            <button type="submit">Submit</button>
-        </form>
+        <% session.delete(:message) %>
+        <% session.delete(:color) %>
     <% end %>
+    
+    <div class="question-container">
+        <% if feedback_message %>
+            <div style="color: <%= feedback_color %>;">
+                <p><%= feedback_message %></p>
+                <form action="<%= @form_action %>" method="get">
+                    <button type="submit">Next</button>
+                </form>
+            </div>
+        <% else %>
+            <h2><%= @question.name_question %></h2>
+            <form action="<%= @form_action %>" method="post">
+                <% @options.each do |option| %>
+                    <div class="option">
+                        <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>">
+                        <label for="option_<%= option.id %>"><%= option.name_option %></label>
+                    </div>
+                <% end %>
+                <input type="hidden" name="question_id" value="<%= @question.id %>">
+                <button type="submit">Submit</button>
+            </form>
+        <% end %>
     </div>
 </main>
 <script>

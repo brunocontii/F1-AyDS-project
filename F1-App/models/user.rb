@@ -24,4 +24,10 @@ class User < ActiveRecord::Base
             end
         end
     end
+
+    def can_play?
+        regenerate_life_if_needed
+        cant_life > 0
+    end
+
 end
