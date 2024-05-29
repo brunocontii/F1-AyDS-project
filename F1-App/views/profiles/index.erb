@@ -1,13 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Profiles</title>
+    <meta charset="UTF-8">
+    <title>Profile of <%= profile.name %></title>
+    <link rel="stylesheet" href="/path/to/your/style.css">
 </head>
 <body>
-    <ul>
-        <% @profiles.each do |p| %>
-            <li><%= p.description %></li>
-        <% end %>
-    </ul>
+    <header>
+        <h1>Profile of <%= profile.name %> <%= profile.lastName %></h1>
+    </header>
+    <main>
+        <div class="profile-info">
+            <p><strong>Name:</strong> <%= profile.name %> <%= profile.lastName %></p>
+            <p><strong>Description:</strong> <%= profile.description %></p>
+            <p><strong>Age:</strong> <%= profile.age %> years</p>
+        </div>
+        <div class="back-to-menu">
+            <a href="/gamemodes">Back</a>
+        </div>
+    </main>
 </body>
 </html>

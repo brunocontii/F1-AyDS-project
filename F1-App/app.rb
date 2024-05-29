@@ -94,14 +94,20 @@ class App < Sinatra::Application
         erb :'how-to-play/howToPlay'
     end
 
-    get '/profiles' do
-        @profiles = Profile.all
-        erb :'profiles/index'
+    get '/profile' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @profile = @current_user.profile if @current_user
+        erb :'profiles/index', locals: { profile: @profile }
     end
 
     get '/gamemodes' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        erb :'gamemodes/menu' , locals: { current_user: @current_user }
+        if request.xhr?
+            content_type :json
+            { lives: @current_user.cant_life }.to_json
+        else
+            erb :'gamemodes/menu', locals: { current_user: @current_user }
+        end
     end
 
     get '/gamemodes/progressive' do
@@ -167,7 +173,7 @@ class App < Sinatra::Application
         @current_user = User.find_by(username: session[:username]) if session[:username]
         
         unless @current_user&.can_play?
-            session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
             return
@@ -201,7 +207,7 @@ class App < Sinatra::Application
         else
             @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             if @current_user.cant_life == 0
-                session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                session[:message] = "You have 0 lives. Please wait for loves to regenerate."
                 session[:color] = "red"
                 redirect '/gamemodes'
                 return
@@ -223,7 +229,7 @@ class App < Sinatra::Application
         @current_user = User.find_by(username: session[:username]) if session[:username]
         
         unless @current_user&.can_play?
-            session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
             return
@@ -257,7 +263,7 @@ class App < Sinatra::Application
         else
             @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             if @current_user.cant_life == 0
-                session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                session[:message] = "You have 0 lives. Please wait for loves to regenerate."
                 session[:color] = "red"
                 redirect '/gamemodes'
                 return
@@ -279,7 +285,7 @@ class App < Sinatra::Application
         @current_user = User.find_by(username: session[:username]) if session[:username]
         
         unless @current_user&.can_play?
-            session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
             return
@@ -313,7 +319,7 @@ class App < Sinatra::Application
         else
             @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             if @current_user.cant_life == 0
-                session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                session[:message] = "You have 0 lives. Please wait for loves to regenerate."
                 session[:color] = "red"
                 redirect '/gamemodes'
                 return
@@ -333,98 +339,82 @@ class App < Sinatra::Application
     end
 
     # Modo Free
-get '/gamemodes/free' do
-    @current_user = User.find_by(username: session[:username]) if session[:username]
+    get '/gamemodes/free' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
     
-    unless @current_user&.can_play?
-        session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
-        session[:color] = "red"
-        redirect '/gamemodes'
-        return
-    end
+        unless @current_user&.can_play?
+            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
+            session[:color] = "red"
+            redirect '/gamemodes'
+            return
+        end
     
-    session[:answered_free_questions] ||= []
-    session[:free_mode_difficulty] ||= 'easy'
+        session[:answered_free_questions] ||= []
+        session[:free_mode_difficulty] ||= 'easy'
   
-    @question = Question.where(level: session[:free_mode_difficulty])
-                        .where.not(id: session[:answered_free_questions])
-                        .order('RANDOM()')
-                        .first
+        @question = Question.where(level: session[:free_mode_difficulty])
+                            .where.not(id: session[:answered_free_questions])
+                            .order('RANDOM()')
+                            .first
   
-    if @question.nil?
-      case session[:free_mode_difficulty]
-      when 'easy'
-        session[:free_mode_difficulty] = 'normal'
-        session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
-      when 'medium'
-        session[:free_mode_difficulty] = 'hard'
-        session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
-      when 'hard'
-        session[:free_mode_difficulty] = 'impossible'
-        session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
-      when 'impossible'
-        session[:free_mode_difficulty] = nil
-        session[:answered_free_questions] = []
-        session[:message] = "Congratulations! You've completed the Free Mode."
-        redirect '/gamemodes'
-        return
-      end
-      redirect '/gamemodes/free'
-      return
+        if @question.nil?
+        case session[:free_mode_difficulty]
+            when 'easy'
+                session[:free_mode_difficulty] = 'normal'
+                session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
+            when 'medium'
+                session[:free_mode_difficulty] = 'hard'
+                session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
+            when 'hard'
+                session[:free_mode_difficulty] = 'impossible'
+                session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
+            when 'impossible'
+                session[:free_mode_difficulty] = nil
+                session[:answered_free_questions] = []
+                session[:message] = "Congratulations! You've completed the Free Mode."
+                redirect '/gamemodes'
+                return
+            end
+            redirect '/gamemodes/free'
+            return
+        end
+  
+        @options = @question.options.shuffle
+        feedback_message = session.delete(:message)
+        feedback_color = session.delete(:color)
+        @form_action = '/gamemodes/free'
+  
+        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
     end
   
-    @options = @question.options.shuffle
-    feedback_message = session.delete(:message)
-    feedback_color = session.delete(:color)
-    @form_action = '/gamemodes/free'
+    post '/gamemodes/free' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @option = Option.find(params[:option_id].to_i)
+        @question = @option.question
   
-    erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
-  end
-  
-  post '/gamemodes/free' do
-    @current_user = User.find_by(username: session[:username]) if session[:username]
-    @option = Option.find(params[:option_id].to_i)
-    @question = @option.question
-  
-    if @option.correct
-      @current_user.increment!(:cant_coins, 10)
-      session[:message] = "Correct! Well done."
-      session[:color] = "green"
-    else
-      @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-      if @current_user.cant_life == 0
-        session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
-        session[:color] = "red"
-        redirect '/gamemodes'
-        return
-    else
+        if @option.correct
+            @current_user.increment!(:cant_coins, 10)
+            session[:message] = "Correct! Well done."
+            session[:color] = "green"
+        else
+            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+            if @current_user.cant_life == 0
+                session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                session[:color] = "red"
+                redirect '/gamemodes'
+                return
+            else
+            session[:message] = "Incorrect!"
+            session[:color] = "red"
+            end
         session[:message] = "Incorrect!"
         session[:color] = "red"
-    end
-      session[:message] = "Incorrect!"
-      session[:color] = "red"
-    end
+        end
   
-    session[:answered_free_questions] ||= []
-    session[:answered_free_questions] << @question.id
+        session[:answered_free_questions] ||= []
+        session[:answered_free_questions] << @question.id
   
-    redirect '/gamemodes/free'
-  end
-  
-
-    get '/progressives' do
-        @progressives = Progressive.all
-        erb :'progressives/index'
-    end
-
-    get '/answers' do
-        @answers = Answer.all
-        erb :'answers/index'
-    end
-
-    get '/replies' do
-        @replies = Reply.all
-        erb :'replies/index'
+        redirect '/gamemodes/free'
     end
 
     get '/buys' do
@@ -437,13 +427,4 @@ get '/gamemodes/free' do
         erb :'wildcards/index'
     end
 
-    get '/questions' do
-        @questions = Question.all
-        erb :'questions/listadoPreguntas'
-    end
-
-    get '/options' do
-        @options = Option.all
-        erb :'options/index'
-    end
 end
