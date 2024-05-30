@@ -1,16 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
-
-* {
+body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: url('progressive-background.jpg') no-repeat center center fixed;
+    background: url('background-question.jpg') no-repeat center center fixed;
     background-size: cover;
-    color: #fff;
 }
 
 header {
@@ -37,15 +30,16 @@ header {
     align-items: center;
 }
 
-.currency, .lives {
+.user-info .currency, .user-info .lives {
     display: flex;
     align-items: center;
-    margin-right: 20px;
+    margin-right: 15px;
+    color: #fff;
 }
 
-.currency img, .lives img {
-    width: 20px;
-    height: 20px;
+.user-info .icon {
+    width: 24px;
+    height: 24px;
     margin-right: 5px;
 }
 
@@ -100,35 +94,64 @@ header {
 }
 
 main {
-    text-align: center;
-    padding: 50px;
-}
-
-main h1 {
-    font-size: 3rem;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 4px #000;
-}
-
-.gamemodes {
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
 }
 
-.gamemode {
-    margin: 0 20px;
-    padding: 20px 40px;
-    background: rgba(0, 0, 0, 0.8);
+.question-container {
+    background-color: #fff;
+    padding: 20px;
     border-radius: 10px;
-    text-decoration: none;
-    color: #fff;
-    font-size: 1.5rem;
-    transition: background 0.3s, transform 0.3s;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
 }
 
-.gamemode:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-    color: #e92727;
+.feedback-message {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.question-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.question-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+}
+
+.option-input {
+    margin-right: 10px;
+}
+
+.option-label {
+    font-size: 1.2em;
+}
+
+.submit-button, .next-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    align-self: center;
+}
+
+.submit-button:hover, .next-button:hover {
+    background-color: #555;
 }

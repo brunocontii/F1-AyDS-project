@@ -36,7 +36,7 @@
 </header>
 <main>
     <% if session[:message] %>
-        <div style="color: <%= session[:color] %>;">
+        <div class="feedback-message" style="color: <%= session[:color] %>;">
             <p><%= session[:message] %></p>
         </div>
         <% session.delete(:message) %>
@@ -45,23 +45,23 @@
     
     <div class="question-container">
         <% if feedback_message %>
-            <div style="color: <%= feedback_color %>;">
+            <div class="feedback-message" style="color: <%= feedback_color %>;">
                 <p><%= feedback_message %></p>
                 <form action="<%= @form_action %>" method="get">
-                    <button type="submit">Next</button>
+                    <button type="submit" class="next-button">Next</button>
                 </form>
             </div>
         <% else %>
-            <h2><%= @question.name_question %></h2>
-            <form action="<%= @form_action %>" method="post">
+            <h2 class="question-title"><%= @question.name_question %></h2>
+            <form action="<%= @form_action %>" method="post" class="question-form">
                 <% @options.each do |option| %>
                     <div class="option">
-                        <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>">
-                        <label for="option_<%= option.id %>"><%= option.name_option %></label>
+                        <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>" class="option-input">
+                        <label for="option_<%= option.id %>" class="option-label"><%= option.name_option %></label>
                     </div>
                 <% end %>
                 <input type="hidden" name="question_id" value="<%= @question.id %>">
-                <button type="submit">Submit</button>
+                <button type="submit" class="submit-button">Check Answer</button>
             </form>
         <% end %>
     </div>
@@ -89,7 +89,6 @@ function updateLanguage(lang) {
         el.textContent = translations[lang][key];
     });
 }
-
 </script>
 </body>
 </html>
