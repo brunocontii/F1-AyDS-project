@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="icon" href='icon-1-50.png')>
+    <link rel="icon" href='icon-1-50.png'>
     <link rel="stylesheet" href="styleLogin.css">
 </head>
 <body>
     <% if @error %>
         <p><%= @error %></p>
     <% end %>
-    <section>   
+    <section>
         <div class="contenedor">
+            <a href="/" class="back-arrow">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
             <div class="formulario">
                 <form action="/login" method="post">
                     <h2>Login</h2>
 
                     <div class="input-contenedor">
-                        <i class="fa-solid fa-envelope"></i>
+                        <i class="fa-solid fa-user"></i>
                         <input type="text" name="username" required>
                         <label for="#">User</label>
                     </div>
@@ -30,21 +33,12 @@
                         <label for="#">Password</label>
                     </div>
 
-                    <div class="olvidar">
-                        <label for="#">
-                            <input type="checkbox"> Recordar  
-                        </label>
-                        <label id="forgotpass">
-                            <a href="#">Olvidé la contraseña</a>
-                        </label>
+                    <div>
+                        <button type="submit">Acceder</button>
                     </div>
-
-                <div>
-                    <button type="submit">Acceder</button>
                 </form>
-                    <div class="registrar">
-                        <p><a href="/register"><u>No tengo cuenta</u></a></p>
-                    </div>
+                <div class="registrar">
+                    <p><a href="/register"><u>No tengo cuenta</u></a></p>
                 </div>
             </div>
         </div>
