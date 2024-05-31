@@ -78,7 +78,7 @@ class App < Sinatra::Application
             @error = "Passwords are different"
             erb :'register/index'
         else
-            user = User.new(username: username, password: password)
+            user = User.create(username: username, password: password, cant_life: 3 , cant_coins: 0)
             session[:username] = user.username
             redirect '/gamemodes'
         end
