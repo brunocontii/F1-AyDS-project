@@ -115,11 +115,26 @@ class App < Sinatra::Application
         erb :'progressives/index' , locals: { current_user: @current_user }
     end
 
-    get '/gamemodes/progressive/pilot' do
+    # generalizacion de las rutas del modo de juego progresivo
+    # se crean las rutas de manera dinamica para cada tema del modo progresivo
+    ['pilot', 'team', 'career', 'circuit'].each do |mode|
+        get "/gamemodes/progressive/#{mode}" do
+            handle_progressive_mode_request(mode)
+        end
+
+        post "/gamemodes/progressive/#{mode}" do
+            handle_progressive_mode_submission(mode)
+        end
+    end
+
+    # metodo para manejar la solicitud GET de un tema del modo progresivo
+    def handle_progressive_mode_request(mode)
+        # obtenemos el usuario actual de la sesion
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        
+
+        # verificamos si tiene vidas para jugar
         unless @current_user&.can_play?
-            session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
             return
@@ -127,33 +142,41 @@ class App < Sinatra::Application
 
         session[:answered_questions] ||= []
 
-        @question = Question.where(theme: 'pilot').where.not(id: session[:answered_questions]).order('RANDOM()').first
+        # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
+        # que no haya sido respondida todavia
+        @question = Question.where(theme: mode).where.not(id: session[:answered_questions]).order('RANDOM()').first
         if @question.nil?
             session[:answered_questions] = []
-            @question = Question.where(theme: 'pilot').order('RANDOM()').first
+            @question = Question.where(theme: mode).order('RANDOM()').first
         end
         @options = @question.options.shuffle
 
         feedback_message = session.delete(:message)
         feedback_color = session.delete(:color)
-        @form_action = '/gamemodes/progressive/pilot'
+        @form_action = "/gamemodes/progressive/#{mode}"
 
-        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color}
+        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
     end
 
-    post '/gamemodes/progressive/pilot' do
+    # metodo para manejar la solicitud POST de un tema del modo progresivo
+    def handle_progressive_mode_submission(mode)
+        # obtenemos el usuario actual de la sesion
         @current_user = User.find_by(username: session[:username]) if session[:username]
         @option = Option.find(params[:option_id].to_i)
+        # aprovechamos la relacion entre questions y options
         @question = @option.question
 
+        # verificamos si la respuesta es correcta
+        # si es correcta sumamos monedas
         if @option.correct
             @current_user.increment!(:cant_coins, 10)
             session[:message] = "Correct! Well done."
             session[:color] = "green"
         else
+            # sino restamos una vida al usuario
             @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
             if @current_user.cant_life == 0
-                session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                 session[:color] = "red"
                 redirect '/gamemodes'
                 return
@@ -166,176 +189,7 @@ class App < Sinatra::Application
         session[:answered_questions] ||= []
         session[:answered_questions] << @question.id
 
-        redirect '/gamemodes/progressive/pilot'
-    end
-
-    get '/gamemodes/progressive/team' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        
-        unless @current_user&.can_play?
-            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
-            session[:color] = "red"
-            redirect '/gamemodes'
-            return
-        end
-        
-        session[:answered_questions] ||= []
-
-        @question = Question.where(theme: 'team').where.not(id: session[:answered_questions]).order('RANDOM()').first
-        if @question.nil?
-            session[:answered_questions] = []
-            @question = Question.where(theme: 'team').order('RANDOM()').first
-        end
-        @options = @question.options.shuffle
-
-        feedback_message = session.delete(:message)
-        feedback_color = session.delete(:color)
-        @form_action = '/gamemodes/progressive/team'
-
-        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color}
-    end
-
-    post '/gamemodes/progressive/team' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        @option = Option.find(params[:option_id].to_i)
-        @question = @option.question
-
-        if @option.correct
-            @current_user.increment!(:cant_coins, 10)
-            session[:message] = "Correct! Well done."
-            session[:color] = "green"
-        else
-            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-            if @current_user.cant_life == 0
-                session[:message] = "You have 0 lives. Please wait for loves to regenerate."
-                session[:color] = "red"
-                redirect '/gamemodes'
-                return
-            else
-                session[:message] = "Incorrect!"
-                session[:color] = "red"
-            end
-            session[:message] = "Incorrect!"
-            session[:color] = "red"
-        end
-
-        session[:answered_questions] ||= []
-        session[:answered_questions] << @question.id
-            
-        redirect '/gamemodes/progressive/team'
-    end
-
-    get '/gamemodes/progressive/career' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        
-        unless @current_user&.can_play?
-            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
-            session[:color] = "red"
-            redirect '/gamemodes'
-            return
-        end
-        
-        session[:answered_questions] ||= []
-
-        @question = Question.where(theme: 'career').where.not(id: session[:answered_questions]).order('RANDOM()').first
-        if @question.nil?
-            session[:answered_questions] = []
-            @question = Question.where(theme: 'career').order('RANDOM()').first
-        end
-        @options = @question.options.shuffle
-
-        feedback_message = session.delete(:message)
-        feedback_color = session.delete(:color)
-        @form_action = '/gamemodes/progressive/career'
-
-        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color}
-    end
-
-    post '/gamemodes/progressive/career' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        @option = Option.find(params[:option_id].to_i)
-        @question = @option.question
-
-        if @option.correct
-            @current_user.increment!(:cant_coins, 10)
-            session[:message] = "Correct! Well done."
-            session[:color] = "green"
-        else
-            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-            if @current_user.cant_life == 0
-                session[:message] = "You have 0 lives. Please wait for loves to regenerate."
-                session[:color] = "red"
-                redirect '/gamemodes'
-                return
-            else
-                session[:message] = "Incorrect!"
-                session[:color] = "red"
-            end
-            session[:message] = "Incorrect!"
-            session[:color] = "red"
-        end
-
-        session[:answered_questions] ||= []
-        session[:answered_questions] << @question.id
-            
-        redirect '/gamemodes/progressive/career'
-    end
-
-    get '/gamemodes/progressive/circuit' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        
-        unless @current_user&.can_play?
-            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
-            session[:color] = "red"
-            redirect '/gamemodes'
-            return
-        end
-        
-        session[:answered_questions] ||= []
-
-        @question = Question.where(theme: 'circuit').where.not(id: session[:answered_questions]).order('RANDOM()').first
-        if @question.nil?
-            session[:answered_questions] = []
-            @question = Question.where(theme: 'circuit').order('RANDOM()').first
-        end
-        @options = @question.options.shuffle
-
-        feedback_message = session.delete(:message)
-        feedback_color = session.delete(:color)
-        @form_action = '/gamemodes/progressive/circuit'
-
-        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color}
-    end
-
-    post '/gamemodes/progressive/circuit' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        @option = Option.find(params[:option_id].to_i)
-        @question = @option.question
-
-        if @option.correct
-            @current_user.increment!(:cant_coins, 10)
-            session[:message] = "Correct! Well done."
-            session[:color] = "green"
-        else
-            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-            if @current_user.cant_life == 0
-                session[:message] = "You have 0 lives. Please wait for loves to regenerate."
-                session[:color] = "red"
-                redirect '/gamemodes'
-                return
-            else
-                session[:message] = "Incorrect!"
-                session[:color] = "red"
-            end
-            session[:message] = "Incorrect!"
-            session[:color] = "red"
-        end
-
-        session[:answered_questions] ||= []
-        session[:answered_questions] << @question.id
-
-            
-        redirect '/gamemodes/progressive/circuit'
+        redirect "/gamemodes/progressive/#{mode}"
     end
 
     # Modo Free
@@ -351,12 +205,12 @@ class App < Sinatra::Application
     
         session[:answered_free_questions] ||= []
         session[:free_mode_difficulty] ||= 'easy'
-  
+
         @question = Question.where(level: session[:free_mode_difficulty])
                             .where.not(id: session[:answered_free_questions])
                             .order('RANDOM()')
                             .first
-  
+
         if @question.nil?
         case session[:free_mode_difficulty]
             when 'easy'
@@ -378,20 +232,20 @@ class App < Sinatra::Application
             redirect '/gamemodes/free'
             return
         end
-  
+
         @options = @question.options.shuffle
         feedback_message = session.delete(:message)
         feedback_color = session.delete(:color)
         @form_action = '/gamemodes/free'
-  
+
         erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
     end
-  
+
     post '/gamemodes/free' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
         @option = Option.find(params[:option_id].to_i)
         @question = @option.question
-  
+
         if @option.correct
             @current_user.increment!(:cant_coins, 10)
             session[:message] = "Correct! Well done."
@@ -410,21 +264,11 @@ class App < Sinatra::Application
         session[:message] = "Incorrect!"
         session[:color] = "red"
         end
-  
+
         session[:answered_free_questions] ||= []
         session[:answered_free_questions] << @question.id
-  
+
         redirect '/gamemodes/free'
-    end
-
-    get '/buys' do
-        @buys = Buy.all
-        erb :'buys/index'
-    end
-
-    get '/wildcards' do
-        @wildcards = Wildcard.all
-        erb :'wildcards/index'
     end
 
 end
