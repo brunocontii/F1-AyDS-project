@@ -102,13 +102,15 @@ main {
 }
 
 .question-container {
-    background-color: #fff;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
     font-size: x-large;
+    color: #000;
 }
 
 .feedback-message {
@@ -155,4 +157,20 @@ main {
 
 .submit-button:hover, .next-button:hover {
     background-color: #555;
+}
+
+.timer {
+    height: 20px;
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#timer-bar {
+    height: 100%;
+    width: 100%;
+    background-color: green;
+    transition: width 1s linear, background-color 1s linear;
 }

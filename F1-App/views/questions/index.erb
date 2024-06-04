@@ -4,6 +4,39 @@
     <title>Questions</title>
     <link rel="icon" href="icon-1-50.png">
     <link rel="stylesheet" href="/stylePilot.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let timeLeft = 15;
+            const timerElement = document.getElementById('timer-bar');
+            const formElement = document.getElementById('question-form');
+
+            const countdown = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    handleTimeOut(); // Handle timeout scenario
+                } else {
+                    const percentage = (timeLeft / 15) * 100;
+                    timerElement.style.width = `${percentage}%`;
+
+                    if (timeLeft > 10) {
+                        timerElement.style.backgroundColor = 'green';
+                    } else if (timeLeft > 5) {
+                        timerElement.style.backgroundColor = 'yellow';
+                    } else if (timeLeft > 2) {
+                        timerElement.style.backgroundColor = 'orange';
+                    } else {
+                        timerElement.style.backgroundColor = 'red';
+                    }
+                }
+                timeLeft -= 1;
+            }, 1000);
+
+            function handleTimeOut() {
+                document.getElementById('timeout').value = 'true';
+                formElement.submit();
+            }
+        });
+    </script>
 </head>
 <body>
 <header>
@@ -52,14 +85,18 @@
                 </form>
             </div>
         <% else %>
+            <div class="timer">
+                <div id="timer-bar"></div>
+            </div>
             <h2 class="question-title"><%= @question.name_question %></h2>
-            <form action="<%= @form_action %>" method="post" class="question-form">
+            <form id="question-form" action="<%= @form_action %>" method="post" class="question-form">
                 <% @options.each do |option| %>
                     <div class="option">
                         <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>" class="option-input">
                         <label for="option_<%= option.id %>" class="option-label"><%= option.name_option %></label>
                     </div>
                 <% end %>
+                <input type="hidden" name="timeout" id="timeout" value="false">
                 <input type="hidden" name="question_id" value="<%= @question.id %>">
                 <button type="submit" class="submit-button">Check Answer</button>
             </form>
@@ -78,7 +115,6 @@ function toggleLanguage() {
     var newFlag = newLang === 'en' ? 'usa.png' : 'argentina.png';
     currentFlag.src = newFlag;
 
-    // Update text content according to selected language
     updateLanguage(newLang);
 }
 
