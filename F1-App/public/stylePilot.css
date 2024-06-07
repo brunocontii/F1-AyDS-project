@@ -134,14 +134,37 @@ main {
 .option {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .option-input {
-    margin-right: 10px;
+    display: none;
 }
 
 .option-label {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid transparent;
+    border-radius: 5px;
     font-size: 1.2em;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.option-input:checked + .option-label {
+    background-color: rgba(255, 204, 0, 0.3);
+    border-color: rgba(255, 204, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: #000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.option-label:hover {
+    background-color: #ddd;
 }
 
 .submit-button, .next-button {
