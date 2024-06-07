@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <title>Create Profile</title>
+    <link rel="icon" href='icon-1-50.png'>
+</head>
+<body>
+    <% if @error %>
+        <p><%= @error %></p>
+    <% end %>
+    <section>   
+        <div class="contenedor">
+            <div class="formulario">
+                <form action="/newProfile" method="post">
+                    <h2>Completa los datos</h2>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="name" required>
+                        <label for="#">Name</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="text" name="lastname" required>
+                        <label for="#">LastName</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="text" name="description" required>
+                        <label for="#">Description</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="int" name="age" required>
+                        <label for="#">Age</label>
+                    </div>
+
+                <div>
+                    <button type="submit">Create Profile</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

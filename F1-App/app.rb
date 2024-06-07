@@ -20,10 +20,12 @@ require './models/question'
 enable :sessions
 
 class App < Sinatra::Application
+    # para asegurarse de que toda la inicialización necesaria en las clases se realice correctamente
     def initialize(app = nil)
         super()
     end
 
+    # para limpiar la cache 
     before do
         cache_control :no_cache, :no_store, :must_revalidate
         expires 0, :public, :no_cache
@@ -34,38 +36,50 @@ class App < Sinatra::Application
         end
     end
 
+    before do
+        # apenas entras se pueden a estas 5 rutas nada mas.
+        pass if request.path_info == '/' || request.path_info == '/login' || request.path_info == '/register' || request.path_info == '/how-to-play' || request.path_info == '/team'
+        # pedirigir al inicio si no hay usuario en la sesión , ni gamemodes ni progressive nada xq hay siempre un usuario en la sesion
+        redirect '/' unless session[:username]
+      end
+
+    # pagina apenas entras a la app
     get '/' do
         erb :'home/home'
     end
 
+    # get de logueo
     get '/login' do
         erb :'login/login'
     end
 
+    # post para loguearse que pedimos el usuario y contraseña
     post '/login' do
         username = params[:username]
         password = params[:password]
-
+        # buscamos el usuario y contraseña en la base de datos
         user = User.find_by(username: username, password: password)
-
+        # si existe va derecho a gamemodes
         if user
             session[:username] = user.username # Guardar el nombre de usuario en la sesión
             redirect "/gamemodes"
-        else
+        else # escribiste mal algo o no existe el usuario o no estas logueado (es mas generico)
             @error = "Invalid username or password. Please try again."
             erb :'login/login'
         end
     end
-
+    # VER SI LO SACAMOS
+    # era para ver cuales guardabamos nomas.
     get '/users' do
         @users = User.all
         erb :'users/index'
     end
-
+    # 
     get '/register' do
         erb :'register/index'
     end
 
+    # registrar un usuario
     post '/register' do
         username = params[:username]
         password = params[:password]
@@ -77,33 +91,56 @@ class App < Sinatra::Application
         elsif password != rpassword
             @error = "Passwords are different"
             erb :'register/index'
-        else
+        else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
             user = User.create(username: username, password: password, cant_life: 3 , cant_coins: 0)
             session[:username] = user.username
-            redirect '/gamemodes'
+            redirect '/gamemodes' # redirecciona a jugar
         end
 
     end
 
+    # ver para que sirve 
     get '/logout' do
         session.clear
         redirect '/'
     end
 
+    # como jugar 
     get '/how-to-play' do
         erb :'how-to-play/howToPlay'
     end
 
     get '/profile' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        @profile = @current_user.profile if @current_user
-        erb :'profiles/index', locals: { profile: @profile }
+        
+        # recupero el usuario y traigo el perfil a @profile
+        @profile = @current_user.profile
+
+        if @profile.nil? # si no existe crea uno,
+            erb :'profiles/newProfile', locals: { user: @current_user }
+        else 
+            @profile = @current_user.profile if @current_user
+            erb :'profiles/index', locals: { profile: @profile }
+        end      
+        
+    end
+
+    post '/newProfile' do
+        name = params[:name]
+        lastname = params[:lastname]
+        description = params[:description]
+        age = params[:age]
+
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        profile = Profile.create(name: name, lastName: lastname, description: description, age: age, user_id: @current_user.id)
+        redirect '/profile' # redirecciona a jugar
+
     end
 
     get '/gamemodes' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        if request.xhr?
-            content_type :json
+        if request.xhr? # solicitud AJAX , permite que solo traiga las vidas, sin recargar toda la pagina.
+            content_type :json # respuesta json y se convierte en cadena y va a buscar las vidas del usuario en sesion.
             { lives: @current_user.cant_life }.to_json
         else
             erb :'gamemodes/menu', locals: { current_user: @current_user }
