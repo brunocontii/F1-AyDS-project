@@ -39,67 +39,6 @@ header {
     align-items: center;
 }
 
-.currency, .lives {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-.currency img, .lives img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
-
-.profile {
-    position: relative;
-}
-
-.profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.profile-pic:hover {
-    transform: scale(1.1);
-}
-
-.profile-menu {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background: rgba(65, 63, 63, 0.8);
-    border-radius: 5px;
-    overflow: hidden;
-    z-index: 1;
-    width: 200px;
-}
-
-.profile-menu a, .profile-menu .change-language {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    text-decoration: none;
-    color: #fff;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.profile-menu a:hover, .profile-menu .change-language:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.language-flag {
-    width: 30px;
-    height: 20px;
-    margin-left: 10px;
-}
 
 main {
     text-align: center;
