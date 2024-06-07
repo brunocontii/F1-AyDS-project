@@ -72,11 +72,11 @@ class App < Sinatra::Application
     # era para ver cuales guardabamos nomas.
     get '/users' do
         @users = User.all
-        erb :'users/index'
+        erb :'users/users'
     end
     # 
     get '/register' do
-        erb :'register/index'
+        erb :'register/register'
     end
 
     # registrar un usuario
@@ -87,10 +87,10 @@ class App < Sinatra::Application
 
         if User.where(username: username).exists?
             @error = "Username already exist"
-            erb :'register/index'
+            erb :'register/register'
         elsif password != rpassword
             @error = "Passwords are different"
-            erb :'register/index'
+            erb :'register/register'
         else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
             user = User.create(username: username, password: password, cant_life: 3 , cant_coins: 0)
             session[:username] = user.username
@@ -120,7 +120,7 @@ class App < Sinatra::Application
             erb :'profiles/newProfile', locals: { user: @current_user }
         else 
             @profile = @current_user.profile if @current_user
-            erb :'profiles/index', locals: { profile: @profile }
+            erb :'profiles/profile', locals: { profile: @profile }
         end      
         
     end
@@ -143,13 +143,13 @@ class App < Sinatra::Application
             content_type :json # respuesta json y se convierte en cadena y va a buscar las vidas del usuario en sesion.
             { lives: @current_user.cant_life }.to_json
         else
-            erb :'gamemodes/menu', locals: { current_user: @current_user }
+            erb :'gamemodes/gamemodes', locals: { current_user: @current_user }
         end
     end
 
     get '/gamemodes/progressive' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        erb :'progressives/index' , locals: { current_user: @current_user }
+        erb :'progressives/progressives' , locals: { current_user: @current_user }
     end
 
     # generalizacion de las rutas del modo de juego progresivo
@@ -196,7 +196,7 @@ class App < Sinatra::Application
         feedback_color = session.delete(:color)
         @form_action = "/gamemodes/progressive/#{mode}"
 
-        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
+        erb :'questions/questions', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
     end
 
     # metodo para manejar la solicitud POST de un tema del modo progresivo
@@ -297,7 +297,7 @@ class App < Sinatra::Application
         feedback_color = session.delete(:color)
         @form_action = '/gamemodes/free'
 
-        erb :'questions/index', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
+        erb :'questions/questions', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
     end
 
     post '/gamemodes/free' do
