@@ -180,24 +180,17 @@ class App < Sinatra::Application
         session[:answered_questions] ||= []
         answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
 
-
-        puts "answered by user"
-
-        puts answered_by_user_ids
-
-        puts "questions"
-
-        questions_already_answered = Question.where.not(id: answered_by_user_ids).pluck(:id)
-
         # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
         # que no haya sido respondida todavia
         @question = Question.where(theme: mode).where.not(id: session[:answered_questions] + answered_by_user_ids).order('RANDOM()').first 
 
-        puts "esta respuesta eligio"
+        if @question.nil?
+            session[:message] = "¡Felicidades, termino esta tematica!"
+            session[:color] = "green"
+            redirect '/gamemodes'
+        end
 
-        puts @question.id
-
-        
+        @options = @question.options
 
         feedback_message = session.delete(:message)
         feedback_color = session.delete(:color)
