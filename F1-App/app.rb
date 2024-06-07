@@ -178,15 +178,26 @@ class App < Sinatra::Application
         end
 
         session[:answered_questions] ||= []
+        answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
+
+
+        puts "answered by user"
+
+        puts answered_by_user_ids
+
+        puts "questions"
+
+        questions_already_answered = Question.where.not(id: answered_by_user_ids).pluck(:id)
 
         # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
         # que no haya sido respondida todavia
-        @question = Question.where(theme: mode).where.not(id: session[:answered_questions]).order('RANDOM()').first
-        if @question.nil?
-            session[:answered_questions] = []
-            @question = Question.where(theme: mode).order('RANDOM()').first
-        end
-        @options = @question.options.shuffle
+        @question = Question.where(theme: mode).where.not(id: session[:answered_questions] + answered_by_user_ids).order('RANDOM()').first 
+
+        puts "esta respuesta eligio"
+
+        puts @question.id
+
+        
 
         feedback_message = session.delete(:message)
         feedback_color = session.delete(:color)
@@ -222,6 +233,7 @@ class App < Sinatra::Application
 
             # si la respuesta es correcta gana monedas
             if @option.correct
+                Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
                 @current_user.increment!(:cant_coins, 10)
                 session[:message] = "Correct! Well done."
                 session[:color] = "green"
