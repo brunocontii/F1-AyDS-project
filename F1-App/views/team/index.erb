@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode Team</title>
+    <link rel="icon" href="icon-1-50.png">
+    <link rel="stylesheet" href="/styleTeam.css">
+</head>
+<body>
+    <header>
+        <div class="left">
+            <a href="/gamemodes" class="menu-item" data-lang-key="Back">Back</a>
+        </div>
+        <div class="right">
+            <div class="user-info">
+                <div class="currency">
+                    <img src="/coin.png" alt="Monedas" class="icon">
+                    <span><%= @current_user ? @current_user.cant_coins : 0 %></span>
+                </div>
+                <div class="lives">
+                    <img src="/heart.png" alt="Vidas" class="icon">
+                    <span><%= @current_user ? @current_user.cant_life : 0 %></span>
+                </div>
+                <div class="profile">
+                    <img src="/pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <div id="profile-menu" class="profile-menu">
+                        <a href="/profile" data-lang-key="profile">Profile</a>
+                        <div class="change-language" onclick="toggleLanguage()">
+                            <span data-lang-key="changeLanguage">Change Language</span>
+                            <img src="/argentina.png" alt="Idioma" class="language-flag">
+                        </div>
+                        <a href="/logout" data-lang-key="logout">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <h1 data-lang-key="team">Team</h1>
+        <div class="project-description">
+            <p>Este es un proyecto de la materia Análisis y Diseños de Sistemas en el cual utilizamos como herramientas ruby y sinatra.</p>
+        </div>
+        <div class="gamemodes">
+            <a href="/gamemodes/team/bruno" class="gamemode" id="bruno" data-lang-key="bruno">Bruno Conti</a>
+            <a href="/gamemodes/team/juan" class="gamemode" id="juan" data-lang-key="juan">Juan Gonzalez</a>
+            <a href="/gamemodes/team/joaco" class="gamemode" id="joaco" data-lang-key="joaco">Joaco Mezzano</a>
+            <a href="/gamemodes/team/erich" class="gamemode" id="erich" data-lang-key="erich">Erich Vollenweider</a>
+        </div>
+    </main>
+    <script>
+        const translations = {
+            es: {
+                Back: 'Atras',
+                profile: 'Perfil',
+                changeLanguage: 'Cambiar Idioma',
+                logout: 'Cerrar sesión',
+                team: 'Equipo',
+                bruno: 'Bruno Conti',
+                juan: 'Juan Gonzalez',
+                joaco: 'Joaco Mezzano',
+                erich: 'Erich Vollenweider'
+            },
+            en: {
+                Back: 'Back',
+                profile: 'Profile',
+                changeLanguage: 'Change Language',
+                logout: 'Log out',
+                team: 'Team',
+                bruno: 'Bruno Conti',
+                juan: 'Juan Gonzalez',
+                joaco: 'Joaco Mezzano',
+                erich: 'Erich Vollenweider'
+            }
+        };
+
+        function toggleProfileMenu() {
+            var menu = document.getElementById('profile-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleLanguage() {
+            var currentFlag = document.querySelector('.language-flag');
+            var newLang = currentFlag.src.includes('argentina.png') ? 'en' : 'es';
+            var newFlag = newLang === 'en' ? '/usa.png' : '/argentina.png';
+            currentFlag.src = newFlag;
+
+            // Update text content according to selected language
+            updateLanguage(newLang);
+        }
+
+        function updateLanguage(lang) {
+            const elements = document.querySelectorAll('[data-lang-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                el.textContent = translations[lang][key];
+            });
+        }
+
+        // Initialize language based on current flag
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentFlag = document.querySelector('.language-flag').src;
+            const initialLang = currentFlag.includes('/argentina.png') ? 'es' : 'en';
+            updateLanguage(initialLang);
+        });
+    </script>
+</body>
+</html>

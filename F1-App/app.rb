@@ -25,7 +25,7 @@ class App < Sinatra::Application
         super()
     end
 
-    # para limpiar la cache 
+    # para limpiar la cache
     before do
         cache_control :no_cache, :no_store, :must_revalidate
         expires 0, :public, :no_cache
@@ -74,7 +74,7 @@ class App < Sinatra::Application
         @users = User.all
         erb :'users/users'
     end
-    # 
+    #
     get '/register' do
         erb :'register/register'
     end
@@ -99,30 +99,35 @@ class App < Sinatra::Application
 
     end
 
-    # ver para que sirve 
+    # ver para que sirve
     get '/logout' do
         session.clear
         redirect '/'
     end
 
-    # como jugar 
+    # como jugar
     get '/how-to-play' do
         erb :'how-to-play/howToPlay'
     end
 
+    # Team
+    get '/team' do
+        erb :'team/index'
+    end
+
     get '/profile' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        
+
         # recupero el usuario y traigo el perfil a @profile
         @profile = @current_user.profile
 
         if @profile.nil? # si no existe crea uno,
             erb :'profiles/newProfile', locals: { user: @current_user }
-        else 
+        else
             @profile = @current_user.profile if @current_user
             erb :'profiles/profile', locals: { profile: @profile }
-        end      
-        
+        end
+
     end
 
     post '/newProfile' do
@@ -182,7 +187,7 @@ class App < Sinatra::Application
 
         # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
         # que no haya sido respondida todavia
-        @question = Question.where(theme: mode).where.not(id: session[:answered_questions] + answered_by_user_ids).order('RANDOM()').first 
+        @question = Question.where(theme: mode).where.not(id: session[:answered_questions] + answered_by_user_ids).order('RANDOM()').first
 
         if @question.nil?
             session[:message] = "¡Felicidades, termino esta tematica!"
@@ -243,7 +248,7 @@ class App < Sinatra::Application
                     session[:color] = "red"
                 end
             end
-    
+
             session[:answered_questions] ||= []
             session[:answered_questions] << @question.id
         end
@@ -254,14 +259,14 @@ class App < Sinatra::Application
     # Modo Free
     get '/gamemodes/free' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-    
+
         unless @current_user&.can_play?
             session[:message] = "You have 0 lives. Please wait for loves to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
             return
         end
-    
+
         session[:answered_free_questions] ||= []
         session[:free_mode_difficulty] ||= 'easy'
 
