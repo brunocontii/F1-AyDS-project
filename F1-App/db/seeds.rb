@@ -34,6 +34,13 @@ questions = [
     {name_question: '¿Cual de los siguientes pilotos es conocido como "The Iceman"?', level: 'difficult', theme: 'pilot'},
     {name_question: '¿Que piloto tiene el record de mas pole positions de la historia?' , level: 'normal', theme: 'pilot'},
     {name_question: '¿Quien es el piloto mas joven en haber ganado una carrera?', level: 'normal' , theme: 'pilot'},
+    {name_question: '¿Quien es el piloto con mas podios(13) sin poder ganar una carrera?', level: 'impossible', theme: 'pilot'},
+    {name_question: '¿Que piloto va a ferrari el año 2025?', level: 'easy', theme: 'free'},
+    {name_question: '¿Que piloto se va este año (2024) de Ferrari? F', level: 'normal', theme: 'free'},
+    {name_question: '¿Cual es el equipo con mas titulos de constructores de la historia de F1? F', level: 'difficult', theme: 'free'},
+    {name_question: '¿En que año se introdujeron los motores hibridos en la F1? F', level: 'impossible', theme: 'free'}
+
+=begin
     {name_question: '¿Que piloto de los siguientes debuto mas joven en una carrera?', level: 'difficult', theme: 'pilot'},
     {name_question: '¿Que piloto es conocido como "el profesor" debido a su estrategia y a su calculo en las carreras?', level: 'difficult', theme: 'pilot'},
     {name_question: '¿Cual de los siguientes pilotos es hijo de un campeon mundial de rally?', level: 'easy', theme: 'pilot'},
@@ -42,8 +49,6 @@ questions = [
     {name_question: '¿Cual es el piloto mas joven en ganar un campeonato de F1?', level: 'normal', theme: 'pilot'},
     {name_question: '¿Quien es el unico piloto que gano un campeonato con renault?', level: 'difficult', theme: 'pilot'},
     {name_question: '¿Quien es el primer piloto en ganar una carrera para ferrari en la historia?', level: 'difficult', theme: 'pilot'},
-    {name_question: '¿Cual fue el unico piloto que gano el campeonato mundial con BrawnGP?', level: 'impossible', theme: 'pilot'},
-    {name_question: '¿Quien es el piloto con mas podios(13) sin poder ganar una carrera?', level: 'impossible', theme: 'pilot'},
     {name_question: '¿Cuantos titulos mundiales tiene el ex piloto Juan Manuel Fangio?', level: 'normal', theme: 'pilot'},
     {name_question: '¿En que año Juan Manuel Fangio gano su ultimo campeonato mundial?', level: 'difficult', theme: 'pilot'},
     {name_question: '¿Para que pais corrieron Emerson Fittipaldi y Felipe Massa?', level: 'easy', theme: 'pilot'},
@@ -122,7 +127,8 @@ questions = [
     {name_question: '¿Cuál es el límite máximo de pilotos permitidos en una parrilla de salida de Fórmula 1?', level: 'normal', theme: 'career'},
     {name_question: '¿Qué sucede si un piloto excede los límites de la pista consistentemente durante la carrera?', level: 'difficult', theme: 'career'},
     {name_question: '¿Cuál es la velocidad máxima permitida en el pit lane durante una carrera de Fórmula 1?', level: 'normal', theme: 'career'},
-    {name_question: '¿Cuál es el límite máximo de motores que un equipo puede utilizar por temporada según las regulaciones de la Fórmula 1?', level: 'impossible', theme: 'career'},
+    {name_question: '¿Cuál es el límite máximo de motores que un equipo puede utilizar por temporada según las regulaciones de la Fórmula 1?', level: 'impossible', theme: 'career'}
+=end    
 ]
 
 
@@ -134,6 +140,27 @@ questions.each do |question_data|
 end
 
 options = [
+    {name_option: 'Lewis Hamilton' , question_id: 6, correct: true},
+    {name_option: 'Esteban Ocon' , question_id: 6, correct: false},
+    {name_option: 'Franco Colapinto' , question_id: 6, correct: false},
+    {name_option: 'Sergio "Checo" Perez' , question_id: 6, correct: false},
+
+    {name_option: 'Michael Schumacher' , question_id: 7, correct: false},
+    {name_option: 'Carlos Sainz jr' , question_id: 7, correct: true},
+    {name_option: 'Lando Norris' , question_id: 7, correct: false},
+    {name_option: 'Romain Grosjean' , question_id: 7, correct: false},
+
+    {name_option: 'Ferrari' , question_id: 8, correct: true},
+    {name_option: 'Mercedes' , question_id: 8, correct: false},
+    {name_option: 'RB' , question_id: 8, correct: false},
+    {name_option: 'Red Bull' , question_id: 8, correct: false},
+
+    {name_option: '2014' , question_id: 9, correct: true},
+    {name_option: '2013' , question_id: 9, correct: false},
+    {name_option: '2015' , question_id: 9, correct: false},
+    {name_option: '2012' , question_id: 9, correct: false},
+
+
     ######                 PILOT                     ######
     {name_option: 'Lewis Hamilton y Michael Schumacher' , question_id: 1, correct: true},
     {name_option: 'Lewis Hamilton y Esteban Ocon' , question_id: 1, correct: false},
@@ -154,11 +181,17 @@ options = [
     {name_option: 'Sebastian Vettel', question_id: 4, correct: false},
     {name_option: 'Fernando Alonso', question_id: 4, correct: false},
     {name_option: 'Lewis Hamilton', question_id: 4, correct: false},
+=begin
+    {name_option: 'Jenson Button', question_id: 6, correct: true},
+    {name_option: 'Rubens Barrichello', question_id: 6, correct: false},
+    {name_option: 'Lewis Hamilton', question_id: 6, correct: false},
+    {name_option: 'Michael Schumacher', question_id: 6, correct: false},
 
-    {name_option: 'Kimi Raikkonen', question_id: 5, correct: false},
-    {name_option: 'Sebastian Vettel', question_id: 5, correct: false},
-    {name_option: 'Max Verstappen', question_id: 5, correct: true},
-    {name_option: 'Lewis Hamilton', question_id: 5, correct: false},
+
+    {name_option: 'Kimi Raikkonen', question_id: 14, correct: false},
+    {name_option: 'Sebastian Vettel', question_id: 14, correct: false},
+    {name_option: 'Max Verstappen', question_id: 14, correct: true},
+    {name_option: 'Lewis Hamilton', question_id: 14, correct: false},
 
     {name_option: 'Niki Lauda', question_id: 6, correct: false},
     {name_option: 'Alain Prost', question_id: 6, correct: true},
@@ -194,11 +227,6 @@ options = [
     {name_option: 'Alberto Ascari', question_id: 12, correct: false},
     {name_option: 'Juan Manuel Fangio', question_id: 12, correct: false},
     {name_option: 'Nino Farina', question_id: 12, correct: false},
-
-    {name_option: 'Jenson Button', question_id: 13, correct: true},
-    {name_option: 'Rubens Barrichello', question_id: 13, correct: false},
-    {name_option: 'Lewis Hamilton', question_id: 13, correct: false},
-    {name_option: 'Michael Schumacher', question_id: 13, correct: false},
 
     {name_option: '5', question_id: 15, correct: true},
     {name_option: '4', question_id: 15, correct: false},
@@ -249,14 +277,15 @@ options = [
     {name_option: '85', question_id: 24, correct: false},
     {name_option: '88', question_id: 24, correct: false},
     {name_option: '95', question_id: 24, correct: false},
+=end
+    {name_option: 'Nick Heidfeld', question_id: 5, correct: true},
+    {name_option: 'Romain Grosjean', question_id: 5, correct: false},
+    {name_option: 'Nico Hulkenberg', question_id: 5, correct: false},
+    {name_option: 'Kevin Magnussen', question_id: 5, correct: false}
 
-    {name_option: 'Nick Heidfeld', question_id: 14, correct: true},
-    {name_option: 'Romain Grosjean', question_id: 14, correct: false},
-    {name_option: 'Nico Hulkenberg', question_id: 14, correct: false},
-    {name_option: 'Kevin Magnussen', question_id: 14, correct: false},
 
     ######                 CIRCUIT                     ######
-
+=begin
     {name_option: '74', question_id: 25, correct: true},
     {name_option: '75', question_id: 25, correct: false},
     {name_option: '73', question_id: 25, correct: false},
@@ -605,7 +634,7 @@ options = [
     {name_option: '7 motores por temporada', question_id: 93, correct: true},
     {name_option: '10 motores por temporada', question_id: 93, correct: false},
     {name_option: 'No hay límite de motores', question_id: 93, correct: false}
-
+=end
 ]
 
 options.each do |option|

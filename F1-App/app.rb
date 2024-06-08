@@ -112,7 +112,7 @@ class App < Sinatra::Application
 
     # Team
     get '/team' do
-        erb :'team/index'
+        erb :'team/team'
     end
 
     get '/profile' do
@@ -260,6 +260,15 @@ class App < Sinatra::Application
     get '/gamemodes/free' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
 
+        # Reinicia el modo de juego si el usuario vuelve a ingresar
+        if session[:reset_free_mode]
+            session[:reset_free_mode] = false
+            free_answers = Answer.joins(:question).where(questions: { theme: 'free' })
+
+            # Restar las respuestas del modo "free" de la tabla completa de respuestas
+            Answer.where(id: free_answers.pluck(:id)).destroy_all
+        end
+
         unless @current_user&.can_play?
             session[:message] = "You have 0 lives. Please wait for loves to regenerate."
             session[:color] = "red"
@@ -269,29 +278,52 @@ class App < Sinatra::Application
 
         session[:answered_free_questions] ||= []
         session[:free_mode_difficulty] ||= 'easy'
+        answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
+        # Preguntas que aún no han sido respondidas en esta dificultad
+        unanswered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
+                                 .where.not(id: answered_by_user_ids)
+                                 .order('RANDOM()')
 
-        @question = Question.where(level: session[:free_mode_difficulty])
-                            .where.not(id: session[:answered_free_questions])
-                            .order('RANDOM()')
-                            .first
+        # Preguntas incorrectamente respondidas (no en las respuestas correctas)
+        incorrectly_answered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
+                                           .where.not(id: answered_by_user_ids)
+                                           .where(id: session[:answered_free_questions])
+                                           .order('RANDOM()')
 
-        if @question.nil?
+        # Seleccionar la siguiente pregunta
+        if unanswered_questions.exists?
+          @question = unanswered_questions.first
+        elsif incorrectly_answered_questions.exists?
+          @question = incorrectly_answered_questions.first
+        else
+            @question = Question.where(level: session[:free_mode_difficulty])
+                                .order('RANDOM()').first
         case session[:free_mode_difficulty]
             when 'easy'
                 session[:free_mode_difficulty] = 'normal'
                 session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
-            when 'medium'
-                session[:free_mode_difficulty] = 'hard'
+            when 'normal'
+                session[:free_mode_difficulty] = 'difficult'
                 session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
-            when 'hard'
+            when 'difficult'
                 session[:free_mode_difficulty] = 'impossible'
                 session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
             when 'impossible'
-                session[:free_mode_difficulty] = nil
+                session[:free_mode_difficulty] = 'easy'
                 session[:answered_free_questions] = []
                 session[:message] = "Congratulations! You've completed the Free Mode."
-                redirect '/gamemodes'
-                return
+                session[:reset_free_mode] = true
+                all_questions = Question.all
+                puts all_questions
+
+                if all_questions.exists?
+                  @question = all_questions.order('RANDOM()').first
+                  puts @question
+                  redirect '/gamemodes'
+                else
+                    redirect '/gamemodes'
+                    return
+                end
             end
             redirect '/gamemodes/free'
             return
@@ -311,6 +343,7 @@ class App < Sinatra::Application
         @question = @option.question
 
         if @option.correct
+            Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
             @current_user.increment!(:cant_coins, 10)
             session[:message] = "Correct! Well done."
             session[:color] = "green"
