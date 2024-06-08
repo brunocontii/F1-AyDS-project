@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styleIndex.css">
+    <link rel="stylesheet" href="styleProfile.css">
 </head>
 <body>
     <header>
         <h1>Profile of <%= profile.name %> <%= profile.lastName %></h1>
+        <div class="back-to-menu">
+            <a href="/gamemodes">Back</a>
+        </div>
     </header>
     <main>
         <div class="profile-info">
             <p><strong>Name:</strong> <%= profile.name %> <%= profile.lastName %></p>
             <p><strong>Description:</strong> <%= profile.description %></p>
             <p><strong>Age:</strong> <%= profile.age %> years</p>
-        </div>
-        <div class="back-to-menu">
-            <a href="/gamemodes">Back</a>
         </div>
     </main>
 </body>
