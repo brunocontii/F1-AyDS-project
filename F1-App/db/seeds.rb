@@ -125,7 +125,8 @@ questions = [
     {name_question: 'What is the maximum number of engines a team can use per season according to Formula 1 regulations?', level: 'impossible', theme: 'career' },
     {name_question: 'Which driver is joining Ferrari in 2025?', level: 'easy', theme: 'free' },
     {name_question: 'Which driver is leaving Ferrari this year (2024)?', level: 'normal', theme: 'free' },
-    {name_question: 'Which team has the most Constructors´ Championships in F1 history?', level: 'difficult', theme: 'free' },
+    {name_question: 'Who was the pilot of Mercedes in 2022 accompanying Lewis Hamilton?', level: 'normal', theme: 'free' },
+    {name_question: 'Which team has the most Constructors Championships in F1 history?', level: 'difficult', theme: 'free' },
     {name_question: 'In what year were hybrid engines introduced in F1?', level: 'impossible', theme: 'free' }
 ]
 
@@ -150,15 +151,20 @@ options = [
     {name_option: 'Lando Norris' , question_id: 95, correct: false},
     {name_option: 'Romain Grosjean' , question_id: 95, correct: false},
 
-    {name_option: 'Ferrari' , question_id: 96, correct: true},
-    {name_option: 'Mercedes' , question_id: 96, correct: false},
-    {name_option: 'RB' , question_id: 96, correct: false},
-    {name_option: 'Red Bull' , question_id: 96, correct: false},
+    { name_option: 'Valtteri Bottas', question_id: 96, correct: true },
+    { name_option: 'Carlos Sainz jr', question_id: 96, correct: false },
+    { name_option: 'Charles Leclerc', question_id: 96, correct: false },
+    { name_option: 'Juan Manuel Fangio', question_id: 96, correct: false },
 
-    {name_option: '2014' , question_id: 97, correct: true},
-    {name_option: '2013' , question_id: 97, correct: false},
-    {name_option: '2015' , question_id: 97, correct: false},
-    {name_option: '2012' , question_id: 97, correct: false},
+    {name_option: 'Ferrari' , question_id: 97, correct: true},
+    {name_option: 'Mercedes' , question_id: 97, correct: false},
+    {name_option: 'RB' , question_id: 97, correct: false},
+    {name_option: 'Red Bull' , question_id: 97, correct: false},
+
+    {name_option: '2014' , question_id: 98, correct: true},
+    {name_option: '2013' , question_id: 98, correct: false},
+    {name_option: '2015' , question_id: 98, correct: false},
+    {name_option: '2012' , question_id: 98, correct: false},
 
     ######                 PILOT                     ######
     {name_option: 'Lewis Hamilton and Michael Schumacher' , question_id: 1, correct: true},
@@ -630,7 +636,7 @@ options = [
     { name_option: '5 engines per season', question_id: 93, correct: false },
     { name_option: '7 engines per season', question_id: 93, correct: true },
     { name_option: '10 engines per season', question_id: 93, correct: false },
-    { name_option: 'No engine limit', question_id: 93, correct: false }
+    { name_option: 'No engine limit', question_id: 93, correct: false },
 ]
 
 options.each do |option|

@@ -125,7 +125,14 @@ class App < Sinatra::Application
             erb :'profiles/newProfile', locals: { user: @current_user }
         else
             @profile = @current_user.profile if @current_user
-            erb :'profiles/profile', locals: { profile: @profile }
+            @countPi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count
+            @countCi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count
+            @countCa = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count
+            @countTe = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count
+
+            @countTotal = (Answer.where(user_id: @current_user.id).count*100)/Question.count
+
+            erb :'profiles/profile', locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe, countTotal: @countTotal }
         end
 
     end

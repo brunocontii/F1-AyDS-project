@@ -89,7 +89,7 @@
             <form id="question-form" action="<%= @form_action %>" method="post" class="question-form">
                 <% @options.each do |option| %>
                     <div class="option">
-                        <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>" class="option-input">
+                        <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>" class="option-input" required>
                         <label for="option_<%= option.id %>" class="option-label"><%= option.name_option %></label>
                     </div>
                 <% end %>
