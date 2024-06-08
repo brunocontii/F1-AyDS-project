@@ -11,7 +11,7 @@
 <body>
     <header>
         <div class="left">
-            <a href="/gamemodes" class="menu-item" data-lang-key="Back">Back</a>
+            <a href="/gamemodes" class="menu-item">Back</a>
         </div>
         <div class="right">
             <div class="user-info">
@@ -26,81 +26,27 @@
                 <div class="profile">
                     <img src="/pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                     <div id="profile-menu" class="profile-menu">
-                        <a href="/profile" data-lang-key="profile">Profile</a>
-                        <div class="change-language" onclick="toggleLanguage()">
-                            <span data-lang-key="changeLanguage">Change Language</span>
-                            <img src="/argentina.png" alt="Idioma" class="language-flag">
-                        </div>
-                        <a href="/logout" data-lang-key="logout">Log out</a>
+                        <a href="/profile">Profile</a>
+                        <a href="/logout">Log out</a>
                     </div>
                 </div>
             </div>
         </div>
     </header>
     <main>
-        <h1 data-lang-key="progressive">Progressive</h1>
+        <h1>Progressive</h1>
         <div class="gamemodes">
-            <a href="/gamemodes/progressive/pilot" class="gamemode" id="pilot" data-lang-key="pilot">Pilot</a>
-            <a href="/gamemodes/progressive/team" class="gamemode" id="team" data-lang-key="team">Team</a>
-            <a href="/gamemodes/progressive/career" class="gamemode" id="career" data-lang-key="career">Career</a>
-            <a href="/gamemodes/progressive/circuit" class="gamemode" id="circuit" data-lang-key="circuit">Circuit</a>
+            <a href="/gamemodes/progressive/pilot" class="gamemode" id="pilot">Pilot</a>
+            <a href="/gamemodes/progressive/team" class="gamemode" id="team">Team</a>
+            <a href="/gamemodes/progressive/career" class="gamemode" id="career">Career</a>
+            <a href="/gamemodes/progressive/circuit" class="gamemode" id="circuit">Circuit</a>
         </div>
     </main>
     <script>
-        const translations = {
-            es: {
-                Back: 'Atras',
-                profile: 'Perfil',
-                changeLanguage: 'Cambiar Idioma',
-                logout: 'Cerrar sesión',
-                progressive: 'Progresivo',
-                pilot: 'Piloto',
-                team: 'Equipo',
-                career: 'Carrera',
-                circuit: 'Circuito'
-            },
-            en: {
-                howToPlay: 'How To Play',
-                profile: 'Profile',
-                changeLanguage: 'Change Language',
-                logout: 'Log out',
-                progressive: 'Progressive',
-                pilot: 'Pilot',
-                team: 'Team',
-                career: 'Career',
-                circuit: 'Circuit'
-            }
-        };
-
         function toggleProfileMenu() {
             var menu = document.getElementById('profile-menu');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
-
-        function toggleLanguage() {
-            var currentFlag = document.querySelector('.language-flag');
-            var newLang = currentFlag.src.includes('argentina.png') ? 'en' : 'es';
-            var newFlag = newLang === 'en' ? '/usa.png' : '/argentina.png';
-            currentFlag.src = newFlag;
-
-            // Update text content according to selected language
-            updateLanguage(newLang);
-        }
-
-        function updateLanguage(lang) {
-            const elements = document.querySelectorAll('[data-lang-key]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-lang-key');
-                el.textContent = translations[lang][key];
-            });
-        }
-
-        // Initialize language based on current flag
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentFlag = document.querySelector('.language-flag').src;
-            const initialLang = currentFlag.includes('/argentina.png') ? 'es' : 'en';
-            updateLanguage(initialLang);
-        });
     </script>
 </body>
 </html>

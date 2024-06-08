@@ -190,7 +190,7 @@ class App < Sinatra::Application
         @question = Question.where(theme: mode).where.not(id: session[:answered_questions] + answered_by_user_ids).order('RANDOM()').first
 
         if @question.nil?
-            session[:message] = "¡Felicidades, termino esta tematica!"
+            session[:message] = "¡Congratulations, you finished this theme!"
             session[:color] = "green"
             redirect '/gamemodes'
         end
@@ -339,31 +339,48 @@ class App < Sinatra::Application
 
     post '/gamemodes/free' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        @option = Option.find(params[:option_id].to_i)
-        @question = @option.question
 
-        if @option.correct
-            Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-            @current_user.increment!(:cant_coins, 10)
-            session[:message] = "Correct! Well done."
-            session[:color] = "green"
-        else
+        if params[:timeout] == 'true'
+            # cuando se acabo el tiempo para responder una pregunta
             @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+            # si al acabarse el tiempo se queda sin vidas
             if @current_user.cant_life == 0
-                session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                 session[:color] = "red"
                 redirect '/gamemodes'
                 return
             else
+                # sino sigue respondiendo preguntas
+                session[:message] = "Time's up! Incorrect!"
+                session[:color] = "red"
+            end
+        else
+            @option = Option.find(params[:option_id].to_i)
+            @question = @option.question
+
+            if @option.correct
+                Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+                @current_user.increment!(:cant_coins, 10)
+                session[:message] = "Correct! Well done."
+                session[:color] = "green"
+            else
+                @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+                if @current_user.cant_life == 0
+                    session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                    session[:color] = "red"
+                    redirect '/gamemodes'
+                    return
+                else
+                session[:message] = "Incorrect!"
+                session[:color] = "red"
+                end
             session[:message] = "Incorrect!"
             session[:color] = "red"
             end
-        session[:message] = "Incorrect!"
-        session[:color] = "red"
-        end
 
-        session[:answered_free_questions] ||= []
-        session[:answered_free_questions] << @question.id
+            session[:answered_free_questions] ||= []
+            session[:answered_free_questions] << @question.id
+        end
 
         redirect '/gamemodes/free'
     end

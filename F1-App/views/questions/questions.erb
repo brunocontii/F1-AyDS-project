@@ -6,29 +6,30 @@
     <link rel="stylesheet" href="/styleTheme.css">
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            let timeLeft = 15;
+            let timeLeft = 20;  // Ajuste a 20 segundos
             const timerElement = document.getElementById('timer-bar');
             const formElement = document.getElementById('question-form');
 
             const countdown = setInterval(() => {
-                if (timeLeft <= 0) {
+                timeLeft -= 1;
+
+                if (timeLeft < 0) {
                     clearInterval(countdown);
-                    handleTimeOut(); // Handle timeout scenario
+                    handleTimeOut();  // Manejar el escenario de timeout
                 } else {
-                    const percentage = (timeLeft / 15) * 100;
+                    const percentage = (timeLeft / 20) * 100;
                     timerElement.style.width = `${percentage}%`;
 
                     if (timeLeft > 10) {
                         timerElement.style.backgroundColor = 'green';
-                    } else if (timeLeft > 5) {
+                    } else if (timeLeft > 6) {
                         timerElement.style.backgroundColor = 'yellow';
-                    } else if (timeLeft > 2) {
+                    } else if (timeLeft > 3) {
                         timerElement.style.backgroundColor = 'orange';
                     } else {
                         timerElement.style.backgroundColor = 'red';
                     }
                 }
-                timeLeft -= 1;
             }, 1000);
 
             function handleTimeOut() {
@@ -41,7 +42,7 @@
 <body>
 <header>
     <div class="left">
-        <a href="/gamemodes" class="menu-item" data-lang-key="back">Back</a>
+        <a href="/gamemodes" class="menu-item">Back</a>
     </div>
     <div class="right">
         <div class="user-info">
@@ -56,12 +57,8 @@
             <div class="profile">
                 <img src="/pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                 <div id="profile-menu" class="profile-menu">
-                    <a href="/profile" data-lang-key="profile">Profile</a>
-                    <div class="change-language" onclick="toggleLanguage()">
-                        <span data-lang-key="changeLanguage">Change Language</span>
-                        <img src="/argentina.png" alt="Idioma" class="language-flag">
-                    </div>
-                    <a href="/logout" data-lang-key="logout">Log out</a>
+                    <a href="/profile">Profile</a>
+                    <a href="/logout">Log out</a>
                 </div>
             </div>
         </div>
@@ -75,7 +72,7 @@
         <% session.delete(:message) %>
         <% session.delete(:color) %>
     <% end %>
-    
+
     <div class="question-container">
         <% if feedback_message %>
             <div class="feedback-message" style="color: <%= feedback_color %>;">
@@ -107,23 +104,6 @@
 function toggleProfileMenu() {
     var menu = document.getElementById('profile-menu');
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-
-function toggleLanguage() {
-    var currentFlag = document.querySelector('.language-flag');
-    var newLang = currentFlag.src.includes('argentina.png') ? 'en' : 'es';
-    var newFlag = newLang === 'en' ? 'usa.png' : 'argentina.png';
-    currentFlag.src = newFlag;
-
-    updateLanguage(newLang);
-}
-
-function updateLanguage(lang) {
-    const elements = document.querySelectorAll('[data-lang-key]');
-    elements.forEach(el => {
-        const key = el.getAttribute('data-lang-key');
-        el.textContent = translations[lang][key];
-    });
 }
 </script>
 </body>

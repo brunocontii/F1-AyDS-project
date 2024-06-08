@@ -39,7 +39,7 @@
 <body>
     <header>
         <div class="left">
-            <a href="/how-to-play" class="menu-item" data-lang-key="howToPlay">How To Play</a>
+            <a href="/how-to-play" class="menu-item">How To Play</a>
         </div>
         <div class="right">
             <div class="user-info">
@@ -54,12 +54,8 @@
                 <div class="profile">
                     <img src="pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                     <div id="profile-menu" class="profile-menu">
-                        <a href="/profile" data-lang-key="profile">Profile</a>
-                        <div class="change-language" onclick="toggleLanguage()">
-                            <span data-lang-key="changeLanguage">Change Language</span>
-                            <img src="argentina.png" alt="Idioma" class="language-flag">
-                        </div>
-                        <a href="/logout" data-lang-key="logout">Log out</a>
+                        <a href="/profile">Profile</a>
+                        <a href="/logout">Log out</a>
                     </div>
                 </div>
             </div>
@@ -78,63 +74,17 @@
             <% session[:message] = nil %>
             <% session[:color] = nil %>
         <% end %>
-        <h1 data-lang-key="gamemodes">Gamemodes</h1>
+        <h1>Gamemodes</h1>
         <div class="gamemodes">
-            <a href="/gamemodes/progressive" class="gamemode" data-lang-key="progressive">Progressive</a>
-            <a href="/gamemodes/free" class="gamemode" data-lang-key="free">Free</a>
+            <a href="/gamemodes/progressive" class="gamemode">Progressive</a>
+            <a href="/gamemodes/free" class="gamemode">Free</a>
         </div>
     </main>
     <script>
-        const translations = {
-            en: {
-                howToPlay: 'How To Play',
-                profile: 'Profile',
-                changeLanguage: 'Change Language',
-                logout: 'Log out',
-                gamemodes: 'Gamemodes',
-                progressive: 'Progressive',
-                free: 'Free'
-            },
-            es: {
-                howToPlay: 'Cómo Jugar',
-                profile: 'Perfil',
-                changeLanguage: 'Cambiar Idioma',
-                logout: 'Cerrar sesión',
-                gamemodes: 'Modos de Juego',
-                progressive: 'Progresivo',
-                free: 'Libre'
-            }
-        };
-
         function toggleProfileMenu() {
-            var menu = document.getElementById('profile-menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function toggleLanguage() {
-            var currentFlag = document.querySelector('.language-flag');
-            var newLang = currentFlag.src.includes('argentina.png') ? 'en' : 'es';
-            var newFlag = newLang === 'en' ? 'usa.png' : 'argentina.png';
-            currentFlag.src = newFlag;
-
-            // Update text content according to selected language
-            updateLanguage(newLang);
-        }
-
-        function updateLanguage(lang) {
-            const elements = document.querySelectorAll('[data-lang-key]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-lang-key');
-                el.textContent = translations[lang][key];
-            });
-        }
-
-        // Initialize language based on current flag
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentFlag = document.querySelector('.language-flag').src;
-            const initialLang = currentFlag.includes('argentina.png') ? 'es' : 'en';
-            updateLanguage(initialLang);
-        });
+        var menu = document.getElementById('profile-menu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
     </script>
 </body>
 </html>
