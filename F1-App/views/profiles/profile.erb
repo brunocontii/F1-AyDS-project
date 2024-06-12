@@ -3,25 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styleProfile.css">
+    <title>Profile</title>
 </head>
 <body>
     <header>
-        <h1>Profile of <%= profile.name %> <%= profile.lastName %></h1>
-        <div class="back-to-menu">
-            <a href="/gamemodes">Back</a>
+        <div class="left">
+            <a href="/gamemodes" class="menu-item">Back</a>
+        </div>
+        <div class="right">
+            <div class="user-info">
+                <div class="currency">
+                    <img src="/coin.png" alt="Monedas" class="icon">
+                    <span><%= @current_user ? @current_user.cant_coins : 0 %></span>
+                </div>
+                <div class="lives">
+                    <img src="/heart.png" alt="Vidas" class="icon">
+                    <span><%= @current_user ? @current_user.cant_life : 0 %></span>
+                </div>
+                <div class="profile">
+                    <img src="/pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <div id="profile-menu" class="profile-menu">
+                        <a href="/profile">Profile</a>
+                        <a href="/logout">Log out</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
     <main>
-        <div class="profile-info">
-            <p><strong>Name:</strong> <%= profile.name %> <%= profile.lastName %></p>
-            <p><strong>Description:</strong> <%= profile.description %></p>
-            <p><strong>Age:</strong> <%= profile.age %> years</p>
-            <p><strong>Pilot percentage: </strong> <%= countPi %>%</p>
-            <p><strong>Circuit percentage: </strong> <%= countCi %>%</p>
-            <p><strong>Career percentage: </strong> <%= countCa %>%</p>
-            <p><strong>Team percentage: </strong> <%= countTe %>%</p>
-
-            <p><strong>Total percentage: </strong> <%= countTotal %>%</p>
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img src="pilot.png" alt="Profile Picture">
+            </div>
+            <div class="profile-details">
+                <p><strong>Name:</strong> <%= profile.name %> <%= profile.lastName %></p>
+                <p><strong>Age:</strong> <%= profile.age %> years</p>
+                <p><strong>Description:</strong> <%= profile.description %></p>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <p>Pilot percentage: <%= countPi %>%</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: <%= countPi %>%;"></div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <p>Circuit percentage: <%= countCi %>%</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: <%= countCi %>%;"></div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <p>Career percentage: <%= countCa %>%</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: <%= countCa %>%;"></div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <p>Team percentage: <%= countTe %>%</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: <%= countTe %>%;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </body>
