@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/styles/styleTheme.css">
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            let timeLeft = 20;  // Ajuste a 20 segundos
+            let timeLeft = 20;
             const timerElement = document.getElementById('timer-bar');
             const formElement = document.getElementById('question-form');
 
@@ -15,7 +15,7 @@
 
                 if (timeLeft < 0) {
                     clearInterval(countdown);
-                    handleTimeOut();  // Manejar el escenario de timeout
+                    handleTimeOut();
                 } else {
                     const percentage = (timeLeft / 20) * 100;
                     timerElement.style.width = `${percentage}%`;

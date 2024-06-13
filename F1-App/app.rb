@@ -140,6 +140,15 @@ class App < Sinatra::Application
 
     end
 
+    post '/profile/picture' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        if @current_user
+            @profile = @current_user.profile
+            @profile.update(profile_picture: params[:profile_picture])
+        end
+        redirect '/profile'
+    end
+
     get '/gamemodes' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
         if request.xhr? # solicitud AJAX , permite que solo traiga las vidas, sin recargar toda la pagina.

@@ -20,7 +20,7 @@ header {
     align-items: center;
     padding: 10px 20px;
     background: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .left .menu-item {
@@ -107,7 +107,7 @@ main {
 }
 
 main h1 {
-    font-size: 4rem; /* Reducido el tamaño del título */
+    font-size: 4rem;
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px #000;
 }
@@ -120,12 +120,12 @@ main h1 {
 
 .gamemode {
     margin: 0 20px;
-    padding: 15px 30px; /* Reducido el padding */
+    padding: 15px 30px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     text-decoration: none;
     color: #fff;
-    font-size: 2rem; /* Reducido el tamaño del texto */
+    font-size: 2rem;
     transition: background 0.3s, transform 0.3s;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     display: inline-block;
@@ -140,5 +140,5 @@ main h1 {
 }
 
 .gamemode i {
-    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    margin-right: 10px;
 }

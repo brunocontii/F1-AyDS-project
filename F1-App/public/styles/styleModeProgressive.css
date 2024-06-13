@@ -8,7 +8,7 @@
 }
 
 body {
-    background: url('/backgruonds/progressive-background.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/progressive-background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
 }
@@ -130,27 +130,27 @@ main h1 {
     padding-right: 100px;
 }
 #pilot:hover {
-    background: url('pilot-background.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/pilot-background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
 #team:hover {
-    background: url('team-background.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/team-background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
 #circuit:hover {
-    background: url('circuit-background.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/circuit-background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
 #career:hover {
-    background: url('career-background.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/career-background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
 .gamemode:hover {
     background: rgba(34, 28, 28, 0.2);
     transform: scale(1.05);
-    color: #e92727;
+    color: #ffcc00;
 }
