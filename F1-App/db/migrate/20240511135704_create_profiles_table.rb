@@ -5,6 +5,7 @@ class CreateProfilesTable < ActiveRecord::Migration[7.1]
       t.string :lastName
       t.text :description
       t.integer :age
+      t.string :profile_picture
       t.references :user, null: false, foreign_key: true
 
       t.datetime :created_at

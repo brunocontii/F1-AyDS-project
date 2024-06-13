@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url("pilot-background.jpg");
+    background-image: url("/backgrounds/pilot-background.jpg");
     background-size: cover;
     color: #333;
     margin: 0;

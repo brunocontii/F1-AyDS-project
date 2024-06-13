@@ -14,10 +14,10 @@ users.each do |user|
 end
 
 profiles = [
-    {name: 'Juan Cruz', lastName: 'Gonzalez', description: 'f1 lover', age: 22, user_id: 3},
-    {name: 'Bruno', lastName: 'Conti', description: 'messi lover', age: 21, user_id: 2},
-    {name: 'Erich', lastName: 'Vollenweider', description: 'KTM Group', age: 25, user_id: 4},
-    {name: 'Joaquin', lastName: 'Mezzano', description: 'intento de programador', age: 23, user_id: 1},
+    {name: 'Juan Cruz', lastName: 'Gonzalez', description: 'f1 lover', age: 22, user_id: 3, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Bruno', lastName: 'Conti', description: 'messi lover', age: 21, user_id: 2, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Erich', lastName: 'Vollenweider', description: 'KTM Group', age: 25, user_id: 4, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Joaquin', lastName: 'Mezzano', description: 'intento de programador', age: 23, user_id: 1, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
 ]
 
 profiles.each do |profile|
@@ -25,6 +25,7 @@ profiles.each do |profile|
         u.description = profile[:description]
         u.age = profile[:age]
         u.user_id = profile[:user_id]
+        u.profile_picture = profile[:profile_picture]
     end
 end
 
@@ -520,7 +521,7 @@ options = [
     { name_option: '2nd place', question_id: 70, correct: false },
     { name_option: '3rd place', question_id: 70, correct: false },
     { name_option: '4th place', question_id: 70, correct: false },
- 
+
     { name_option: 'Italian', question_id: 71, correct: true },
     { name_option: 'German', question_id: 71, correct: false },
     { name_option: 'British', question_id: 71, correct: false },
@@ -547,62 +548,62 @@ options = [
     { name_option: 'Indicates the start of the race', question_id: 75, correct: false },
     { name_option: 'Indicates danger on track', question_id: 75, correct: false },
     { name_option: 'Indicates to slow down', question_id: 75, correct: false },
-  
+
     { name_option: 'Indicates the safety car is coming out', question_id: 76, correct: false },
     { name_option: 'Indicates the start of the race', question_id: 76, correct: false },
     { name_option: 'Indicates that the danger on track has ended', question_id: 76, correct: true },
     { name_option: 'Indicates the final lap', question_id: 76, correct: false },
-  
+
     { name_option: 'Indicates that the driver must slow down and cannot overtake unless there is a damaged car ahead', question_id: 77, correct: true },
     { name_option: 'Indicates the safety car is coming out', question_id: 77, correct: false },
     { name_option: 'Indicates danger on track', question_id: 77, correct: false },
     { name_option: 'Indicates to slow down', question_id: 77, correct: false },
-  
+
     { name_option: 'Indicates the start of the race', question_id: 78, correct: false },
     { name_option: 'Indicates to slow down', question_id: 78, correct: false },
     { name_option: 'Indicates danger on track', question_id: 78, correct: false },
     { name_option: 'Indicates the safety car is coming out', question_id: 78, correct: true },
-  
+
     { name_option: 'Indicates the safety car is coming out', question_id: 79, correct: false },
     { name_option: 'Same as with a Safety Car but the safety car does not come out', question_id: 79, correct: true },
     { name_option: 'Indicates to slow down', question_id: 79, correct: false },
     { name_option: 'Indicates the end of the race', question_id: 79, correct: false },
-  
+
     { name_option: 'Indicates that the session is completely stopped', question_id: 80, correct: true },
     { name_option: 'Indicates the safety car is coming out', question_id: 80, correct: false },
     { name_option: 'Indicates danger on track', question_id: 80, correct: false },
     { name_option: 'Indicates to slow down', question_id: 80, correct: false },
-  
+
     { name_option: 'Indicates that the warned driver will be excluded from the session for a serious unsporting maneuver', question_id: 81, correct: true },
     { name_option: 'Indicates that the warned driver will be excluded from the session for exceeding speed', question_id: 81, correct: false },
     { name_option: 'Indicates driver change', question_id: 81, correct: false },
     { name_option: 'Indicates that the driver must enter the pit', question_id: 81, correct: false },
-  
+
     { name_option: 'Indicates that the warned driver will be excluded from the session for a serious unsporting maneuver', question_id: 82, correct: false },
     { name_option: 'Indicates to the driver that their car has severe mechanical problems compromising safety and they must enter the pit and stop the vehicle as soon as possible', question_id: 82, correct: true },
     { name_option: 'Indicates to the driver that the team lost communication with them and they must enter the pit to fix it', question_id: 82, correct: false },
     { name_option: 'Indicates to the driver that they will be replaced by another driver from the team', question_id: 82, correct: false },
-  
+
     { name_option: 'Warns drivers of engine failure', question_id: 83, correct: false },
     { name_option: 'Indicates to drivers to enter the pit to refuel', question_id: 83, correct: false },
     { name_option: 'Indicates to drivers to enter the pit to change tires', question_id: 83, correct: false },
     { name_option: 'Warns drivers of a dangerous or unsporting maneuver on track', question_id: 83, correct: true },
-  
+
     { name_option: 'Always shown in practice and races statically at the end of the pit lane to indicate that cars are approaching on track', question_id: 84, correct: false },
     { name_option: 'In practice session, the driver must let a faster car pass without changing their line', question_id: 84, correct: false },
     { name_option: 'In race situation, the driver who will be lapped by another that has completed an additional lap will be alerted by the blue flag to allow overtaking as quickly as possible', question_id: 84, correct: false },
     { name_option: 'All options are correct', question_id: 84, correct: true },
-  
+
     { name_option: 'Indicates to drivers that the safety car is coming out', question_id: 85, correct: false },
     { name_option: 'Indicates to drivers that there was an accident on track', question_id: 85, correct: false },
     { name_option: 'Indicates to drivers that the track conditions are not optimal for driving at the limit', question_id: 85, correct: true },
     { name_option: 'Indicates to drivers to return to the pits', question_id: 85, correct: false },
-  
+
     { name_option: 'Indicates that a driver has retired from the race', question_id: 86, correct: false },
     { name_option: 'Indicates that there is an excessively slow vehicle on track, such as a crane or medical car', question_id: 86, correct: true },
     { name_option: 'Indicates the final lap of the race', question_id: 86, correct: false },
     { name_option: 'Indicates that all vehicles must return to the pits', question_id: 86, correct: false },
-  
+
     { name_option: 'Practice session times', question_id: 87, correct: false },
     { name_option: 'Order of arrival in the previous race', question_id: 87, correct: false },
     { name_option: 'Driver standings based on their championship results', question_id: 87, correct: false },
@@ -612,27 +613,27 @@ options = [
     { name_option: '100 laps', question_id: 88, correct: false },
     { name_option: '75 laps', question_id: 88, correct: false },
     { name_option: 'No lap limit', question_id: 88, correct: true },
-  
+
     { name_option: '1 hour', question_id: 89, correct: false },
     { name_option: '2 hours', question_id: 89, correct: false },
     { name_option: '30 minutes', question_id: 89, correct: false },
     { name_option: 'Depends on the circuit and race conditions', question_id: 89, correct: true },
-  
+
     { name_option: '18 drivers', question_id: 90, correct: false },
     { name_option: '20 drivers', question_id: 90, correct: false },
     { name_option: '22 drivers', question_id: 90, correct: true },
     { name_option: '24 drivers', question_id: 90, correct: false },
-  
+
     { name_option: 'A time penalty is awarded at the end of the race', question_id: 91, correct: false },
     { name_option: 'Receives a warning from the team', question_id: 91, correct: false },
     { name_option: 'May receive a time penalty or a drive-through', question_id: 91, correct: true },
     { name_option: 'No consequences', question_id: 91, correct: false },
-  
+
     { name_option: '80 km/h', question_id: 92, correct: true },
     { name_option: '100 km/h', question_id: 92, correct: false },
     { name_option: '120 km/h', question_id: 92, correct: false },
     { name_option: '150 km/h', question_id: 92, correct: false },
-  
+
     { name_option: '5 engines per season', question_id: 93, correct: false },
     { name_option: '7 engines per season', question_id: 93, correct: true },
     { name_option: '10 engines per season', question_id: 93, correct: false },

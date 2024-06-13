@@ -5,8 +5,8 @@
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mode Progressive</title>
-    <link rel="icon" href="icon-1-50.png">
-    <link rel="stylesheet" href="/styleModeProgressive.css">
+    <link rel="icon" href="/icons/icon-1-50.png">
+    <link rel="stylesheet" href="/styles/styleModeProgressive.css">
 </head>
 <body>
     <header>
@@ -16,15 +16,15 @@
         <div class="right">
             <div class="user-info">
                 <div class="currency">
-                    <img src="/coin.png" alt="Monedas" class="icon">
+                    <img src="/icons/coin.png" alt="Monedas" class="icon">
                     <span><%=@current_user ? @current_user.cant_coins : 0%></span>
                 </div>
                 <div class="lives">
-                    <img src="/heart.png" alt="Vidas" class="icon">
+                    <img src="/icons/heart.png" alt="Vidas" class="icon">
                     <span><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
                 <div class="profile">
-                    <img src="/pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                     <div id="profile-menu" class="profile-menu">
                         <a href="/profile">Profile</a>
                         <a href="/logout">Log out</a>

@@ -41,7 +41,7 @@ class App < Sinatra::Application
         pass if request.path_info == '/' || request.path_info == '/login' || request.path_info == '/register' || request.path_info == '/how-to-play' || request.path_info == '/team'
         # pedirigir al inicio si no hay usuario en la sesión , ni gamemodes ni progressive nada xq hay siempre un usuario en la sesion
         redirect '/' unless session[:username]
-      end
+    end
 
     # pagina apenas entras a la app
     get '/' do
@@ -76,6 +76,8 @@ class App < Sinatra::Application
     end
     #
     get '/register' do
+        # lista de todas las fotos que se encuentran dentro de public/profile_pictures
+        @profile_pictures = Dir.glob("public/profile_pictures/*").map{ |path| path.split('/').last }
         erb :'register/register'
     end
 
@@ -84,6 +86,11 @@ class App < Sinatra::Application
         username = params[:username]
         password = params[:password]
         rpassword = params[:repeat_password]
+        name = params[:name]
+        lastname = params[:lastname]
+        description = params[:description]
+        age = params[:age]
+        profile_picture = params[:profile_pic]
 
         if User.where(username: username).exists?
             @error = "Username already exist"
@@ -93,10 +100,10 @@ class App < Sinatra::Application
             erb :'register/register'
         else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
             user = User.create(username: username, password: password, cant_life: 3 , cant_coins: 0)
+            Profile.create(name: name, lastName: lastname, description: description, age: age, user: user, profile_picture: profile_picture)
             session[:username] = user.username
             redirect '/gamemodes' # redirecciona a jugar
         end
-
     end
 
     # ver para que sirve
@@ -121,31 +128,15 @@ class App < Sinatra::Application
         # recupero el usuario y traigo el perfil a @profile
         @profile = @current_user.profile
 
-        if @profile.nil? # si no existe crea uno,
-            erb :'profiles/newProfile', locals: { user: @current_user }
-        else
-            @profile = @current_user.profile if @current_user
-            @countPi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count
-            @countCi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count
-            @countCa = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count
-            @countTe = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count
+        @profile = @current_user.profile if @current_user
+        @countPi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count
+        @countCi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count
+        @countCa = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count
+        @countTe = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count
 
-            @countTotal = (Answer.where(user_id: @current_user.id).count*100)/Question.count
+        @countTotal = (Answer.where(user_id: @current_user.id).count*100)/Question.count
 
-            erb :'profiles/profile', locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe, countTotal: @countTotal }
-        end
-
-    end
-
-    post '/newProfile' do
-        name = params[:name]
-        lastname = params[:lastname]
-        description = params[:description]
-        age = params[:age]
-
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-        profile = Profile.create(name: name, lastName: lastname, description: description, age: age, user_id: @current_user.id)
-        redirect '/profile' # redirecciona a jugar
+        erb :'profiles/profile', locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe, countTotal: @countTotal }
 
     end
 

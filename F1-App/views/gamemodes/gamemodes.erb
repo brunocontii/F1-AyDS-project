@@ -5,35 +5,25 @@
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu</title>
-    <link rel="icon" href="icon-1-50.png">
-    <link rel="stylesheet" href="styleMenu.css">
+    <link rel="icon" href="/icons/icon-1-50.png">
+    <link rel="stylesheet" href="/styles/styleMenu.css">
     <style>
-    .message {
-        font-size: 2.5rem;
-        text-align: center;
-        margin: 20px 0;
-        padding: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        border-radius: 10px;
-        color: #ffcc00;
-        text-shadow: 2px 2px 4px #000;
-        display: inline-block;
-    }
+        /* Estilos adicionales CSS aquí si es necesario */
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    $(document).ready(function() {
-        function updateLives() {
-            $.get('/gamemodes', function(data) {
-                console.log(data);
-                $('#lives-count').text(data.lives);
-            });
-        }
+        $(document).ready(function() {
+            function updateLives() {
+                $.get('/gamemodes', function(data) {
+                    console.log(data);
+                    $('#lives-count').text(data.lives);
+                });
+            }
 
-        setInterval(updateLives, 20000);
+            setInterval(updateLives, 20000);
 
-        updateLives();
-    });
+            updateLives();
+        });
     </script>
 </head>
 <body>
@@ -44,15 +34,15 @@
         <div class="right">
             <div class="user-info">
                 <div class="currency">
-                    <img src="coin.png" alt="Monedas" class="icon">
+                    <img src="/icons/coin.png" alt="Monedas" class="icon">
                     <span><%=@current_user ? @current_user.cant_coins : 0%></span>
                 </div>
                 <div class="lives">
-                    <img src="heart.png" alt="Vidas" class="icon">
-                    <span id = "lives-count"><%=@current_user ? @current_user.cant_life : 0%></span>
+                    <img src="/icons/heart.png" alt="Vidas" class="icon">
+                    <span id="lives-count"><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
                 <div class="profile">
-                    <img src="pilot.png" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                     <div id="profile-menu" class="profile-menu">
                         <a href="/profile">Profile</a>
                         <a href="/logout">Log out</a>
@@ -76,15 +66,19 @@
         <% end %>
         <h1>Gamemodes</h1>
         <div class="gamemodes">
-            <a href="/gamemodes/progressive" class="gamemode">Progressive</a>
-            <a href="/gamemodes/free" class="gamemode">Free</a>
+            <a href="/gamemodes/progressive" class="gamemode">
+                <i class="fas fa-coins"></i> Progressive
+            </a>
+            <a href="/gamemodes/free" class="gamemode">
+                <i class="fas fa-gamepad"></i> Free
+            </a>
         </div>
     </main>
     <script>
         function toggleProfileMenu() {
-        var menu = document.getElementById('profile-menu');
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
+            var menu = document.getElementById('profile-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>

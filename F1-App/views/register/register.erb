@@ -3,51 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=<>, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="icon" href='icon-1-50.png')>
-    <link rel="stylesheet" href="styleLogin.css">
+    <link rel="icon" href='/icons/icon-1-50.png'>
+    <link rel="stylesheet" href="/styles/styleRegister.css">
 </head>
 <body>
     <% if @error %>
         <p><%= @error %></p>
     <% end %>
-    <section>   
+    <section>
         <div class="contenedor">
             <a href="/" class="back-arrow">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <div class="formulario">
-                <form action="/register" method="post">
+                <form action="/register" method="post" onsubmit="return validateForm()">
                     <h2>Register</h2>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-user"></i>
+                        <input type="text" name="name" required>
+                        <label for="name">Name</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="lastname" required>
+                        <label for="lastname">Last Name</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-align-left"></i>
+                        <input type="text" name="description" required>
+                        <label for="description">Description</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-calendar"></i>
+                        <input type="number" name="age" required>
+                        <label for="age">Age</label>
+                    </div>
+
+                    <div class="input-contenedor">
+                        <i class="fa-solid fa-user"></i>
                         <input type="text" name="username" required>
-                        <label for="#">User</label>
+                        <label for="username">User</label>
                     </div>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-lock"></i>
                         <input type="password" name="password" required>
-                        <label for="#">Password</label>
+                        <label for="password">Password</label>
                     </div>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-lock"></i>
                         <input type="password" name="repeat_password" required>
-                        <label for="#">Repeat Password</label>
+                        <label for="repeat_password">Repeat Password</label>
                     </div>
 
-                <div>
+                    <button type="button" onclick="chooseProfilePicture()">Choose a profile picture</button>
+                    <input type="hidden" name="profile_pic" id="selected-profile-picture" required>
+
                     <button type="submit">Register</button>
                 </form>
-                    <div class="registrar">
-                        <p><a href="/login"><u>I have an account</u></a></p>
-                    </div>
+                <div class="registrar">
+                    <p><a href="/login"><u>I have an account</u></a></p>
                 </div>
             </div>
         </div>
     </section>
+
+    <div id="profile-picture-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Choose a Profile Picture</h2>
+            <div class="profile-pictures">
+                <% @profile_pictures.each do |picture| %>
+                    <img src="/profile_pictures/<%= picture %>" class="profile-picture" onclick="selectProfilePicture('/profile_pictures/<%= picture %>')">
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function chooseProfilePicture() {
+            document.getElementById('profile-picture-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('profile-picture-modal').style.display = 'none';
+        }
+
+        function selectProfilePicture(url) {
+            document.getElementById('selected-profile-picture').value = url;
+            closeModal();
+        }
+
+        function validateForm() {
+        var profilePic = document.getElementById('selected-profile-picture').value;
+        if (profilePic == '') {
+            alert('Por favor, selecciona una foto de perfil.');
+            return false;
+        }
+        return true;
+    }
+    </script>
 </body>
 </html>

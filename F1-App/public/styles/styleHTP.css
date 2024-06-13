@@ -3,7 +3,7 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-image: url('background-HTP.png');
+    background-image: url('/backgrounds/background-HTP.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -1,3 +1,4 @@
+/* Estilos generales */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
 
 * {
@@ -8,7 +9,7 @@
 }
 
 body {
-    background: url('ferrari-car.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/fondo.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
 }
@@ -19,6 +20,7 @@ header {
     align-items: center;
     padding: 10px 20px;
     background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
 .left .menu-item {
@@ -105,7 +107,7 @@ main {
 }
 
 main h1 {
-    font-size: 7rem;
+    font-size: 4rem; /* Reducido el tamaño del título */
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px #000;
 }
@@ -113,22 +115,30 @@ main h1 {
 .gamemodes {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .gamemode {
     margin: 0 20px;
-    padding: 20px 40px;
+    padding: 15px 30px; /* Reducido el padding */
     background: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     text-decoration: none;
     color: #fff;
-    font-size: 3.3rem;
+    font-size: 2rem; /* Reducido el tamaño del texto */
     transition: background 0.3s, transform 0.3s;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    display: inline-block;
+    text-align: center;
+    line-height: 1;
 }
 
 .gamemode:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
-    color: #e92727;
+    color: #ffcc00;
+}
+
+.gamemode i {
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
 }

@@ -3,7 +3,7 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-image: url(f1.gif);
+    background-image: url(/backgrounds/f1.gif);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
