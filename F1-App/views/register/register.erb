@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="/styles/styleRegister.css">
 </head>
 <body>
-    <% if @error %>
-        <p><%= @error %></p>
-    <% end %>
     <section>
         <div class="contenedor">
             <a href="/" class="back-arrow">
@@ -67,6 +64,10 @@
                     <input type="hidden" name="profile_pic" id="selected-profile-picture" required>
 
                     <button type="submit">Register</button>
+
+                    <% if @error %>
+                        <p class="error-message" id="error-message"><%= @error %></p>
+                    <% end %>
                 </form>
                 <div class="registrar">
                     <p><a href="/login"><u>I have an account</u></a></p>
@@ -102,13 +103,22 @@
         }
 
         function validateForm() {
-        var profilePic = document.getElementById('selected-profile-picture').value;
-        if (profilePic == '') {
-            alert('Por favor, selecciona una foto de perfil.');
-            return false;
+            var profilePic = document.getElementById('selected-profile-picture').value;
+            if (profilePic == '') {
+                alert('Por favor, selecciona una foto de perfil.');
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
+
+        window.onload = function() {
+            var errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                setTimeout(function() {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        };
     </script>
 </body>
 </html>

@@ -64,7 +64,7 @@ class App < Sinatra::Application
             session[:username] = user.username # Guardar el nombre de usuario en la sesión
             redirect "/gamemodes"
         else # escribiste mal algo o no existe el usuario o no estas logueado (es mas generico)
-            @error = "Invalid username or password. Please try again."
+            @error = "Invalid username or password."
             erb :'login/login'
         end
     end
@@ -91,6 +91,7 @@ class App < Sinatra::Application
         description = params[:description]
         age = params[:age]
         profile_picture = params[:profile_pic]
+        @profile_pictures = Dir.glob("public/profile_pictures/*").map{ |path| path.split('/').last }
 
         if User.where(username: username).exists?
             @error = "Username already exist"

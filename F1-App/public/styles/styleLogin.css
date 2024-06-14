@@ -126,3 +126,9 @@ button:hover {
     text-decoration: underline;
     margin-left: 30px;
 }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}

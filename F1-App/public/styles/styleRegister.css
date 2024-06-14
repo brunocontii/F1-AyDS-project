@@ -176,3 +176,9 @@ button:hover {
     cursor: pointer;
     object-fit: cover;
 }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
