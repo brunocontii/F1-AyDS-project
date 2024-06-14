@@ -264,6 +264,22 @@ class App < Sinatra::Application
         redirect "/gamemodes/progressive/#{mode}"
     end
 
+    post '/use_extra_time' do
+        content_type :json
+        request_body = request.body.read
+        params = JSON.parse(request_body)
+    
+        user_id = params['user_id']
+        @current_user = User.find(user_id)
+    
+        if @current_user.cant_coins >= 50
+            @current_user.update(cant_coins: @current_user.cant_coins - 50)
+            { status: 'success' }.to_json
+        else
+            halt 400, { error: 'Not enough coins' }.to_json
+        end
+    end
+
     # Modo Free
     get '/gamemodes/free' do
         @current_user = User.find_by(username: session[:username]) if session[:username]

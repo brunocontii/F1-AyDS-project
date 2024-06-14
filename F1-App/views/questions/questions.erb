@@ -7,8 +7,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             let timeLeft = 20;
+            let extraTimeUsed = false;
             const timerElement = document.getElementById('timer-bar');
             const formElement = document.getElementById('question-form');
+            const extraTimeButton = document.getElementById('extra-time-button');
 
             const countdown = setInterval(() => {
                 timeLeft -= 1;
@@ -17,7 +19,7 @@
                     clearInterval(countdown);
                     handleTimeOut();
                 } else {
-                    const percentage = (timeLeft / 20) * 100;
+                    const percentage = (timeLeft / (extraTimeUsed ? 40 : 20)) * 100;
                     timerElement.style.width = `${percentage}%`;
 
                     if (timeLeft > 10) {
@@ -36,6 +38,31 @@
                 document.getElementById('timeout').value = 'true';
                 formElement.submit();
             }
+
+            extraTimeButton.addEventListener('click', () => {
+                if (!extraTimeUsed && <%= @current_user.cant_coins %> >= 50) {
+                    fetch('/use_extra_time', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ user_id: <%= @current_user.id %> })
+                    }).then(response => {
+                        if (response.ok) {
+                            extraTimeUsed = true;
+                            timeLeft += 20;
+                            extraTimeButton.disabled = true;
+                            document.querySelector('.currency span').textContent -= 50;
+                        } else {
+                            response.json().then(data => {
+                                alert('Error: ' + data.error);
+                            });
+                        }
+                    }).catch(error => {
+                        alert('Failed to use extra time: ' + error.message);
+                    });
+                }
+            });
         });
     </script>
 </head>
@@ -55,7 +82,7 @@
                 <span><%= @current_user ? @current_user.cant_life : 0 %></span>
             </div>
             <div class="profile">
-                <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                <img src="<%= @current_user.profile.profile_picture %>" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                 <div id="profile-menu" class="profile-menu">
                     <a href="/profile">Profile</a>
                     <a href="/logout">Log out</a>
@@ -82,29 +109,37 @@
                 </form>
             </div>
         <% else %>
-            <div class="timer">
-                <div id="timer-bar"></div>
-            </div>
-            <h2 class="question-title"><%= @question.name_question %></h2>
-            <form id="question-form" action="<%= @form_action %>" method="post" class="question-form">
-                <% @options.each do |option| %>
-                    <div class="option">
-                        <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>" class="option-input" required>
-                        <label for="option_<%= option.id %>" class="option-label"><%= option.name_option %></label>
+            <div class="question-and-wildcard">
+                <div class="question-content">
+                    <div class="timer">
+                        <div id="timer-bar"></div>
                     </div>
-                <% end %>
-                <input type="hidden" name="timeout" id="timeout" value="false">
-                <input type="hidden" name="question_id" value="<%= @question.id %>">
-                <button type="submit" class="submit-button">Check Answer</button>
-            </form>
+                    <h2 class="question-title"><%= @question.name_question %></h2>
+                    <form id="question-form" action="<%= @form_action %>" method="post" class="question-form">
+                        <% @options.each do |option| %>
+                            <div class="option">
+                                <input type="radio" id="option_<%= option.id %>" name="option_id" value="<%= option.id %>" class="option-input" required>
+                                <label for="option_<%= option.id %>" class="option-label"><%= option.name_option %></label>
+                            </div>
+                        <% end %>
+                        <input type="hidden" name="timeout" id="timeout" value="false">
+                        <input type="hidden" name="question_id" value="<%= @question.id %>">
+                        <button type="submit" class="submit-button">Check Answer</button>
+                    </form>
+                </div>
+                <div id="wildcards-container">
+                    <button id="extra-time-button" class="wildcard-button" title="Use Extra Time (50 coins)"></button>
+                </div>
+            </div>
         <% end %>
     </div>
 </main>
 <script>
-function toggleProfileMenu() {
-    var menu = document.getElementById('profile-menu');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
+    function toggleProfileMenu() {
+        var menu = document.getElementById('profile-menu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
 </script>
 </body>
 </html>
+        

@@ -197,3 +197,39 @@ main {
     background-color: green;
     transition: width 1s linear, background-color 1s linear;
 }
+
+.question-and-wildcard {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.question-content {
+    flex-grow: 1;
+}
+
+#wildcards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wildcard-button {
+    width: 80px;
+    height: 80px;
+    border: none;
+    border-radius: 50%;
+    background-image: url('/icons/clock.png');
+    background-size: cover;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.wildcard-button:hover {
+    transform: scale(1.1);
+}
+
+.wildcard-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
