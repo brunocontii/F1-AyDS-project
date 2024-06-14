@@ -11,6 +11,7 @@ body {
     background: url('/backgrounds/progressive-background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
+    overflow-x: hidden;
 }
 
 header {
@@ -105,52 +106,97 @@ main {
 }
 
 main h1 {
-    font-size: 5rem;
+    font-size: 4rem;
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px #000;
+    animation: fadeInDown 1s ease-out;
 }
 
 .gamemodes {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .gamemode {
-    margin: 0 20px;
+    margin: 0 10px;
     padding: 20px 40px;
     background: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     text-decoration: none;
     color: #fff;
-    font-size: 2.7rem;
+    font-size: 2rem;
     transition: background 0.3s, transform 0.3s;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    padding-bottom: 400px;
-    padding-left: 100px;
-    padding-right: 100px;
-}
-#pilot:hover {
-    background: url('/backgrounds/pilot-background.jpg') no-repeat center center fixed;
-    background-size: cover;
-}
-
-#team:hover {
-    background: url('/backgrounds/team-background.jpg') no-repeat center center fixed;
-    background-size: cover;
+    width: 250px; /* Increased width */
+    height: 150px; /* Increased height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-#circuit:hover {
-    background: url('/backgrounds/circuit-background.jpg') no-repeat center center fixed;
-    background-size: cover;
+.gamemode::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    transition: background 0.3s;
 }
 
-#career:hover {
-    background: url('/backgrounds/career-background.jpg') no-repeat center center fixed;
-    background-size: cover;
+.gamemode:hover::before {
+    background: rgba(0, 0, 0, 0);
 }
 
 .gamemode:hover {
-    background: rgba(34, 28, 28, 0.2);
-    transform: scale(1.05);
+    transform: scale(1.2);
     color: #ffcc00;
+    z-index: 2;
+}
+
+.gamemode:not(:hover) {
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.gamemode#pilot:hover {
+    background-image: url('/backgrounds/max-verstappen-background.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.gamemode#team:hover {
+    background-image: url('/backgrounds/ferrari-team-background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.gamemode#career:hover {
+    background-image: url('/backgrounds/flag-career-background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.gamemode#circuit:hover {
+    background-image: url('/backgrounds/circuit-background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

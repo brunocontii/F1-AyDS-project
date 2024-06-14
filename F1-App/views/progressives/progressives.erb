@@ -24,7 +24,7 @@
                     <span><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
                 <div class="profile">
-                    <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <img src=<%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                     <div id="profile-menu" class="profile-menu">
                         <a href="/profile">Profile</a>
                         <a href="/logout">Log out</a>
