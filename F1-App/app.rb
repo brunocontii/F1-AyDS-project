@@ -203,7 +203,8 @@ class App < Sinatra::Application
             redirect '/gamemodes'
         end
 
-        @options = @question.options
+        # ordenamos las opciones de manera random
+        @options = @question.options.to_a.shuffle
 
         feedback_message = session.delete(:message)
         feedback_color = session.delete(:color)
@@ -212,57 +213,58 @@ class App < Sinatra::Application
         erb :'questions/questions', locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message, feedback_color: feedback_color }
     end
 
-    # metodo para manejar la solicitud POST de un tema del modo progresivo
     def handle_progressive_mode_submission(mode)
         # obtenemos el usuario actual de la sesion
         @current_user = User.find_by(username: session[:username]) if session[:username]
-
-        if params[:timeout] == 'true'
-            # cuando se acabo el tiempo para responder una pregunta
-            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-            # si al acabarse el tiempo se queda sin vidas
-            if @current_user.cant_life == 0
-                session[:message] = "You have 0 lives. Please wait for lives to regenerate."
-                session[:color] = "red"
-                redirect '/gamemodes'
-                return
-            else
-                # sino sigue respondiendo preguntas
-                session[:message] = "Time's up! Incorrect!"
-                session[:color] = "red"
-            end
-        else
-            # si logra responder antes de que se le acaba el tiempo
-            @option = Option.find(params[:option_id].to_i)
-            # aprovechamos la relacion de questions y options
-            @question = @option.question
-
-            # si la respuesta es correcta gana monedas
-            if @option.correct
-                Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-                @current_user.increment!(:cant_coins, 10)
-                session[:message] = "Correct! Well done."
-                session[:color] = "green"
-            else
-                # sino pierde vidas
+    
+        if @current_user.can_play?
+            if params[:timeout] == 'true'
                 @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+    
                 if @current_user.cant_life == 0
                     session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                     session[:color] = "red"
                     redirect '/gamemodes'
                     return
                 else
-                    session[:message] = "Incorrect!"
+                    session[:message] = "Time's up! Incorrect!"
                     session[:color] = "red"
                 end
+            else
+                @option = Option.find(params[:option_id].to_i)
+                @question = @option.question
+    
+                if @option.correct
+                    Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+                    @current_user.increment!(:cant_coins, 10)
+                    session[:message] = "Correct! Well done."
+                    session[:color] = "green"
+                else
+                    @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+    
+                    if @current_user.cant_life == 0
+                        session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+                        session[:color] = "red"
+                        redirect '/gamemodes'
+                        return
+                    else
+                        session[:message] = "Incorrect!"
+                        session[:color] = "red"
+                    end
+                end
+    
+                session[:answered_questions] ||= []
+                session[:answered_questions] << @question.id
             end
-
-            session[:answered_questions] ||= []
-            session[:answered_questions] << @question.id
+    
+            redirect "/gamemodes/progressive/#{mode}"
+        else
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+            session[:color] = "red"
+            redirect '/gamemodes'
         end
-
-        redirect "/gamemodes/progressive/#{mode}"
     end
+    
 
     post '/use_extra_time' do
         content_type :json
@@ -272,8 +274,8 @@ class App < Sinatra::Application
         user_id = params['user_id']
         @current_user = User.find(user_id)
     
-        if @current_user.cant_coins >= 50
-            @current_user.update(cant_coins: @current_user.cant_coins - 50)
+        if @current_user.cant_coins >= 75
+            @current_user.update(cant_coins: @current_user.cant_coins - 75)
             { status: 'success' }.to_json
         else
             halt 400, { error: 'Not enough coins' }.to_json
@@ -291,8 +293,8 @@ class App < Sinatra::Application
         question = Question.find(question_id)
         options = question.options
       
-        if @current_user.cant_coins >= 50
-          @current_user.update(cant_coins: @current_user.cant_coins - 50)
+        if @current_user.cant_coins >= 150
+          @current_user.update(cant_coins: @current_user.cant_coins - 150)
       
           # Seleccionar 2 opciones incorrectas al azar
           incorrect_options = options.reject { |option| option.correct }.sample(2)

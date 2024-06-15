@@ -20,13 +20,13 @@
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" name="name" required>
+                        <input type="text" name="name" required pattern="[A-Za-z\s]+" title="Name must only contain letters and spaces">
                         <label for="name">Name</label>
                     </div>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" name="lastname" required>
+                        <input type="text" name="lastname" required pattern="[A-Za-z\s]+" title="Lastname must only contain letters and spaces">
                         <label for="lastname">Last Name</label>
                     </div>
 
@@ -38,7 +38,7 @@
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-calendar"></i>
-                        <input type="number" name="age" required>
+                        <input type="number" name="age" required min="0">
                         <label for="age">Age</label>
                     </div>
 
