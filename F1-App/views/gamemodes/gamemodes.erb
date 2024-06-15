@@ -39,7 +39,11 @@
                     <span id="lives-count"><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
                 <div class="profile">
-                    <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <% if current_user.profile %>
+                        <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <% else %>
+                        No profile picture available
+                    <% end %>
                     <div id="profile-menu" class="profile-menu">
                         <a href="/profile">Profile</a>
                         <a href="/logout">Log out</a>
