@@ -11,6 +11,7 @@
             const timerElement = document.getElementById('timer-bar');
             const formElement = document.getElementById('question-form');
             const extraTimeButton = document.getElementById('extra-time-button');
+            const fiftyFiftyButton = document.getElementById('fifty-fifty-button');
 
             const countdown = setInterval(() => {
                 timeLeft -= 1;
@@ -60,6 +61,34 @@
                         }
                     }).catch(error => {
                         alert('Failed to use extra time: ' + error.message);
+                    });
+                }
+            });
+
+            fiftyFiftyButton.addEventListener('click', () => {
+                if (<%= @current_user.cant_coins %> >= 50) {
+                    fetch('/use_50_50', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ user_id: <%= @current_user.id %>, question_id: <%= @question.id %> })
+                    }).then(response => {
+                        if (response.ok) {
+                            response.json().then(data => {
+                                data.removed_options.forEach(optionId => {
+                                    document.getElementById(`option_${optionId}`).parentNode.style.display = 'none';
+                                });
+                                fiftyFiftyButton.disabled = true;
+                                document.querySelector('.currency span').textContent -= 50;
+                            });
+                        } else {
+                            response.json().then(data => {
+                                alert('Error: ' + data.error);
+                            });
+                        }
+                    }).catch(error => {
+                        alert('Failed to use 50-50: ' + error.message);
                     });
                 }
             });
@@ -127,8 +156,15 @@
                         <button type="submit" class="submit-button">Check Answer</button>
                     </form>
                 </div>
-                <div id="wildcards-container">
+            </div>
+            <div id="wildcards-container">
+                <div class="wildcard">
                     <button id="extra-time-button" class="wildcard-button" title="Use Extra Time (50 coins)"></button>
+                    <p class="wildcard-title">Extra Time</p>
+                </div>
+                <div class="wildcard">
+                    <button id="fifty-fifty-button" class="wildcard-button" title="Use 50-50 (50 coins)"></button>
+                    <p class="wildcard-title">50-50</p>
                 </div>
             </div>
         <% end %>
@@ -142,4 +178,3 @@
 </script>
 </body>
 </html>
-        

@@ -195,7 +195,7 @@ class App < Sinatra::Application
 
         # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
         # que no haya sido respondida todavia
-        @question = Question.where(theme: mode).where.not(id: session[:answered_questions] + answered_by_user_ids).order('RANDOM()').first
+        @question = Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
 
         if @question.nil?
             session[:message] = "¡Congratulations, you finished this theme!"
@@ -279,6 +279,31 @@ class App < Sinatra::Application
             halt 400, { error: 'Not enough coins' }.to_json
         end
     end
+
+    post '/use_50_50' do
+        content_type :json
+        request_body = request.body.read
+        params = JSON.parse(request_body)
+      
+        user_id = params['user_id']
+        question_id = params['question_id']
+        @current_user = User.find(user_id)
+        question = Question.find(question_id)
+        options = question.options
+      
+        if @current_user.cant_coins >= 50
+          @current_user.update(cant_coins: @current_user.cant_coins - 50)
+      
+          # Seleccionar 2 opciones incorrectas al azar
+          incorrect_options = options.reject { |option| option.correct }.sample(2)
+          incorrect_option_ids = incorrect_options.map(&:id)
+      
+          { status: 'success', removed_options: incorrect_option_ids }.to_json
+        else
+          halt 400, { error: 'Not enough coins' }.to_json
+        end
+      end
+      
 
     # Modo Free
     get '/gamemodes/free' do
