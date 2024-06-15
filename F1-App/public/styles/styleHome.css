@@ -3,10 +3,6 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-image: url(/backgrounds/f1.gif);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -61,6 +57,7 @@ main {
     align-items: center;
     text-align: center;
     padding: 40px;
+    position: relative; /* Importante para el video de fondo */
 }
 
 .welcome-message {
@@ -104,4 +101,14 @@ footer {
 
 footer p {
     margin: 0;
+}
+
+video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Asegura que el video esté detrás de todo */
 }

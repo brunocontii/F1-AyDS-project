@@ -57,10 +57,30 @@ nav ul li a:hover {
 main {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 40px;
+}
+
+#contenedor-instructions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    max-height: 575px;
+    margin: 20px 0;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 20px 0;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .instructions {
@@ -75,17 +95,19 @@ main {
     max-height: 70vh;
 }
 
-.instructions h1 {
-    font-size: 48px;
-    margin: 0 0 20px;
-    font-weight: 700;
-    text-transform: uppercase;
+#pInside {
+    font-size: 21px;
+    margin: 10px 0;
+    line-height: 1.5;
+    max-width: 400px;
+    text-align: left;
 }
 
 .instructions p {
-    font-size: 18px;
+    font-size: 21px;
     margin: 10px 0;
     line-height: 1.5;
+    text-align: left;
 }
 
 .instructions ul {
@@ -94,7 +116,7 @@ main {
 }
 
 .instructions ul li {
-    font-size: 18px;
+    font-size: 21px;
     line-height: 1.5;
 }
 
