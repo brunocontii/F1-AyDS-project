@@ -49,11 +49,14 @@ nav ul li a {
     border-bottom: 2px solid transparent;
 }
 
-nav ul li a:hover {
+#back:hover {
     color: #ffcc00;
     border-bottom: 2px solid #ffcc00;
 }
 
+#same:hover {
+    cursor: default;
+}
 
 main {
     text-align: center;
