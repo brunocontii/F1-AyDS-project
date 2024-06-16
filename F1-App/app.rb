@@ -8,12 +8,7 @@ set :public_folder, File.dirname(__FILE__) + '/public'
 require './models/user'
 require './models/profile'
 require './models/gamemode'
-require './models/free'
-require './models/progressive'
 require './models/answer'
-require './models/reply'
-require './models/buy'
-require './models/wildcard'
 require './models/option'
 require './models/question'
 
@@ -39,21 +34,21 @@ class App < Sinatra::Application
     before do
         # apenas entras se pueden a estas 5 rutas nada mas.
         pass if request.path_info == '/' || request.path_info == '/login' || request.path_info == '/register' || request.path_info == '/how-to-play' || request.path_info == '/team'
-        # pedirigir al inicio si no hay usuario en la sesión , ni gamemodes ni progressive nada xq hay siempre un usuario en la sesion
+        # redirigir al inicio si no hay usuario en la sesión , ni gamemodes ni progressive nada xq hay siempre un usuario en la sesion.
         redirect '/' unless session[:username]
     end
 
-    # pagina apenas entras a la app
+    # pagina apenas entras a la app.
     get '/' do
         erb :'home/home'
     end
 
-    # get de logueo
+    # get de logueo.
     get '/login' do
         erb :'login/login'
     end
 
-    # post para loguearse que pedimos el usuario y contraseña
+    # post para loguearse que pedimos el usuario y contraseña.
     post '/login' do
         username = params[:username]
         password = params[:password]
@@ -68,13 +63,8 @@ class App < Sinatra::Application
             erb :'login/login'
         end
     end
-    # VER SI LO SACAMOS
-    # era para ver cuales guardabamos nomas.
-    get '/users' do
-        @users = User.all
-        erb :'users/users'
-    end
-    #
+
+    # get de registro para mostrar el formulario. 
     get '/register' do
         # lista de todas las fotos que se encuentran dentro de public/profile_pictures
         @profile_pictures = Dir.glob("public/profile_pictures/*").map{ |path| path.split('/').last }
@@ -107,7 +97,6 @@ class App < Sinatra::Application
         end
     end
 
-    # ver para que sirve
     get '/logout' do
         session.clear
         redirect '/'
