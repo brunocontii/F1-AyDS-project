@@ -7,6 +7,20 @@
     <title>Mode Progressive</title>
     <link rel="icon" href="/icons/icon-1-50.png">
     <link rel="stylesheet" href="/styles/styleModeProgressive.css">
+    <script>
+        $(document).ready(function() {
+            function updateLives() {
+                $.get('/gamemodes', function(data) {
+                    console.log(data);
+                    $('#lives-count').text(data.lives);
+                });
+            }
+
+            setInterval(updateLives, 20000);
+
+            updateLives();
+        });
+    </script>
 </head>
 <body>
     <header>

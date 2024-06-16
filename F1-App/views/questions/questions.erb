@@ -6,6 +6,20 @@
     <link rel="stylesheet" href="/styles/styleTheme.css">
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
     <script>
+        $(document).ready(function() {
+            function updateLives() {
+                $.get('/gamemodes', function(data) {
+                    console.log(data);
+                    $('#lives-count').text(data.lives);
+                });
+            }
+
+            setInterval(updateLives, 20000);
+
+            updateLives();
+        });
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             let timeLeft = 20;
             let extraTimeUsed = false;

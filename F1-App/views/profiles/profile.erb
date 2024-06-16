@@ -6,6 +6,20 @@
     <link rel="stylesheet" href="/styles/styleProfile.css">
     <link rel="icon" href='/icons/icon-1-50.png'>
     <title>Profile</title>
+    <script>
+        $(document).ready(function() {
+            function updateLives() {
+                $.get('/gamemodes', function(data) {
+                    console.log(data);
+                    $('#lives-count').text(data.lives);
+                });
+            }
+
+            setInterval(updateLives, 20000);
+
+            updateLives();
+        });
+    </script>
 </head>
 <body>
     <header>
