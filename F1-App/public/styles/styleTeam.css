@@ -58,6 +58,12 @@ nav ul li a {
     cursor: default;
 }
 
+.back-arrow {
+    color: #fff;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
 main {
     text-align: center;
     padding: 50px;

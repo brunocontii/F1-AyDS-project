@@ -24,10 +24,12 @@ header {
 }
 
 .left .menu-item {
-    color: #fff;
+    color: #ffffff;
     text-decoration: none;
-    font-size: 1.2rem;
-    transition: color 0.3s;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
 }
 
 .left .menu-item:hover {
