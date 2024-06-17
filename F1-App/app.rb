@@ -64,7 +64,7 @@ class App < Sinatra::Application
         end
     end
 
-    # get de registro para mostrar el formulario. 
+    # get de registro para mostrar el formulario.
     get '/register' do
         # lista de todas las fotos que se encuentran dentro de public/profile_pictures
         @profile_pictures = Dir.glob("public/profile_pictures/*").map{ |path| path.split('/').last }
@@ -115,19 +115,20 @@ class App < Sinatra::Application
     get '/profile' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
 
-        # recupero el usuario y traigo el perfil a @profile
-        @profile = @current_user.profile
-
-        @profile = @current_user.profile if @current_user
-        @countPi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count
-        @countCi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count
-        @countCa = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count
-        @countTe = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count
-
-        @countTotal = (Answer.where(user_id: @current_user.id).count*100)/Question.count
-
-        erb :'profiles/profile', locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe, countTotal: @countTotal }
-
+        if request.xhr?
+          content_type :json
+          {lives: @current_user.cant_life}.to_json
+        else
+            # recupero el usuario y traigo el perfil a @profile
+            @profile = @current_user.profile
+            @profile = @current_user.profile if @current_user
+            @countPi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count
+            @countCi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count
+            @countCa = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count
+            @countTe = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count
+            @countTotal = (Answer.where(user_id: @current_user.id).count*100)/Question.count
+            erb :'profiles/profile', locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe, countTotal: @countTotal }
+        end
     end
 
     post '/profile/picture' do
@@ -151,7 +152,12 @@ class App < Sinatra::Application
 
     get '/gamemodes/progressive' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        erb :'progressives/progressives' , locals: { current_user: @current_user }
+        if request.xhr?
+          content_type :json
+          {lives: @current_user.cant_life}.to_json
+        else
+            erb :'progressives/progressives' , locals: { current_user: @current_user }
+        end
     end
 
     # generalizacion de las rutas del modo de juego progresivo
@@ -205,11 +211,11 @@ class App < Sinatra::Application
     def handle_progressive_mode_submission(mode)
         # obtenemos el usuario actual de la sesion
         @current_user = User.find_by(username: session[:username]) if session[:username]
-    
+
         if @current_user.can_play?
             if params[:timeout] == 'true'
                 @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-    
+
                 if @current_user.cant_life == 0
                     session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                     session[:color] = "red"
@@ -222,7 +228,7 @@ class App < Sinatra::Application
             else
                 @option = Option.find(params[:option_id].to_i)
                 @question = @option.question
-    
+
                 if @option.correct
                     Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
                     @current_user.increment!(:cant_coins, 10)
@@ -230,7 +236,7 @@ class App < Sinatra::Application
                     session[:color] = "green"
                 else
                     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-    
+
                     if @current_user.cant_life == 0
                         session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                         session[:color] = "red"
@@ -241,11 +247,11 @@ class App < Sinatra::Application
                         session[:color] = "red"
                     end
                 end
-    
+
                 session[:answered_questions] ||= []
                 session[:answered_questions] << @question.id
             end
-    
+
             redirect "/gamemodes/progressive/#{mode}"
         else
             session[:message] = "You have 0 lives. Please wait for lives to regenerate."
@@ -253,16 +259,16 @@ class App < Sinatra::Application
             redirect '/gamemodes'
         end
     end
-    
+
 
     post '/use_extra_time' do
         content_type :json
         request_body = request.body.read
         params = JSON.parse(request_body)
-    
+
         user_id = params['user_id']
         @current_user = User.find(user_id)
-    
+
         if @current_user.cant_coins >= 75
             @current_user.update(cant_coins: @current_user.cant_coins - 75)
             { status: 'success' }.to_json
@@ -275,26 +281,26 @@ class App < Sinatra::Application
         content_type :json
         request_body = request.body.read
         params = JSON.parse(request_body)
-      
+
         user_id = params['user_id']
         question_id = params['question_id']
         @current_user = User.find(user_id)
         question = Question.find(question_id)
         options = question.options
-      
+
         if @current_user.cant_coins >= 150
           @current_user.update(cant_coins: @current_user.cant_coins - 150)
-      
+
           # Seleccionar 2 opciones incorrectas al azar
           incorrect_options = options.reject { |option| option.correct }.sample(2)
           incorrect_option_ids = incorrect_options.map(&:id)
-      
+
           { status: 'success', removed_options: incorrect_option_ids }.to_json
         else
           halt 400, { error: 'Not enough coins' }.to_json
         end
       end
-      
+
 
     # Modo Free
     get '/gamemodes/free' do

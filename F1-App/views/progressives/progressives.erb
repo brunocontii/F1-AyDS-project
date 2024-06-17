@@ -7,10 +7,11 @@
     <title>Mode Progressive</title>
     <link rel="icon" href="/icons/icon-1-50.png">
     <link rel="stylesheet" href="/styles/styleModeProgressive.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             function updateLives() {
-                $.get('/gamemodes', function(data) {
+                $.get('/gamemodes/progressive', function(data) {
                     console.log(data);
                     $('#lives-count').text(data.lives);
                 });
@@ -35,7 +36,7 @@
                 </div>
                 <div class="lives">
                     <img src="/icons/heart.png" alt="Vidas" class="icon">
-                    <span><%=@current_user ? @current_user.cant_life : 0%></span>
+                    <span id="lives-count"><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
                 <div class="profile">
                     <img src=<%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
