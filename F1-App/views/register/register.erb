@@ -20,13 +20,13 @@
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" name="name" required pattern="[A-Za-z\s]+" title="Name must only contain letters and spaces">
+                        <input type="text" name="name" required onkeypress="return checkInput(event)">
                         <label for="name">Name</label>
                     </div>
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" name="lastname" required pattern="[A-Za-z\s]+" title="Lastname must only contain letters and spaces">
+                        <input type="text" name="lastname" required onkeypress="return checkInput(event)">
                         <label for="lastname">Last Name</label>
                     </div>
 
@@ -38,7 +38,7 @@
 
                     <div class="input-contenedor">
                         <i class="fa-solid fa-calendar"></i>
-                        <input type="number" name="age" required min="0">
+                        <input type="number" name="age" required onkeydown="return isNumberKey(event)">
                         <label for="age">Age</label>
                     </div>
 
@@ -119,6 +119,22 @@
                 }, 5000);
             }
         };
+
+        function checkInput(event) {
+            var char = String.fromCharCode(event.which);
+            if (!char.match(/^[A-Za-z\s]+$/)) {
+                event.preventDefault();
+            }
+        }
+
+        function isNumberKey(event) {
+            var charCode = (event.which) ? event.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
     </script>
 </body>
 </html>
