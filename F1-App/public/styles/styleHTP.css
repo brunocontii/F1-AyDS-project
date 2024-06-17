@@ -3,7 +3,7 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background-image: url('/backgrounds/background-HTP.png');
+    background-image: url('/backgrounds/317664.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -97,7 +97,7 @@ h1 {
     background-color: rgba(0, 0, 0, 0.4);
     padding: 40px;
     border-radius: 15px;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     max-width: 800px;
     margin: 0 20px;
@@ -123,7 +123,7 @@ h1 {
 #lastP {
     font-size: 25px;
     text-align: center;
-    color: coral;
+    color: goldenrod;
 }
 
 .instructions ul {

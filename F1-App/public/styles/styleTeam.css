@@ -8,7 +8,7 @@
 }
 
 body {
-    background: url('/backgrounds/background-team.jpg') no-repeat center center fixed;
+    background: url('/backgrounds/team-background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
 }
@@ -75,16 +75,6 @@ main h1 {
     text-shadow: 2px 2px 4px #000;
 }
 
-.project-description {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px 2px #000;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 30px;
-}
-
 footer {
     position: fixed;
     bottom: 0;
@@ -108,7 +98,7 @@ footer p {
 .gamemodes {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .gamemode {
@@ -161,4 +151,30 @@ footer p {
 .gamemode img {
     width: 100%;
     height: auto;
+}
+
+.email {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 50px;
+    padding: 20px 40px;
+    margin: 0 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.4rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.info img {
+    filter: brightness(4);
+}
+
+.email a {
+    color: white;
+    text-decoration: none;
 }
