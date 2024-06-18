@@ -5,6 +5,7 @@
     <link rel="icon" href="/icons/icon-1-50.png">
     <link rel="stylesheet" href="/styles/styleTheme.css">
     <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             function updateLives() {
@@ -81,7 +82,7 @@
             });
 
             fiftyFiftyButton.addEventListener('click', () => {
-                if (<%= @current_user.cant_coins %> >= 75) {
+                if (<%= @current_user.cant_coins %> >= 150) {
                     fetch('/use_50_50', {
                         method: 'POST',
                         headers: {
@@ -123,7 +124,7 @@
             </div>
             <div class="lives">
                 <img src="/icons/heart.png" alt="Vidas" class="icon">
-                <span><%= @current_user ? @current_user.cant_life : 0 %></span>
+                <span id="lives-count"><%= @current_user ? @current_user.cant_life : 0 %></span>
             </div>
             <div class="profile">
                 <img src="<%= @current_user.profile.profile_picture %>" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
@@ -171,15 +172,15 @@
                         <button type="submit" class="submit-button">Check Answer</button>
                     </form>
                 </div>
-            </div>
-            <div id="wildcards-container">
-                <div class="wildcard">
-                    <button id="extra-time-button" class="wildcard-button" title="Use Extra Time (75 coins)"></button>
-                    <p class="wildcard-title">Extra Time</p>
-                </div>
-                <div class="wildcard">
-                    <button id="fifty-fifty-button" class="wildcard-button" title="Use 50-50 (150 coins)"></button>
-                    <p class="wildcard-title">50-50</p>
+                <div id="wildcards-container">
+                    <div class="wildcard">
+                        <button id="extra-time-button" class="wildcard-button" title="Use Extra Time (75 coins)" style="background-image: url('/icons/clock.png');"></button>
+                        <p class="wildcard-title">Extra Time</p>
+                    </div>
+                    <div class="wildcard">
+                        <button id="fifty-fifty-button" class="wildcard-button" title="Use 50-50 (150 coins)" style="background-image: url('/icons/borrar.png');"></button>
+                        <p class="wildcard-title">50-50</p>
+                    </div>
                 </div>
             </div>
         <% end %>

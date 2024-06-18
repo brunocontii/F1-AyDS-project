@@ -220,6 +220,7 @@ main {
     gap: 20px;
     margin-top: 70px;
     margin-right: 20px;
+    margin-left: 40px;
     margin-bottom: 20px;
 }
 
@@ -239,6 +240,10 @@ main {
     cursor: pointer;
     transition: transform 0.3s, background-color 0.3s;
 }
+
+.wildcard-button {
+    transform: scale(1.2);
+  }
 
 .wildcard-button:hover {
     transform: scale(1.1);
@@ -264,7 +269,7 @@ main {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 5px 10px;
-    margin-top: -5px;
+    margin-top: 5px;
     border-radius: 5px;
     text-align: center;
     width: 100%;
