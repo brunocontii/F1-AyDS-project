@@ -576,7 +576,7 @@ options = [
     {name_option: 'The race has benn suspended', question_id: 83, correct: false},
     {name_option: 'Mechanical problem in the car, must return to the pits', question_id: 83, correct: true},
     {name_option: 'Penalty for dangerous driving', question_id: 83, correct: false},
-    {name_option: 'The race has been suspended', question_id: 83, correct: false},
+    {name_option: 'Return all drivers to the pits', question_id: 83, correct: false},
 
     {name_option: 'Warns drivers of engine failure', question_id: 84, correct: false},
     {name_option: 'Indicates to drivers to enter the pit to refuel', question_id: 84, correct: false},
