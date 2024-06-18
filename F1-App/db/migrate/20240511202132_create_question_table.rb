@@ -4,7 +4,6 @@ class CreateQuestionTable < ActiveRecord::Migration[7.1]
       t.string :name_question
       t.string :level
       t.string :theme
-      t.references :wildcard, foreign_key: true
 
       t.datetime :created_at
       t.datetime :updated_at

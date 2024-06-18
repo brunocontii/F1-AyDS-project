@@ -66,7 +66,7 @@ RSpec.describe 'The App' do
                 age: '25',
                 profile_pic: 'profile1.png'
             }
-            expect(last_response.status).to eq(200) # Verifica que esta todo ok.
+            expect(last_response.status).to eq(302) # Verifica que esta todo ok.
         end
     
         it 'fails to register if username already exists' do

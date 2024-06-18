@@ -1,7 +1,7 @@
 users = [
     {username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 20},
     {username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100},
-    {username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 90000},
+    {username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100},
     {username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80},
 ]
 
@@ -130,17 +130,18 @@ questions = [
     {name_question: 'How are drivers and teams rewarded according to their performance in the Formula 1 race?', level: 'normal', theme: 'career' },
     {name_question: 'How many points does the driver who achieves the fastest lap in a race receive?', level: 'easy', theme: 'career' },
     {name_question: 'How many drivers receive points at the end of each race?', level: 'difficult', theme: 'career' },
-    {name_question: 'How are drivers and teams rewarded according to their performance in the Formula 1 race?', level: 'normal', theme: 'career' },
+    {name_question: 'In what year was the first race in F1 history??', level: 'normal', theme: 'career' },
     {name_question: 'What technical regulations govern car specifications in Formula 1?', level: 'difficult', theme: 'career' },
     {name_question: 'What do drivers have to do at the end of a race?', level: 'impossible', theme: 'career' },
-    {name_question: 'Que sucede si un piloto ignora tres banderas azules consecutivas?', level: 'difficult', theme: 'career' },
+    {name_question: 'What happens if a driver ignores three consecutive blue flags?', level: 'difficult', theme: 'career' },
+
     {name_question: 'Which driver is joining Ferrari in 2025?', level: 'easy', theme: 'free' },
     {name_question: 'How do you win the drivers championship at the end of the world championship?', level: 'easy', theme: 'free' },
     {name_question: 'Which driver is leaving Ferrari this year (2024)?', level: 'normal', theme: 'free' },
     {name_question: 'Who was the pilot of Mercedes in 2022 accompanying Lewis Hamilton?', level: 'normal', theme: 'free' },
-    {name_question: 'Which team has the most Constructors Championships in F1 history?', level: 'difficult', theme: 'free' },
     {name_question: 'What type of garment has to be fireproof according to the FIA regulations?', level: 'difficult', theme: 'free' },
-    {name_question: 'In what year were hybrid engines introduced in F1?', level: 'impossible', theme: 'free' }
+    {name_question: 'Which team has the most Constructors Championships in F1 history?', level: 'difficult', theme: 'free' },    
+    {name_question: 'In what year were hybrid engines introduced in F1?', level: 'impossible', theme: 'free' },
     {name_question: 'What are drivers prohibited from using during a race?', level: 'impossible', theme: 'free' }
 
 ]
@@ -642,10 +643,10 @@ options = [
     {name_option: 'The first 8 pilots', question_id: 96, correct: false},
     {name_option: 'All drivers who finish the race', question_id: 96, correct: false},
 
-    {name_option: 'By the maximum speed reached', question_id: 97, correct: false},
-    {name_option: 'By the amount of progress', question_id: 97, correct: true},
-    {name_option: 'For the total race time', question_id: 97, correct: false},
-    {name_option: 'By the specific scoring system', question_id: 97, correct: false},
+    {name_option: '1965', question_id: 97, correct: false},
+    {name_option: '1950', question_id: 97, correct: true},
+    {name_option: '1955', question_id: 97, correct: false},
+    {name_option: '1953', question_id: 97, correct: false},
 
     {name_option: 'Satefy regulations', question_id: 98, correct: false},
     {name_option: 'Race rules', question_id: 98, correct: false},
