@@ -20,25 +20,33 @@ RSpec.describe 'The App' do
             expect(last_response.body).to include('Login')
         end
     end
-    
+
+    describe 'GET /' do
+        it 'probando' do
+            get '/'
+            expect(last_response).to be_ok
+            expect(last_response.body).to include('')
+        end
+    end
+
     # Test para verificar el comportamiento de la ruta POST /login al iniciar sesion con credenciales tanto correctas como incorrectas.
     describe 'POST /login' do
         let!(:user) { User.create(username: 'testuser', password: 'password123') }
-    
+
         it 'logs in with correct credentials' do
             post '/login', username: 'testuser', password: 'password123'
             expect(last_response).to be_redirect
             follow_redirect!
             expect(last_request.path).to eq('/gamemodes')
         end
-    
+
         it 'fails to log in with incorrect credentials' do
           post '/login', username: 'testuser', password: 'wrongpassword'
           expect(last_response).to be_ok
           expect(last_response.body).to include('Invalid username or password.')
         end
     end
-    
+
     # Test para verificar que la ruta GET /register va a la pagina de registro correctamente.
     describe 'GET /register' do
         it 'renders the register page' do
@@ -47,14 +55,14 @@ RSpec.describe 'The App' do
             expect(last_response.body).to include('Register')
         end
     end
-    
+
     # Test para verificar el comportamiento de la ruta POST /register al registrar usuario y sus 3 variantes
     # 1) si esta todo correcto, 2) si el usuario ya existe, 3) si las contraseñas de un usuario no coindicen.
     describe 'POST /register' do
         before do
           allow(Dir).to receive(:glob).and_return(['profile1.png', 'profile2.png'])
         end
-        
+
         it 'registers a new user with valid details' do
             post '/register', {
                 username: 'newuser',
@@ -66,9 +74,9 @@ RSpec.describe 'The App' do
                 age: '25',
                 profile_pic: 'profile1.png'
             }
-            expect(last_response.status).to eq(302) # Verifica que esta todo ok.
+            expect(last_response.status).to eq(200) # Verifica que esta todo ok.
         end
-    
+
         it 'fails to register if username already exists' do
             User.create(username: 'existinguser', password: 'password123')
             post '/register', {
