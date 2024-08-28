@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/spec/login-and-register_spec.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/spec/login-and-register_spec.rb": {
         "lines": [
           1,
           null,
@@ -114,10 +114,53 @@
           null,
           null,
           null,
+          null,
+          null,
+          1,
+          6,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          null,
           null
         ]
       },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/app.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/app.rb": {
         "lines": [
           1,
           1,
@@ -551,7 +594,7 @@
           null
         ]
       },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/models/user.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/user.rb": {
         "lines": [
           1,
           1,
@@ -560,59 +603,46 @@
           null,
           1,
           1,
-          1,
+          6,
           null,
           null,
-          0,
+          5,
           null,
-          0,
+          5,
           null,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
-          null,
-          0,
+          3,
+          3,
           null,
           null,
-          null,
+          3,
+          2,
           null,
           1,
-          0,
-          0,
+          null,
+          null,
+          null,
+          5,
+          2,
+          null,
+          null,
+          null,
+          null,
+          1,
+          2,
+          2,
           null,
           null,
           null
         ]
       },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/models/profile.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/profile.rb": {
         "lines": [
           1,
           1,
           null
         ]
       },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/models/gamemode.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/models/answer.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/models/option.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/gamemode.rb": {
         "lines": [
           1,
           1,
@@ -620,7 +650,25 @@
           null
         ]
       },
-      "/home/erich/Universidad/F1-AyDS-project/F1-App/models/question.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/answer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/option.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/question.rb": {
         "lines": [
           1,
           1,
@@ -631,6 +679,6 @@
         ]
       }
     },
-    "timestamp": 1724772814
+    "timestamp": 1724804568
   }
 }

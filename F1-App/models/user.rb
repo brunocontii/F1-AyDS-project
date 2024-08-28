@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
     REGENERATION_INTERVAL = 60.seconds
     def regenerate_life_if_needed
         return unless last_life_lost_at
-    
+
         # Calcular el numero de vidas que pueden regenerarse
         lives_to_regenerate = ((Time.now - last_life_lost_at) / REGENERATION_INTERVAL).floor
-    
+
         if cant_life < 3 && lives_to_regenerate > 0
             # Regenerar vidas sin exceder el maximo de 3
             new_life_count = [cant_life + lives_to_regenerate, 3].min
@@ -22,6 +22,11 @@ class User < ActiveRecord::Base
                 update(last_life_lost_at: nil)
             end
         end
+
+        if cant_life == 3
+            update(last_life_lost_at: nil)
+        end
+
     end
 
     def can_play?
