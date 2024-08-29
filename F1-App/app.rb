@@ -116,8 +116,8 @@ class App < Sinatra::Application
         @current_user = User.find_by(username: session[:username]) if session[:username]
 
         if request.xhr?
-          content_type :json
-          {lives: @current_user.cant_life}.to_json
+            content_type :json
+            {lives: @current_user.cant_life}.to_json
         else
             # recupero el usuario y traigo el perfil a @profile
             @profile = @current_user.profile
@@ -153,8 +153,8 @@ class App < Sinatra::Application
     get '/gamemodes/progressive' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
         if request.xhr?
-          content_type :json
-          {lives: @current_user.cant_life}.to_json
+            content_type :json
+            {lives: @current_user.cant_life}.to_json
         else
             erb :'progressives/progressives' , locals: { current_user: @current_user }
         end
@@ -287,15 +287,15 @@ class App < Sinatra::Application
         options = question.options
 
         if @current_user.cant_coins >= 150
-          @current_user.update(cant_coins: @current_user.cant_coins - 150)
+            @current_user.update(cant_coins: @current_user.cant_coins - 150)
 
-          # Seleccionar 2 opciones incorrectas al azar
-          incorrect_options = options.reject { |option| option.correct }.sample(2)
-          incorrect_option_ids = incorrect_options.map(&:id)
+            # Seleccionar 2 opciones incorrectas al azar
+            incorrect_options = options.reject { |option| option.correct }.sample(2)
+            incorrect_option_ids = incorrect_options.map(&:id)
 
-          { status: 'success', removed_options: incorrect_option_ids }.to_json
+            { status: 'success', removed_options: incorrect_option_ids }.to_json
         end
-      end
+    end
 
 
     # Modo Free
@@ -323,20 +323,20 @@ class App < Sinatra::Application
         answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
         # Preguntas que aún no han sido respondidas en esta dificultad
         unanswered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
-                                 .where.not(id: answered_by_user_ids)
-                                 .order('RANDOM()')
+                                    .where.not(id: answered_by_user_ids)
+                                    .order('RANDOM()')
 
         # Preguntas incorrectamente respondidas (no en las respuestas correctas)
         incorrectly_answered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
-                                           .where.not(id: answered_by_user_ids)
-                                           .where(id: session[:answered_free_questions])
-                                           .order('RANDOM()')
+                                            .where.not(id: answered_by_user_ids)
+                                            .where(id: session[:answered_free_questions])
+                                            .order('RANDOM()')
 
         # Seleccionar la siguiente pregunta
         if unanswered_questions.exists?
-          @question = unanswered_questions.first
+            @question = unanswered_questions.first
         elsif incorrectly_answered_questions.exists?
-          @question = incorrectly_answered_questions.first
+            @question = incorrectly_answered_questions.first
         else
             @question = Question.where(level: session[:free_mode_difficulty])
                                 .order('RANDOM()').first
@@ -359,9 +359,9 @@ class App < Sinatra::Application
                 puts all_questions
 
                 if all_questions.exists?
-                  @question = all_questions.order('RANDOM()').first
-                  puts @question
-                  redirect '/gamemodes'
+                    @question = all_questions.order('RANDOM()').first
+                    puts @question
+                    redirect '/gamemodes'
                 else
                     redirect '/gamemodes'
                     return

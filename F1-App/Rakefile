@@ -1,2 +1,16 @@
 require 'sinatra/activerecord/rake'
 require './app'
+
+namespace :db do
+  desc "Reset test database"
+  task :reset => :environment do
+    Rake::Task["db:drop"].invoke
+    Rake::Task["db:create"].invoke
+    Rake::Task["db:migrate"].invoke
+  end
+
+  desc "Prepare test database"
+  task :prepare do
+    Rake::Task["db:migrate"].invoke
+  end
+end
