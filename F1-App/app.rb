@@ -122,11 +122,11 @@ class App < Sinatra::Application
             # recupero el usuario y traigo el perfil a @profile
             @profile = @current_user.profile
             @profile = @current_user.profile if @current_user
-            @countPi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count
-            @countCi = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count
-            @countCa = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count
-            @countTe = Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count
-            @countTotal = (Answer.where(user_id: @current_user.id).count*100)/Question.count
+            @countPi = Question.where(theme: 'pilot').count > 0 ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count*100/Question.where(theme: 'pilot').count : 0
+            @countCi = Question.where(theme: 'circuit').count > 0 ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count*100/Question.where(theme: 'circuit').count : 0
+            @countCa = Question.where(theme: 'career').count > 0 ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count*100/Question.where(theme: 'career').count : 0
+            @countTe = Question.where(theme: 'team').count > 0 ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count*100/Question.where(theme: 'team').count : 0
+            @countTotal = Question.count > 0 ? (Answer.where(user_id: @current_user.id).count*100)/Question.count : 0
             erb :'profiles/profile', locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe, countTotal: @countTotal }
         end
     end
