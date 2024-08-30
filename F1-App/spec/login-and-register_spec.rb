@@ -140,4 +140,72 @@ RSpec.describe 'The App' do
         end
     end
 
+    describe 'POST /gamemodes/free' do
+        let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 2, cant_coins: 0) }
+        let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
+        let!(:correct_option) { Option.create(name_option:'Correct Answer', correct: true, question: question) }
+        let!(:incorrect_option) { Option.create(name_option:'Incorrect Answer', correct: false, question: question) }
+      
+        before do
+          set_session(username: user.username)
+        end
+      
+        context 'when you dont have more time left' do
+          it 'reduces the users lives and redirects to /gamemodes if lives reaches 0' do
+            user.update(cant_life: 1)
+            post '/gamemodes/free', { timeout: 'true' }
+      
+            expect(user.reload.cant_life).to eq(0)
+            expect(last_response).to be_redirect
+            expect(last_response.location).to include('/gamemodes')
+            expect(get_session[:message]).to eq("You have 0 lives. Please wait for lives to regenerate.")
+            expect(get_session[:color]).to eq("red")
+          end
+      
+          it 'reduces the users lives and continues if lives are still remaining' do
+            post '/gamemodes/free', { timeout: 'true' }
+      
+            expect(user.reload.cant_life).to eq(1)
+            expect(last_response).to be_redirect
+            expect(last_response.location).to include('/gamemodes/free')
+            expect(get_session[:message]).to eq("Time's up! Incorrect!")
+            expect(get_session[:color]).to eq("red")
+          end 
+        end
+      
+        context 'when an incorrect option is selected' do
+          it 'reduces the users lives and redirects if lives reached 0' do
+            user.update(cant_life: 1)
+            post '/gamemodes/free', { option_id: incorrect_option.id }
+      
+            expect(user.reload.cant_life).to eq(0)
+            expect(last_response).to be_redirect
+            expect(last_response.location).to include('/gamemodes')
+            expect(get_session[:message]).to eq("You have 0 lives. Please wait for lives to regenerate.")
+            expect(get_session[:color]).to eq("red")
+          end
+      
+          it 'reduces the users lives and continues if lives are still remaining' do
+            post '/gamemodes/free', { option_id: incorrect_option.id }
+      
+            expect(user.reload.cant_life).to eq(1)
+            expect(last_response).to be_redirect
+            expect(last_response.location).to include('/gamemodes/free')
+            expect(get_session[:message]).to eq("Incorrect!")
+            expect(get_session[:color]).to eq("red")
+          end
+        end
+      
+        context 'when a correct option is selected' do
+          it 'increments the users coins and redirects to /gamemodes/free' do
+            post '/gamemodes/free', { option_id: correct_option.id }
+      
+            expect(user.reload.cant_coins).to eq(10)
+            expect(last_response).to be_redirect
+            expect(last_response.location).to include('/gamemodes/free')
+            expect(get_session[:message]).to eq("Correct! Well done.")
+            expect(get_session[:color]).to eq("green")
+          end
+        end
+      end
 end

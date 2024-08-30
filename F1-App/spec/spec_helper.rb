@@ -19,7 +19,19 @@ SimpleCov.start
 
 require 'database_cleaner-active_record'
 
+module SessionHelper
+  def set_session(username:)
+    env 'rack.session', { username: username }
+  end
+
+  def get_session
+    last_request.env['rack.session']
+  end
+end
+
 RSpec.configure do |config|
+
+  config.include SessionHelper
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

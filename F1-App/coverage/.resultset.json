@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/spec/login-and-register_spec.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/spec/login-and-register_spec.rb": {
         "lines": [
           1,
           null,
@@ -14,7 +14,7 @@
           null,
           1,
           null,
-          11,
+          16,
           null,
           null,
           null,
@@ -136,6 +136,106 @@
           1,
           null,
           null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          6,
+          6,
+          6,
+          6,
+          null,
+          1,
+          5,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
           null,
           1,
           1,
@@ -148,7 +248,7 @@
           null
         ]
       },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/app.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/app.rb": {
         "lines": [
           1,
           1,
@@ -174,20 +274,20 @@
           null,
           null,
           1,
-          14,
-          14,
+          19,
+          19,
           null,
-          14,
-          3,
-          3,
+          19,
+          8,
+          8,
           null,
           null,
           null,
           1,
           null,
-          14,
+          19,
           null,
-          3,
+          8,
           null,
           null,
           null,
@@ -532,57 +632,55 @@
           null,
           null,
           1,
-          0,
+          5,
           null,
-          0,
+          5,
           null,
-          0,
+          2,
           null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
-          0,
+          2,
+          1,
+          1,
+          1,
           null,
           null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
+          1,
+          1,
           null,
           null,
-          0,
-          0,
+          3,
+          3,
+          null,
+          3,
+          1,
+          1,
+          1,
+          1,
+          null,
+          2,
+          2,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          1,
           null,
           null,
-          0,
+          2,
+          2,
+          null,
+          null,
+          3,
           null,
           null,
           null
         ]
       },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/models/user.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/user.rb": {
         "lines": [
           1,
           1,
@@ -591,7 +689,7 @@
           null,
           1,
           1,
-          7,
+          12,
           null,
           null,
           5,
@@ -623,32 +721,14 @@
           null
         ]
       },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/models/profile.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/profile.rb": {
         "lines": [
           1,
           1,
           null
         ]
       },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/models/gamemode.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/models/answer.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/models/option.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/gamemode.rb": {
         "lines": [
           1,
           1,
@@ -656,7 +736,7 @@
           null
         ]
       },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/models/question.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/answer.rb": {
         "lines": [
           1,
           1,
@@ -666,7 +746,25 @@
           null
         ]
       },
-      "/home/bruno/Desktop/uni/2024/1er cuatri 2024/analisis y diseño de software/F1-AyDS-project/F1-App/spec/user-life_spec.rb": {
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/option.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/models/question.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/joaquin/Escritorio/F1-AyDS-project/F1-App/spec/user-life_spec.rb": {
         "lines": [
           1,
           null,
@@ -730,6 +828,6 @@
         ]
       }
     },
-    "timestamp": 1724936254
+    "timestamp": 1725051989
   }
 }

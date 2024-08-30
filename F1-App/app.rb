@@ -390,7 +390,6 @@ class App < Sinatra::Application
                 session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                 session[:color] = "red"
                 redirect '/gamemodes'
-                return
             else
                 # sino sigue respondiendo preguntas
                 session[:message] = "Time's up! Incorrect!"
@@ -408,10 +407,9 @@ class App < Sinatra::Application
             else
                 @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
                 if @current_user.cant_life == 0
-                    session[:message] = "Yo have 0 lives. Please wait for loves to regenerate."
+                    session[:message] = "You have 0 lives. Please wait for lives to regenerate."
                     session[:color] = "red"
                     redirect '/gamemodes'
-                    return
                 else
                 session[:message] = "Incorrect!"
                 session[:color] = "red"
