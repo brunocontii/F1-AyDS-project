@@ -312,7 +312,7 @@ class App < Sinatra::Application
         end
 
         unless @current_user&.can_play?
-            session[:message] = "You have 0 lives. Please wait for loves to regenerate."
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
             return

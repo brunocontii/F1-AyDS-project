@@ -264,6 +264,97 @@ RSpec.describe 'The App' do
         end
     end
 
+    describe 'GET /gamemodes/free' do
+        let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 2, cant_coins: 0) }
+        let!(:easy_question) { Question.create(name_question: 'Easy Question', level: 'easy', theme: 'free') }
+        let!(:normal_question) { Question.create(name_question: 'Normal Question', level: 'normal', theme: 'free') }
+        let!(:difficult_question) { Question.create(name_question: 'Difficult Question', level: 'difficult', theme: 'free') }
+        let!(:correct_option) { Option.create(name_option:'Correct Answer', correct: true, question: easy_question) }
+        let!(:incorrect_option) { Option.create(name_option:'Incorrect Answer', correct: false, question: easy_question) }
+
+        before do
+            env 'rack.session', { username: user.username }
+        end
+
+        context 'when the user has no lives left' do
+            before do
+                user.update(cant_life: 0)
+            end
+
+            it 'redirects to /gamemodes with a message' do
+                get '/gamemodes/free'
+                expect(last_request.env['rack.session'][:message]).to eq('You have 0 lives. Please wait for lives to regenerate.')
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq('/gamemodes')
+            end
+        end
+
+        #context 'when reset_free_mode is set' do
+        #    before do
+        #        env 'rack.session', { reset_free_mode: true, #answered_free_questions: [easy_question.id] }
+        #    end
+        #
+        #    it 'resets the free mode and deletes previous answers' do
+        #        get '/gamemodes/free'
+        #        expect(last_request.env['rack.session'][:answered_free_questions]).to be_empty
+        #        expect(last_request.env['rack.session'][:reset_free_mode]).to be_nil
+        #        expect(last_response).to be_ok
+        #    end
+        #end
+
+        #context 'when there are unanswered questions' do
+        #    it 'assigns an unanswered question to @question' do
+        #        get '/gamemodes/free'
+        #        expect(last_response).to be_ok
+        #        expect(assigns(:question)).to eq(easy_question)
+        #    end
+        #end
+
+        #context 'when there are NO unanswered question but incorrect ones' do
+        #    before do
+        #        Answer.create(question_id: easy_question.id, user_id: user.id, option_id: correct_option.id)
+        #        last_request.env['rack.session'][:answered_free_questions] = [easy_question.id]
+        #    end
+        #
+        #    it 'assigns an incorrectly answered question to @question' do
+        #        get '/gamemodes/free'
+        #        expect(last_response).to be_ok
+        #        expect(assigns(:question)).to eq(easy_question)
+        #    end
+        #end
+
+        #context 'when all question are answered' do
+        #    before do
+        #        Answer.create(question_id: easy_question.id, user_id: user.id, option_id: correct_option.id)
+        #        env 'rack.session', { answered_free_questions: [easy_question.id], free_mode_difficulty: 'normal', unanswered_questions: [] }
+        #    end
+
+        #    it 'updates the difficulty and provides a new question' do
+        #        get '/gamemodes/free'
+        #        expect(last_request.env['rack.session'][:free_mode_difficulty]).to eq('difficult')
+        #        expect(assigns(:question)).to eq(difficult_question)
+        #    end
+        #end
+
+        #context 'when all questions are answered and the mode needs to reset' do
+        #    before do
+        #        Answer.create(question_id: easy_question.id, user_id: user.id, option_id: correct_option.id)
+        #        env 'rack.session', { answered_free_questions: [easy_question.id], free_mode_difficulty: 'impossible' }
+        #        Question.create(name_question: 'Another Question', level: 'easy', theme: 'free')
+        #    end
+        #
+        #    it 'resets the mode and redirects appropriately' do
+        #        get '/gamemodes/free'
+        #        expect(last_request.env['rack.session'][:answered_free_questions]).to be_empty
+        #        expect(last_request.env['rack.session'][:free_mode_difficulty]).to eq('easy')
+        #        expect(last_response).to be_redirect
+        #        follow_redirect!
+        #        expect(last_request.path).to eq('/gamemodes')
+        #    end
+        #end
+    end
+
     describe 'POST /gamemodes/free' do
         # Definiciones temporales para las pruebas
         let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0) }
@@ -315,9 +406,10 @@ RSpec.describe 'The App' do
           end
       
           it 'reduces the users lives and continues if lives are still remaining' do
+            initial_lives = user.cant_life
             post '/gamemodes/free', { option_id: incorrect_option.id }
       
-            expect(user.reload.cant_life).to eq(2)
+            expect(user.reload.cant_life).to eq(initial_lives-1)
             expect(last_response).to be_redirect
             expect(last_response.location).to include('/gamemodes/free')
             expect(last_request.env['rack.session'][:message]).to eq("Incorrect!")
