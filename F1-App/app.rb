@@ -380,11 +380,9 @@ class App < Sinatra::Application
                     redirect '/gamemodes'
                 else
                     redirect '/gamemodes'
-                    return
                 end
             end
             redirect '/gamemodes/free'
-            return
         end
 
         @options = @question.options.shuffle
