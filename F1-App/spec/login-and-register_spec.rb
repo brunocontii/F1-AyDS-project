@@ -112,6 +112,7 @@ RSpec.describe 'The App' do
         end
     end
 
+    # Test para verificar que la ruta GET /logout va a la pagina /.
     describe 'GET /logout' do
         it 'renders the logout page' do
             get '/logout', {}, 'rack.session' => { username: 'testuser' }
@@ -124,6 +125,7 @@ RSpec.describe 'The App' do
         end
     end
 
+    # Test para verificar que la ruta GET /team va a la pagina efectivamente a Team.
     describe 'GET /team' do
         it 'renders the team page' do
             get '/team'
@@ -132,6 +134,7 @@ RSpec.describe 'The App' do
         end
     end
 
+    # Test para verificar que la ruta GET /team va a la pagina efectivamente a Team.
     describe 'GET /how-to-play' do
         it 'renders the howToPlay page' do
             get '/how-to-play'
@@ -141,6 +144,7 @@ RSpec.describe 'The App' do
     end
 
     describe 'GET /profile' do
+        # Cuando el usuario esta logueado carga todo bien
         context 'when user is logged in' do
             let(:user) do
                 User.create(
@@ -150,7 +154,7 @@ RSpec.describe 'The App' do
                     cant_coins: 0
                 )
             end
-            
+
             let(:profile) do
                 Profile.create(
                     name: 'testname',
@@ -174,9 +178,19 @@ RSpec.describe 'The App' do
                 expect(last_response.body).to eq({ lives: user.cant_life }.to_json)
             end
         end
+
+        context 'when user is not logged in' do
+            it 'redirects to home page' do
+                get '/profile'
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq('/')
+            end
+        end
     end
 
     describe 'POST /profile/picture' do
+        # Cuando el usuario esta logueado
         context 'when user is logged in' do
             let(:user) do
                 User.create(
@@ -186,7 +200,7 @@ RSpec.describe 'The App' do
                     cant_coins: 0
                 )
             end
-            
+
             let(:profile) do
                 Profile.create(
                     name: 'testname',
@@ -198,6 +212,7 @@ RSpec.describe 'The App' do
                 )
             end
 
+            # Guardamos todas las fotos
             let(:profile_picture_file) { Dir.glob("public/profile_pictures/*.png").sample }
 
             before do
@@ -206,8 +221,11 @@ RSpec.describe 'The App' do
             end
 
             it 'updates the profile picture' do
+                # Post con la nueva foto de perfil
                 post '/profile/picture', profile_picture: "/public/profile_pictures/#{File.basename(profile_picture_file)}"
                 updated_profile = Profile.find_by(user_id: user.id)
+                # Una vez que se actualizo la foto de perfil
+                # chequeamos que sea la que se paso como parametro al post
                 expect(updated_profile.profile_picture).to eq("/public/profile_pictures/#{File.basename(profile_picture_file)}")
                 expect(last_response).to be_redirect
                 follow_redirect!
@@ -215,6 +233,8 @@ RSpec.describe 'The App' do
             end
         end
 
+        # Cuando el usuario no esta logueado
+        # se lo redirecciona a /
         context 'when user is not logged in' do
             it 'redirects to home page' do
                 post '/profile/picture'
@@ -235,21 +255,21 @@ RSpec.describe 'The App' do
                     cant_coins: 130
                 )
             end
-    
+
             before do
                 env 'rack.session', { username: user.username }
             end
-    
+
             it 'returns JSON with lives when requested via AJAX' do
                 env 'rack.session', { username: user.username }
                 get '/gamemodes/progressive', {}, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
                 expected_response = { lives: user.cant_life,}.to_json
-                
+
                 expect(last_response).to be_ok
                 expect(last_response.content_type).to eq('application/json')
                 expect(last_response.body).to eq(expected_response)
             end
-    
+
             it 'renders gamemodes template when not requested via AJAX' do
                 get '/gamemodes/progressive'
                 expect(last_response.body).to include(user.cant_life.to_s)
@@ -257,7 +277,7 @@ RSpec.describe 'The App' do
                 expect(last_response.body).to include('Progressive')
             end
         end
-    
+
         context 'when user is not logged in' do
             it 'redirects to home page' do
                 get '/gamemodes/progressive'
@@ -267,7 +287,7 @@ RSpec.describe 'The App' do
             end
         end
     end
-    
+
     describe 'GET /gamemodes/progressive/:mode' do
         ['pilot', 'team', 'career', 'circuit'].each do |mode|
             context "when mode is #{mode}" do
@@ -279,7 +299,7 @@ RSpec.describe 'The App' do
                         cant_coins: 220
                     )
                 end
-          
+
                 before do
                     env 'rack.session', { username: user.username }
                     # Preparando pregunta y respuestas para testear
@@ -289,8 +309,8 @@ RSpec.describe 'The App' do
                     @incorrect_option2 = Option.create(name_option: 'Incorrect Option 2', question_id: @question.id, correct: false)
                     @incorrect_option3 = Option.create(name_option: 'Incorrect Option 3', question_id: @question.id, correct: false)
                 end
-    
-                # Si la pregunta se muestra, que se muestre tanto la pregunta 
+
+                # Si la pregunta se muestra, que se muestre tanto la pregunta
                 # como la opcion correcta y las 3 incorrectas.
                 it 'displays a question and its options if available' do
                     get "/gamemodes/progressive/#{mode}"
@@ -301,9 +321,9 @@ RSpec.describe 'The App' do
                     expect(last_response.body).to include(@incorrect_option2.name_option)
                     expect(last_response.body).to include(@incorrect_option3.name_option)
                 end
-    
+
                 # Si no hay preguntas ya disponibles porque fueron contestadas todas correctamente
-                # se borrarian todas y me redirecciono a gamemodes. 
+                # se borrarian todas y me redirecciono a gamemodes.
                 it 'redirects to /gamemodes if no questions available' do
                     Option.delete_all # Se elimina antes de question ya que sino no se podria, son dependientes
                     Question.delete_all # se hace por las dudas que este cargada la bdd con algo externo a este test
@@ -312,7 +332,7 @@ RSpec.describe 'The App' do
                     follow_redirect!
                     expect(last_request.path).to eq('/gamemodes')
                 end
-                    
+
                 # Si no hay vidas, tendrian que estar en 0 y me redirecciono a /gamemodes
                 it 'redirects to /gamemodes if no lives available' do
                     user.update(cant_life: 0)
@@ -321,11 +341,107 @@ RSpec.describe 'The App' do
                     follow_redirect!
                     expect(last_request.path).to eq('/gamemodes')
                 end
-    
+
             end
         end
-    
+
     end
+
+    describe 'POST /use_extra_time' do
+        let!(:user) { User.create(username: 'testuser', password: 'password123', cant_coins: 100) }
+
+        before do
+            env 'rack.session', { username: user.username }
+        end
+
+        context 'when the user has enough coins' do
+            # Puede usar el comodin , pierde 75 monedas.
+            it 'reduces the user coins and returns success status' do
+                request_body = { user_id: user.id }.to_json
+
+                post '/use_extra_time', request_body, { 'CONTENT_TYPE' => 'application/json' }
+                expect(last_response.content_type).to eq('application/json')
+                expect(last_response.status).to eq(200)
+                updated_user = User.find(user.id)
+                expect(updated_user.reload.cant_coins).to eq(25) # Se espera que se reduzcan 75 monedas
+
+                # Respuesta JSON sea la esperada
+                json_response = JSON.parse(last_response.body)
+                expect(json_response).to eq({ 'status' => 'success' })
+            end
+        end
+
+        context 'when the user does not have enough coins' do
+            # No puede usar el comodin
+            it 'does not reduce the coins and does not return success' do
+                # Actualiza las monedas del usuario para que no tenga suficientes y probar
+                user.update(cant_coins: 50)
+                request_body = { user_id: user.id }.to_json
+                post '/use_extra_time', request_body, { 'CONTENT_TYPE' => 'application/json' }
+                expect(user.reload.cant_coins).to eq(50) # Las monedas deben permanecer igual
+            end
+        end
+    end
+
+    describe 'POST /use_50_50' do
+        # Preparando usuario y pregunta con sus respuestas
+        let!(:user) { User.create(username: 'testuser', password: 'password123', cant_coins: 160) }
+        let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
+        let!(:correct_option) { Option.create(name_option:'Correct Answer', correct: true, question: question) }
+        let!(:incorrect_option1) { Option.create(name_option: 'Incorrect Option 1', question_id: question.id, correct: false) }
+        let!(:incorrect_option2) { Option.create(name_option: 'Incorrect Option 1', question_id: question.id, correct: false) }
+        let!(:incorrect_option3) { Option.create(name_option: 'Incorrect Option 1', question_id: question.id, correct: false) }
+
+        before do
+            env 'rack.session', { username: user.username }
+        end
+
+        context 'when the user has enough coins' do
+            # Puede usar el comodin , pierde 150 monedas
+            it 'reduces the user coins and returns success status' do
+
+                request_body = { user_id: user.id , question_id: question.id }.to_json
+
+                post '/use_50_50', request_body, { 'CONTENT_TYPE' => 'application/json' }
+                expect(last_response.content_type).to eq('application/json')
+                expect(last_response.status).to eq(200)
+
+                updated_user = User.find(user.id)
+
+                expect(updated_user.reload.cant_coins).to eq(10) # Se espera que se reduzcan 150 monedas
+
+                # respuesta JSON sea la esperada y contenga dos opciones incorrectas
+
+                json_response = JSON.parse(last_response.body)
+                expect(json_response['status']).to eq('success')
+                expect(json_response['removed_options'].size).to eq(2)
+
+                # IDs de las opciones incorrectas
+                incorrect_ids = [incorrect_option1.id, incorrect_option2.id, incorrect_option3.id]
+
+                expect(json_response['removed_options']).to all(be_in(incorrect_ids))
+
+                # Verifica que las opciones eliminadas sean incorrectas
+                json_response['removed_options'].each do |id|
+                    option = Option.find(id)
+                    expect(option.correct).to be(false)
+                end
+            end
+        end
+
+        context 'when the user does not have enough coins' do
+            # No puede usar el comodin
+            it 'does not reduce the coins and does not return success' do
+                # Actualiza las monedas del usuario para que no tenga suficientes y probar
+                user.update(cant_coins: 50)
+                request_body = { user_id: user.id , question_id: question.id }.to_json
+                post '/use_50_50', request_body, { 'CONTENT_TYPE' => 'application/json' }
+                expect(user.reload.cant_coins).to eq(50) # Las monedas deben permanecer igual
+
+            end
+        end
+    end
+
 
     describe 'GET /gamemodes' do
         context 'when user is loggen in' do
@@ -458,78 +574,80 @@ RSpec.describe 'The App' do
     end
 
     describe 'POST /gamemodes/free' do
-        # Definiciones temporales para las pruebas
+        # Preparando usuario y pregunta con sus respuestas
         let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0) }
         let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
         let!(:correct_option) { Option.create(name_option:'Correct Answer', correct: true, question: question) }
         let!(:incorrect_option) { Option.create(name_option:'Incorrect Answer', correct: false, question: question) }
 
-        # Verificación de sesión
-        before do
-            env 'rack.session', { username: user.username }
-        end
-      
-        #Cuando no tenemos más tiempo
+        # Cuando no tenemos más tiempo
         context 'when you dont have more time left' do
-          it 'reduces the users lives and redirects to /gamemodes if lives reaches 0' do
-            user.update(cant_life: 1)
-            post '/gamemodes/free', { timeout: 'true' }
-      
-            expect(user.reload.cant_life).to eq(0)
-            expect(last_response).to be_redirect
-            expect(last_response.location).to include('/gamemodes')
-            expect(last_request.env['rack.session'][:message]).to eq("You have 0 lives. Please wait for lives to regenerate.")
-            expect(last_request.env['rack.session'][:color]).to eq("red")
-          end
-      
-          it 'reduces the users lives and continues if lives are still remaining' do
-            initial_lives = user.cant_life
-            post '/gamemodes/free', { timeout: 'true' }
-      
-            expect(user.reload.cant_life).to eq(initial_lives - 1)
-            expect(last_response).to be_redirect
-            expect(last_response.location).to include('/gamemodes/free')
-            expect(last_request.env['rack.session'][:message]).to eq("Time's up! Incorrect!")
-            expect(last_request.env['rack.session'][:color]).to eq("red")
-          end 
+            # Y vida tiene una
+            it 'reduces the users lives and redirects to /gamemodes if lives reaches 0' do
+                user.update(cant_life: 1)
+                post '/gamemodes/free', { timeout: 'true' }
+
+                expect(user.reload.cant_life).to eq(0)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include('/gamemodes')
+                expect(last_request.env['rack.session'][:message]).to eq("You have 0 lives. Please wait for lives to regenerate.")
+                expect(last_request.env['rack.session'][:color]).to eq("red")
+            end
+
+            # Y vida tiene mas de una
+            it 'reduces the users lives and continues if lives are still remaining' do
+                initial_lives = user.cant_life
+                post '/gamemodes/free', { timeout: 'true' }
+
+                expect(user.reload.cant_life).to eq(initial_lives - 1)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include('/gamemodes/free')
+                expect(last_request.env['rack.session'][:message]).to eq("Time's up! Incorrect!")
+                expect(last_request.env['rack.session'][:color]).to eq("red")
+            end
         end
-      
+
         # Cuando una opción incorrecta es seleccionada
         context 'when an incorrect option is selected' do
-          it 'reduces the users lives and redirects if lives reached 0' do
-            user.update(cant_life: 1)
-            post '/gamemodes/free', { option_id: incorrect_option.id }
-      
-            expect(user.reload.cant_life).to eq(0)
-            expect(last_response).to be_redirect
-            expect(last_response.location).to include('/gamemodes')
-            expect(last_request.env['rack.session'][:message]).to eq("You have 0 lives. Please wait for lives to regenerate.")
-            expect(last_request.env['rack.session'][:color]).to eq("red")
-          end
-      
-          it 'reduces the users lives and continues if lives are still remaining' do
-            initial_lives = user.cant_life
-            post '/gamemodes/free', { option_id: incorrect_option.id }
-      
-            expect(user.reload.cant_life).to eq(initial_lives-1)
-            expect(last_response).to be_redirect
-            expect(last_response.location).to include('/gamemodes/free')
-            expect(last_request.env['rack.session'][:message]).to eq("Incorrect!")
-            expect(last_request.env['rack.session'][:color]).to eq("red")
-          end
+            # Y vida tiene una
+            it 'reduces the users lives and redirects if lives reached 0' do
+                user.update(cant_life: 1)
+                post '/gamemodes/free', { option_id: incorrect_option.id }
+
+                expect(user.reload.cant_life).to eq(0)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include('/gamemodes')
+                expect(last_request.env['rack.session'][:message]).to eq("You have 0 lives. Please wait for lives to regenerate.")
+                expect(last_request.env['rack.session'][:color]).to eq("red")
+            end
+
+            # Y vida tiene mas de una
+            it 'reduces the users lives and continues if lives are still remaining' do
+                initial_lives = user.cant_life
+                post '/gamemodes/free', { option_id: incorrect_option.id }
+
+                expect(user.reload.cant_life).to eq(initial_lives-1)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include('/gamemodes/free')
+                expect(last_request.env['rack.session'][:message]).to eq("Incorrect!")
+                expect(last_request.env['rack.session'][:color]).to eq("red")
+            end
         end
 
         # Cuando una opción correcta es seleccionada
         context 'when a correct option is selected' do
-          it 'increments the users coins and redirects to /gamemodes/free' do
-            post '/gamemodes/free', { option_id: correct_option.id }
-      
-            expect(user.reload.cant_coins).to eq(10)
-            expect(last_response).to be_redirect
-            expect(last_response.location).to include('/gamemodes/free')
-            expect(last_request.env['rack.session'][:message]).to eq("Correct! Well done.")
-            expect(last_request.env['rack.session'][:color]).to eq("green")
-          end
+            # Gana 10
+            it 'increments the users coins and redirects to /gamemodes/free' do
+                post '/gamemodes/free', { option_id: correct_option.id }
+
+                expect(user.reload.cant_coins).to eq(10)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include('/gamemodes/free')
+                expect(last_request.env['rack.session'][:message]).to eq("Correct! Well done.")
+                expect(last_request.env['rack.session'][:color]).to eq("green")
+            end
         end
+
     end
+
 end

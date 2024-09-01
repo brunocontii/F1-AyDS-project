@@ -268,9 +268,11 @@ class App < Sinatra::Application
         user_id = params['user_id']
         @current_user = User.find(user_id)
 
-        if @current_user.cant_coins >= 75
-            @current_user.update(cant_coins: @current_user.cant_coins - 75)
+        if @current_user&.cant_coins.to_i >= 75
+            @current_user.update!(cant_coins: @current_user.cant_coins - 75)
             { status: 'success' }.to_json
+        else
+            { status: 'error', message: 'Not enough coins' }.to_json
         end
     end
 
@@ -293,6 +295,8 @@ class App < Sinatra::Application
             incorrect_option_ids = incorrect_options.map(&:id)
 
             { status: 'success', removed_options: incorrect_option_ids }.to_json
+        else
+            { status: 'error', message: 'Not enough coins' }.to_json
         end
     end
 
