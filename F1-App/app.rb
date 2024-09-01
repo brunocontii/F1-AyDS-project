@@ -182,7 +182,6 @@ class App < Sinatra::Application
             session[:message] = "You have 0 lives. Please wait for lives to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
-            return
         end
 
         session[:answered_questions] ||= []

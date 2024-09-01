@@ -217,12 +217,114 @@ RSpec.describe 'The App' do
 
         context 'when user is not logged in' do
             it 'redirects to home page' do
-            post '/profile/picture'
-            expect(last_response).to be_redirect
-            follow_redirect!
-            expect(last_request.path).to eq('/')
+                post '/profile/picture'
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq('/')
             end
         end
+    end
+
+    describe 'GET /gamemodes/progressive' do
+        context 'when user is loggen in' do
+            let(:user) do
+                User.create(
+                    username: 'testuser',
+                    password: 'testpassword',
+                    cant_life: 2,
+                    cant_coins: 130
+                )
+            end
+    
+            before do
+                env 'rack.session', { username: user.username }
+            end
+    
+            it 'returns JSON with lives when requested via AJAX' do
+                env 'rack.session', { username: user.username }
+                get '/gamemodes/progressive', {}, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'
+                expected_response = { lives: user.cant_life,}.to_json
+                
+                expect(last_response).to be_ok
+                expect(last_response.content_type).to eq('application/json')
+                expect(last_response.body).to eq(expected_response)
+            end
+    
+            it 'renders gamemodes template when not requested via AJAX' do
+                get '/gamemodes/progressive'
+                expect(last_response.body).to include(user.cant_life.to_s)
+                expect(last_response.body).to include(user.cant_coins.to_s)
+                expect(last_response.body).to include('Progressive')
+            end
+        end
+    
+        context 'when user is not logged in' do
+            it 'redirects to home page' do
+                get '/gamemodes/progressive'
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq('/')
+            end
+        end
+    end
+    
+    describe 'GET /gamemodes/progressive/:mode' do
+        ['pilot', 'team', 'career', 'circuit'].each do |mode|
+            context "when mode is #{mode}" do
+                let(:user) do
+                    User.create(
+                        username: 'testuser',
+                        password: 'testpassword',
+                        cant_life: 3,
+                        cant_coins: 220
+                    )
+                end
+          
+                before do
+                    env 'rack.session', { username: user.username }
+                    # Preparando pregunta y respuestas para testear
+                    @question = Question.create(name_question: 'Sample Question', level: 'easy', theme: mode)
+                    @correct_option = Option.create(name_option: 'Correct Option', question_id: @question.id, correct: true)
+                    @incorrect_option1 = Option.create(name_option: 'Incorrect Option 1', question_id: @question.id, correct: false)
+                    @incorrect_option2 = Option.create(name_option: 'Incorrect Option 2', question_id: @question.id, correct: false)
+                    @incorrect_option3 = Option.create(name_option: 'Incorrect Option 3', question_id: @question.id, correct: false)
+                end
+    
+                # Si la pregunta se muestra, que se muestre tanto la pregunta 
+                # como la opcion correcta y las 3 incorrectas.
+                it 'displays a question and its options if available' do
+                    get "/gamemodes/progressive/#{mode}"
+                    expect(last_response).to be_ok
+                    expect(last_response.body).to include(@question.name_question)
+                    expect(last_response.body).to include(@correct_option.name_option)
+                    expect(last_response.body).to include(@incorrect_option1.name_option)
+                    expect(last_response.body).to include(@incorrect_option2.name_option)
+                    expect(last_response.body).to include(@incorrect_option3.name_option)
+                end
+    
+                # Si no hay preguntas ya disponibles porque fueron contestadas todas correctamente
+                # se borrarian todas y me redirecciono a gamemodes. 
+                it 'redirects to /gamemodes if no questions available' do
+                    Option.delete_all # Se elimina antes de question ya que sino no se podria, son dependientes
+                    Question.delete_all # se hace por las dudas que este cargada la bdd con algo externo a este test
+                    get "/gamemodes/progressive/#{mode}"
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq('/gamemodes')
+                end
+                    
+                # Si no hay vidas, tendrian que estar en 0 y me redirecciono a /gamemodes
+                it 'redirects to /gamemodes if no lives available' do
+                    user.update(cant_life: 0)
+                    get "/gamemodes/progressive/#{mode}"
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq('/gamemodes')
+                end
+    
+            end
+        end
+    
     end
 
     describe 'GET /gamemodes' do
