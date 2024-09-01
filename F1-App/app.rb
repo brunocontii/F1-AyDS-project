@@ -208,54 +208,67 @@ class App < Sinatra::Application
     end
 
     def handle_progressive_mode_submission(mode)
-        # obtenemos el usuario actual de la sesion
         @current_user = User.find_by(username: session[:username]) if session[:username]
-
-        if @current_user.can_play?
-            if params[:timeout] == 'true'
-                @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-
-                if @current_user.cant_life == 0
-                    session[:message] = "You have 0 lives. Please wait for lives to regenerate."
-                    session[:color] = "red"
-                    redirect '/gamemodes'
-                    return
-                else
-                    session[:message] = "Time's up! Incorrect!"
-                    session[:color] = "red"
-                end
-            else
-                @option = Option.find(params[:option_id].to_i)
-                @question = @option.question
-
-                if @option.correct
-                    Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-                    @current_user.increment!(:cant_coins, 10)
-                    session[:message] = "Correct! Well done."
-                    session[:color] = "green"
-                else
-                    @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-
-                    if @current_user.cant_life == 0
-                        session[:message] = "You have 0 lives. Please wait for lives to regenerate."
-                        session[:color] = "red"
-                        redirect '/gamemodes'
-                        return
-                    else
-                        session[:message] = "Incorrect!"
-                        session[:color] = "red"
-                    end
-                end
-
-                session[:answered_questions] ||= []
-                session[:answered_questions] << @question.id
-            end
-
-            redirect "/gamemodes/progressive/#{mode}"
+    
+        unless @current_user&.can_play?
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+            session[:color] = "red"
+            return redirect '/gamemodes'
+        end
+    
+        if params[:timeout] == 'true'
+            handle_timeout
         else
+            handle_option_submission
+        end
+    
+        redirect "/gamemodes/progressive/#{mode}"
+    end
+    
+    private
+    
+    def handle_timeout
+        @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+        if @current_user.cant_life.zero?
             session[:message] = "You have 0 lives. Please wait for lives to regenerate."
             session[:color] = "red"
             redirect '/gamemodes'
+        else
+            session[:message] = "Time's up! Incorrect!"
+            session[:color] = "red"
+        end
+    end
+    
+    def handle_option_submission
+        if params[:option_id].to_i > 0
+            @option = Option.find(params[:option_id].to_i)
+            @question = @option.question
+            if @option.correct
+                Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+                @current_user.increment!(:cant_coins, 10)
+                session[:message] = "Correct! Well done."
+                session[:color] = "green"
+            else
+                handle_incorrect_answer
+            end
+            session[:answered_questions] ||= []
+            session[:answered_questions] << @question.id
+        else
+            session[:message] = "Invalid option ID"
+            session[:color] = "red"
+            redirect '/gamemodes'
+        end
+    end
+    
+    def handle_incorrect_answer
+        @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+        if @current_user.cant_life.zero?
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+            session[:color] = "red"
+            redirect '/gamemodes'
+        else
+            session[:message] = "Incorrect!"
+            session[:color] = "red"
         end
     end
 

@@ -442,6 +442,106 @@ RSpec.describe 'The App' do
         end
     end
 
+    describe 'POST /gamemodes/progressive/:mode' do
+        let(:user) { User.create(username: 'testuser', password: 'testpassword', cant_life: 3, cant_coins: 0) }
+        let(:question) { Question.create(name_question: 'What is Ruby?', level: 'easy', theme: mode) }
+        let(:correct_option) { Option.create(name_option: 'A programming language', question_id: question.id, correct: true) }
+        let(:incorrect_option) { Option.create(name_option: 'A gemstone', question_id: question.id, correct: false) }
+
+        before do
+            env 'rack.session', { username: user.username }
+        end
+      
+        # Parametrizacion para todos los modos de juego
+        shared_examples 'progressive mode' do |mode|
+            let(:mode) { mode }
+      
+            # Cuando el tiempo para responder se termino
+            context 'when time runs out' do
+                # Y el usuario se quedo sin vidas
+                it 'reduces life and redirects to /gamemodes when no lives left' do
+                    user.update(cant_life: 1)
+                    user.reload
+                    post "/gamemodes/progressive/#{mode}", {timeout: 'true'}
+                    expect(user.reload.cant_life).to eq(0)
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq('/gamemodes')
+                end
+      
+                # Todavia le quedan vidas al usuario
+                it 'reduces life and reloads the mode when lives remain' do
+                    initial_lives = user.cant_life
+                    post "/gamemodes/progressive/#{mode}", {timeout: 'true'}
+                    expect(user.reload.cant_life).to eq(initial_lives - 1)
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq("/gamemodes/progressive/#{mode}")
+                end
+            end
+      
+            # Cuando el usuario responde correctamente
+            context 'when the user selects a correct option' do
+                # Incrementamos monedas y cargamos la pregunta que sigue
+                it 'increments coins and reloads the mode' do
+                    post "/gamemodes/progressive/#{mode}", {option_id: correct_option.id}
+                    expect(user.reload.cant_coins).to eq(10)
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq("/gamemodes/progressive/#{mode}")
+                end
+            end
+      
+            # Cuando el usuario responde incorrectamente
+            context 'when the user selects an incorrect option' do
+                # Y se quedo sin vidas para jugar
+                it 'reduces life and redirects to /gamemodes when no lives left' do
+                    user.update(cant_life: 1)
+                    post "/gamemodes/progressive/#{mode}", {option_id: incorrect_option.id}
+                    expect(user.reload.cant_life).to eq(0)
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq('/gamemodes')
+                end
+      
+                # Todavia tiene vidas para jugar
+                it 'reduces life and reloads the mode when lives remain' do
+                    initial_lives = user.cant_life
+                    post "/gamemodes/progressive/#{mode}", {option_id: incorrect_option.id}
+                    expect(user.reload.cant_life).to eq(initial_lives - 1)
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq("/gamemodes/progressive/#{mode}")
+                end
+            end
+      
+            # Cuando el usuario selecciona un id invalido (no pasa nunca)
+            context 'when the user selects an invalid option id' do
+                it 'displays an error message and redirects to /gamemodes' do
+                    post "/gamemodes/progressive/#{mode}", {option_id: 0}
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq('/gamemodes')                
+                end
+            end
+      
+            # Cuando el usuario no tiene mas vidas
+            context 'when the user has no lives left' do
+                it 'does not allow playing and redirects to /gamemodes' do
+                    user.update(cant_life: 0)
+                    post "/gamemodes/progressive/#{mode}"
+                    expect(last_response).to be_redirect
+                    follow_redirect!
+                    expect(last_request.path).to eq('/gamemodes')
+                end
+            end
+        end
+      
+        # Parametrizacion
+        %w[pilot career team circuit].each do |mode|
+            include_examples 'progressive mode', mode
+        end
+    end
 
     describe 'GET /gamemodes' do
         context 'when user is loggen in' do
@@ -579,6 +679,10 @@ RSpec.describe 'The App' do
         let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
         let!(:correct_option) { Option.create(name_option:'Correct Answer', correct: true, question: question) }
         let!(:incorrect_option) { Option.create(name_option:'Incorrect Answer', correct: false, question: question) }
+
+        before do
+            env 'rack.session', { username: user.username }
+        end
 
         # Cuando no tenemos más tiempo
         context 'when you dont have more time left' do
