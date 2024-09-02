@@ -16,8 +16,8 @@ RSpec.describe 'The App' do
         # Creaciones de elementos temporales a utilizar
         let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0) }
         let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
-        let!(:correct_option) { Option.create(name_option:'Correct Option', correct: true, question: question) }
-        let!(:incorrect_option) { Option.create(name_option:'Incorrect Option 1', correct: false, question: question) }
+        let!(:correct_option) { Option.create(name_option:'Correct Option', question_id: question.id, correct: true) }
+        let!(:incorrect_option) { Option.create(name_option:'Incorrect Option 1', question_id: question.id, correct: false) }
 
         before do
             env 'rack.session', { username: user.username }
@@ -39,9 +39,9 @@ RSpec.describe 'The App' do
         end
 
         # Cuando el modo es reseteado tiene que eliminar todas las preguntas anteriores y reiniciar el flag de reset
+        # Simula que cree el una respuesta que resetea todo y se fija que dicha respuesta este vacia que es lo que tendria que pasar
         context 'when the mode is reset' do
-            let!(:answered_question) { Answer.create(user: user, question: question, option: correct_option) }
-        
+            let!(:answered_question) { Answer.create(question_id: question.id, user_id: user.id, option_id: correct_option.id) }
             before do
               env 'rack.session', { username: user.username, reset_free_mode: true }
               get '/gamemodes/free'
@@ -49,6 +49,7 @@ RSpec.describe 'The App' do
         
             it 'deletes previous answers and resets the reset_free_mode flag' do
               expect(Answer.where(id: answered_question.id)).to be_empty
+              # espera que sea false el reseteo ya que ya reseteed
               expect(last_request.env['rack.session'][:reset_free_mode]).to be_falsey
             end
         end
@@ -158,49 +159,50 @@ RSpec.describe 'The App' do
               expect(last_request.path).to eq('/gamemodes')
             end
         end
+          
+        context 'when there are incorrectly answered questions in the current difficulty' do
+            let!(:incorrectly_answered_question) { Question.create(name_question: 'Incorrectly Answered Question', level: 'easy', theme: 'free') }
+            let!(:incorrect_option) { Option.create(name_option: 'Incorrect Option', question_id: incorrectly_answered_question.id, correct: false ) }
+          
+            before do
+                # Simula una respuesta incorrecta de la pregunta
+                Answer.create(user_id: user.id, question_id: incorrectly_answered_question.id, option_id: incorrect_option.id)
+                
+                # Configura la sesión con la pregunta incorrectamente respondida
+                env 'rack.session', {
+                    username: user.username,
+                    free_mode_difficulty: 'easy',
+                    answered_free_questions: [incorrectly_answered_question.id]
+                }
+         
+                # Realiza la petición GET
+                get '/gamemodes/free'
+            end
+         
+            it 'assigns an incorrectly answered question to @question' do
+                # Verifica que @question se ha asignado a la pregunta incorrectamente respondida
+                expect(last_request.env['rack.session'][:answered_free_questions]).to include(incorrectly_answered_question.id)
+            end
 
-        # context 'when there are no questions to display in the current difficulty' do
-        #     before do
-        #       # Crea una pregunta en una dificultad diferente para asegurarse de que no haya preguntas en la dificultad actual
-        #       Question.create(name_question: 'Other Question', level: 'medium', theme: 'free')
-          
-        #       # Configura la sesión para que apunte a una dificultad en la que no hay preguntas
-        #       env 'rack.session', { username: user.username, free_mode_difficulty: 'easy' }
-        #       get '/gamemodes/free'
-        #     end
-          
-        #     it 'redirects to /gamemodes' do
-        #       expect(last_response).to be_redirect
-        #       follow_redirect!
-        #       expect(last_request.path).to eq('/gamemodes')
-        #     end
-        # end
-          
-        # context 'when there are incorrectly answered questions in the current difficulty' do
-        #     let!(:incorrectly_answered_question) { Question.create(name_question: 'Incorrectly Answered Question', level: 'easy', theme: 'free') }
-        #     let!(:incorrect_option) { Option.create(name_option: 'Incorrect Option', correct: false, question: incorrectly_answered_question) }
-          
-        #     before do
-        #       # Simula una respuesta incorrecta de la pregunta
-        #       Answer.create(user: user, question: incorrectly_answered_question, option: incorrect_option)
-              
-        #       # Configura la sesión con la pregunta incorrectamente respondida
-        #       env 'rack.session', {
-        #         username: user.username,
-        #         free_mode_difficulty: 'easy',
-        #         answered_free_questions: [incorrectly_answered_question.id]
-        #       }
-          
-        #       # Realiza la petición GET
-        #       get '/gamemodes/free'
-        #     end
-          
-        #     it 'assigns an incorrectly answered question to @question' do
-        #         # Verifica que @question se ha asignado a la pregunta incorrectamente respondida
-        #         expect(last_request.env['rack.session'][:answered_free_questions]).to include(incorrectly_answered_question.id)
-        #     end
-        # end          
+        end
+        # no anda todavia , seguir con este caso del elsif
+        context 'When the user answers questions incorrectly and has already answered all the questions of the current difficulty' do
+            let!(:incorrectly_answered_question) { Question.create(name_question: 'Incorrectly Answered Question', level: 'easy', theme: 'free') }
+            let!(:incorrect_option) { Option.create(name_option: 'Incorrect Option', question_id: incorrectly_answered_question.id, correct: false ) }
+            let!(:incorrect_answer) { Answer.create(question_id: incorrectly_answered_question.id, user_id: user.id , option_id: incorrect_option.id ) }
+            before do 
+                env 'rack.session', { username: user.username, free_mode_difficulty: 'normal', unanswered_questions: [], theme: 'free', incorrectly_answered_questions:  incorrect_answer}
+                get '/gamemodes/free'
+            end
+            it 'redirect gamemodes' do
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq('/gamemodes/free')
+            end
+        end
+
     end
+
 
     describe 'POST /gamemodes/free' do
         # Preparando usuario y pregunta con sus respuestas
