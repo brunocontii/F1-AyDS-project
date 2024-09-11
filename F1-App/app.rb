@@ -216,7 +216,7 @@ class App < Sinatra::Application
             return redirect '/gamemodes'
         end
     
-        if params[:timeout] == 'true'
+        if params[:timeout] == 'true' && !session[:inmunity]
             handle_timeout
         else
             handle_option_submission
@@ -248,11 +248,19 @@ class App < Sinatra::Application
                 @current_user.increment!(:cant_coins, 10)
                 session[:message] = "Correct! Well done."
                 session[:color] = "green"
+            elsif session[:inmunity]
+                session[:inmunity] = false
+                session[:message] = "Activate inmunity"
+                session[:color] = "green"
             else
                 handle_incorrect_answer
             end
             session[:answered_questions] ||= []
             session[:answered_questions] << @question.id
+        elsif session[:inmunity]
+            session[:inmunity] = false
+            session[:message] = "Activate inmunity"
+            session[:color] = "green"
         else
             session[:message] = "Invalid option ID"
             session[:color] = "red"
@@ -313,6 +321,23 @@ class App < Sinatra::Application
         end
     end
 
+    post '/inmunity' do
+        content_type :json
+        request_body = request.body.read
+        params = JSON.parse(request_body)
+
+        user_id = params['user_id']
+        @current_user = User.find(user_id)
+
+        if @current_user&.cant_coins.to_i >= 200
+            session[:inmunity] = true
+            @current_user.update!(cant_coins: @current_user.cant_coins - 200)
+            
+            { status: 'success' }.to_json
+        else
+            { status: 'error', message: 'Not enough coins' }.to_json
+        end
+    end
 
     # Modo Free
     get '/gamemodes/free' do

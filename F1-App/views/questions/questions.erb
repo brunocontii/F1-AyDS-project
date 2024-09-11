@@ -28,6 +28,7 @@
             const formElement = document.getElementById('question-form');
             const extraTimeButton = document.getElementById('extra-time-button');
             const fiftyFiftyButton = document.getElementById('fifty-fifty-button');
+            const inmunity = document.getElementById('inmunity-button')
 
             const countdown = setInterval(() => {
                 timeLeft -= 1;
@@ -108,6 +109,30 @@
                     });
                 }
             });
+                        
+            inmunity.addEventListener('click', () => {
+                if (<%= @current_user.cant_coins %> >= 200) {
+                    fetch('/inmunity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ user_id: <%= @current_user.id %>})
+                    }).then(response => {
+                        if (response.ok) {
+                            inmunity.disabled = true;
+                            document.querySelector('.currency span').textContent -= 200;
+                        } else {
+                            response.json().then(data => {
+                                alert('Error: ' + data.error);
+                            });
+                        }
+                    }).catch(error => {
+                        alert('Failed to use inmunity: ' + error.message);
+                    });
+                }
+            });
+
         });
     </script>
 </head>
@@ -184,6 +209,10 @@
                     <div class="wildcard">
                         <button id="fifty-fifty-button" class="wildcard-button" title="Use 50-50 (150 coins)" style="background-image: url('/icons/borrar.png');"></button>
                         <p class="wildcard-title">50-50</p>
+                    </div>
+                    <div class="wildcard">
+                        <button id="inmunity-button" class="wildcard-button" title="Inmunity (200 coins)" style="background-image: url('/icons/inmunity.png');"></button>
+                        <p class="wildcard-title">Inmunity</p>
                     </div>
                 </div>
             </div>

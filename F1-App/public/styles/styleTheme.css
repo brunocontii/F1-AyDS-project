@@ -262,6 +262,10 @@ main {
     background-image: url('/icons/borrar.png');
 }
 
+#inmunity-button {
+    background-image: url('/icons/inmunity.png');
+}
+
 .wildcard-title {
     font-size: 0.9em;
     color: #000000;
