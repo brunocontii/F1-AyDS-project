@@ -38,6 +38,10 @@
                     <img src="/icons/heart.png" alt="Vidas" class="icon">
                     <span id="lives-count"><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
+                <div class="points">
+                    <img src="/icons/points.png" alt="Vidas" class="icon">
+                    <span id="points-count"><%= @current_user ? @current_user.total_points : 0 %></span>
+                </div>
                 <div class="profile">
                     <% if current_user.profile %>
                         <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
@@ -73,6 +77,22 @@
             <a href="/gamemodes/free" class="gamemode">
                 <i class="fas fa-gamepad"></i> Free
             </a>
+        </div>
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <div class="internal">
+                <% if users && users.any? %>
+                    <% users.each_with_index do |user, index| %>
+                        <div class="leaderboard-entry">
+                        <span class="rank"><%= index + 1 %>.</span>
+                        <span class="username"><%= user.username %></span>
+                        <span class="points"><%= user.total_points %> pts</span>
+                        </div>
+                    <% end %>
+                <% else %>
+                    <p>No hay usuarios en el leaderboard.</p>
+                <% end %>
+            </div>
         </div>
     </main>
     <script>

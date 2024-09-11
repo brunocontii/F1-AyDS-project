@@ -5,8 +5,9 @@ class CreateUsersTable < ActiveRecord::Migration[7.1]
       t.string :password
       t.integer :cant_life
       t.integer :cant_coins
+      t.integer :total_points
       t.datetime :last_life_lost_at
-      
+
       t.datetime :created_at
       t.datetime :updated_at
     end

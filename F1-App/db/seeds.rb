@@ -1,8 +1,8 @@
 users = [
-    {username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 20},
-    {username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100},
-    {username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100},
-    {username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80},
+    {username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 20, total_points: 0},
+    {username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100, total_points: 0},
+    {username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100, total_points: 0},
+    {username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80, total_points: 0},
 ]
 
 users.each do |user|
@@ -10,6 +10,7 @@ users.each do |user|
         u.password = user[:password]
         u.cant_life = user[:cant_life]
         u.cant_coins = user[:cant_coins]
+        u.total_points = user[:total_points]
     end
 end
 
@@ -140,7 +141,7 @@ questions = [
     {name_question: 'Which driver is leaving Ferrari this year (2024)?', level: 'normal', theme: 'free' },
     {name_question: 'Who was the pilot of Mercedes in 2022 accompanying Lewis Hamilton?', level: 'normal', theme: 'free' },
     {name_question: 'What type of garment has to be fireproof according to the FIA regulations?', level: 'difficult', theme: 'free' },
-    {name_question: 'Which team has the most Constructors Championships in F1 history?', level: 'difficult', theme: 'free' },    
+    {name_question: 'Which team has the most Constructors Championships in F1 history?', level: 'difficult', theme: 'free' },
     {name_question: 'In what year were hybrid engines introduced in F1?', level: 'impossible', theme: 'free' },
     {name_question: 'What are drivers prohibited from using during a race?', level: 'impossible', theme: 'free' }
 
@@ -293,52 +294,52 @@ options = [
     {name_option: 'Silverstone', question_id: 27, correct: true},
     {name_option: 'Fuji', question_id: 27, correct: false},
     {name_option: 'Jerez', question_id: 27, correct: false},
-    
+
     {name_option: 'Monza', question_id: 28, correct: false},
     {name_option: 'Sochi', question_id: 28, correct: false},
     {name_option: 'Pescara', question_id: 28, correct: true},
     {name_option: 'Zolder', question_id: 28, correct: false},
-    
+
     {name_option: '25.602km', question_id: 29, correct: false},
     {name_option: '25.954km', question_id: 29, correct: false},
     {name_option: '26.122km', question_id: 29, correct: false},
     {name_option: '25.801km', question_id: 29, correct: true},
-    
+
     {name_option: 'Monza', question_id: 30, correct: true},
     {name_option: 'Mónaco', question_id: 30, correct: false},
     {name_option: 'Silverstone', question_id: 30, correct: false},
     {name_option: 'Hungaroring', question_id: 30, correct: false},
-    
+
     {name_option: '69', question_id: 31, correct: false},
     {name_option: '72', question_id: 31, correct: true},
     {name_option: '57', question_id: 31, correct: false},
     {name_option: '75', question_id: 31, correct: false},
-    
+
     {name_option: 'Autodrome', question_id: 32, correct: false},
     {name_option: 'Hybrid', question_id: 32, correct: false},
     {name_option: 'Rural', question_id: 32, correct: true},
     {name_option: 'Street circuit', question_id: 32, correct: false},
-    
+
     {name_option: 'Riverside', question_id: 33, correct: false},
     {name_option: 'Miami', question_id: 33, correct: false},
     {name_option: 'Mugello', question_id: 33, correct: false},
     {name_option: 'Las Vegas', question_id: 33, correct: true},
-    
+
     {name_option: 'United States', question_id: 34, correct: true},
     {name_option: 'Spain', question_id: 34, correct: false},
     {name_option: 'England', question_id: 34, correct: false},
     {name_option: 'Italy', question_id: 34, correct: false},
-    
+
     {name_option: 'AVUS', question_id: 35, correct: false},
     {name_option: 'Mónaco', question_id: 35, correct: true},
     {name_option: 'Yeda', question_id: 35, correct: false},
     {name_option: 'Zolder', question_id: 35, correct: false},
-    
+
     {name_option: 'The Chapel', question_id: 36, correct: false},
     {name_option: 'Mount Silvano', question_id: 36, correct: false},
     {name_option: 'The Flying Kilometer', question_id: 36, correct: true},
     {name_option: 'The Flat Point', question_id: 36, correct: false},
-    
+
     {name_option: '1986-1992', question_id: 37, correct: false},
     {name_option: '1999-2009', question_id: 37, correct: false},
     {name_option: '1975-1983', question_id: 37, correct: false},
@@ -703,7 +704,7 @@ options = [
     {name_option: 'Jewelry' , question_id: 108, correct: true},
     {name_option: 'They have no prohibitions' , question_id: 108, correct: false},
     {name_option: 'Very long hair' , question_id: 108, correct: false},
-    {name_option: 'Maximum weight' , question_id: 108, correct: false}, 
+    {name_option: 'Maximum weight' , question_id: 108, correct: false},
 
 ]
 

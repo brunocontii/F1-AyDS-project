@@ -38,6 +38,10 @@
                     <img src="/icons/heart.png" alt="Vidas" class="icon">
                     <span id="lives-count"><%=@current_user ? @current_user.cant_life : 0%></span>
                 </div>
+                <div class="points">
+                    <img src="/icons/points.png" alt="Vidas" class="icon">
+                    <span id="points-count"><%= @current_user ? @current_user.total_points : 0 %></span>
+                </div>
                 <div class="profile">
                     <% if current_user.profile %>
                         <img src= <%= @current_user.profile.profile_picture %> alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">

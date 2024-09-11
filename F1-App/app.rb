@@ -15,6 +15,7 @@ require './models/question'
 enable :sessions
 
 class App < Sinatra::Application
+    $racha = 1
     # para asegurarse de que toda la inicialización necesaria en las clases se realice correctamente
     def initialize(app = nil)
         super()
@@ -141,12 +142,17 @@ class App < Sinatra::Application
     end
 
     get '/gamemodes' do
+        # Intenta obtener los 10 usuarios con más puntos en orden descendente
+        @users = User.order(total_points: :desc).limit(10) || []
+        # Si hay una sesión activa, busca el usuario actual
         @current_user = User.find_by(username: session[:username]) if session[:username]
-        if request.xhr? # solicitud AJAX , permite que solo traiga las vidas, sin recargar toda la pagina.
-            content_type :json # respuesta json y se convierte en cadena y va a buscar las vidas del usuario en sesion.
-            { lives: @current_user.cant_life }.to_json
+
+        if request.xhr? # Si la solicitud es AJAX, envía solo los datos necesarios
+          content_type :json
+          { lives: @current_user&.cant_life || 0 }.to_json # Maneja el caso en que @current_user pueda ser nil
         else
-            erb :'gamemodes/gamemodes', locals: { current_user: @current_user }
+          # Renderiza la vista con los usuarios y el usuario actual como variables locales
+          erb :'gamemodes/gamemodes', locals: { current_user: @current_user, users: @users }
         end
     end
 
@@ -209,24 +215,24 @@ class App < Sinatra::Application
 
     def handle_progressive_mode_submission(mode)
         @current_user = User.find_by(username: session[:username]) if session[:username]
-    
+
         unless @current_user&.can_play?
             session[:message] = "You have 0 lives. Please wait for lives to regenerate."
             session[:color] = "red"
             return redirect '/gamemodes'
         end
-    
+
         if params[:timeout] == 'true' && !session[:inmunity]
             handle_timeout
         else
             handle_option_submission
         end
-    
+
         redirect "/gamemodes/progressive/#{mode}"
     end
-    
+
     private
-    
+
     def handle_timeout
         @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
         if @current_user.cant_life.zero?
@@ -238,7 +244,7 @@ class App < Sinatra::Application
             session[:color] = "red"
         end
     end
-    
+
     def handle_option_submission
         if params[:option_id].to_i > 0
             @option = Option.find(params[:option_id].to_i)
@@ -246,6 +252,8 @@ class App < Sinatra::Application
             if @option.correct
                 Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
                 @current_user.increment!(:cant_coins, 10)
+                @current_user.increment!(:total_points, 50*$racha)
+                $racha = $racha + 1
                 session[:message] = "Correct! Well done."
                 session[:color] = "green"
             elsif session[:inmunity]
@@ -267,8 +275,9 @@ class App < Sinatra::Application
             redirect '/gamemodes'
         end
     end
-    
+
     def handle_incorrect_answer
+        $racha = 1
         @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
         if @current_user.cant_life.zero?
             session[:message] = "You have 0 lives. Please wait for lives to regenerate."
@@ -332,7 +341,7 @@ class App < Sinatra::Application
         if @current_user&.cant_coins.to_i >= 200
             session[:inmunity] = true
             @current_user.update!(cant_coins: @current_user.cant_coins - 200)
-            
+
             { status: 'success' }.to_json
         else
             { status: 'error', message: 'Not enough coins' }.to_json
@@ -436,6 +445,8 @@ class App < Sinatra::Application
             if @option.correct
                 Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
                 @current_user.increment!(:cant_coins, 10)
+                @current_user.increment!(:total_points, 50*$racha)
+                $racha = $racha + 1
                 session[:message] = "Correct! Well done."
                 session[:color] = "green"
             else

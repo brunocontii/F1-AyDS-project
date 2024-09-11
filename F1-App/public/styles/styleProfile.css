@@ -34,7 +34,7 @@ header {
     align-items: center;
 }
 
-.user-info .currency, .user-info .lives {
+.user-info .currency, .user-info .lives, .user-info .points {
     display: flex;
     align-items: center;
     margin-right: 15px;

@@ -41,13 +41,13 @@ header {
     align-items: center;
 }
 
-.currency, .lives {
+.currency, .lives, .points {
     display: flex;
     align-items: center;
     margin-right: 20px;
 }
 
-.currency img, .lives img {
+.currency img, .lives img, .points img {
     width: 20px;
     height: 20px;
     margin-right: 5px;
@@ -143,4 +143,43 @@ main h1 {
 
 .gamemode i {
     margin-right: 10px;
+}
+
+.leaderboard {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.leaderboard h2 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.leaderboard-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.leaderboard-entry .rank {
+    font-weight: bold;
+    color: #ffcc00;
+}
+
+.leaderboard-entry .username {
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.leaderboard-entry .points {
+    font-weight: bold;
+    color: #fff;
 }

@@ -38,13 +38,13 @@ header {
     align-items: center;
 }
 
-.currency, .lives {
+.currency, .lives, .points {
     display: flex;
     align-items: center;
     margin-right: 20px;
 }
 
-.currency img, .lives img {
+.currency img, .lives img, .points img {
     width: 20px;
     height: 20px;
     margin-right: 5px;
