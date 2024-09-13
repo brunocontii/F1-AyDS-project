@@ -91,7 +91,7 @@ class App < Sinatra::Application
             @error = "Passwords are different"
             erb :'register/register'
         else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
-            user = User.create(username: username, password: password, cant_life: 3 , cant_coins: 0)
+            user = User.create(username: username, password: password, cant_life: 3, cant_coins: 0, total_points: 0)
             Profile.create(name: name, lastName: lastname, description: description, age: age, user: user, profile_picture: profile_picture)
             session[:username] = user.username
             redirect '/gamemodes' # redirecciona a jugar
@@ -148,11 +148,11 @@ class App < Sinatra::Application
         @current_user = User.find_by(username: session[:username]) if session[:username]
 
         if request.xhr? # Si la solicitud es AJAX, envía solo los datos necesarios
-          content_type :json
-          { lives: @current_user&.cant_life || 0 }.to_json # Maneja el caso en que @current_user pueda ser nil
+            content_type :json
+            { lives: @current_user&.cant_life || 0 }.to_json # Maneja el caso en que @current_user pueda ser nil
         else
-          # Renderiza la vista con los usuarios y el usuario actual como variables locales
-          erb :'gamemodes/gamemodes', locals: { current_user: @current_user, users: @users }
+            # Renderiza la vista con los usuarios y el usuario actual como variables locales
+            erb :'gamemodes/gamemodes', locals: { current_user: @current_user, users: @users }
         end
     end
 
@@ -291,32 +291,42 @@ class App < Sinatra::Application
 
 
     post '/use_extra_time' do
+        # Obtenemos la solicitud y convertimos el JSON recibido en un hash
         content_type :json
         request_body = request.body.read
         params = JSON.parse(request_body)
 
+        # Extraemos al usuario desde los parametros y lo buscamos
         user_id = params['user_id']
         @current_user = User.find(user_id)
 
+        # Caso donde el usuario SI puede comprar el comodin
         if @current_user&.cant_coins.to_i >= 75
             @current_user.update!(cant_coins: @current_user.cant_coins - 75)
+            # Devolvemos un JSON con el estado exitoso
             { status: 'success' }.to_json
         else
+            # Devolvemos un JSON con un mensaje de error
             { status: 'error', message: 'Not enough coins' }.to_json
         end
     end
 
     post '/use_50_50' do
+        # Obtenemos la solicitud y convertimos el JSON recibido en un hash
         content_type :json
         request_body = request.body.read
         params = JSON.parse(request_body)
 
+        # Extraemos al usuario desde los parametros y lo buscamos
         user_id = params['user_id']
-        question_id = params['question_id']
         @current_user = User.find(user_id)
+        # Estraemos la pregunta desde los parametros y la buscamos
+        # Tambien buscamos las opciones para esa pregunta
+        question_id = params['question_id']
         question = Question.find(question_id)
         options = question.options
 
+        # Caso donde el usuario SI puede comprar el comodin
         if @current_user.cant_coins >= 150
             @current_user.update(cant_coins: @current_user.cant_coins - 150)
 
@@ -324,26 +334,32 @@ class App < Sinatra::Application
             incorrect_options = options.reject { |option| option.correct }.sample(2)
             incorrect_option_ids = incorrect_options.map(&:id)
 
+            # Devolvemos un JSON con el estado exitoso
             { status: 'success', removed_options: incorrect_option_ids }.to_json
         else
+            # Devolvemos un JSON con un mensaje de error
             { status: 'error', message: 'Not enough coins' }.to_json
         end
     end
 
     post '/inmunity' do
+        # Obtenemos la solicitud y convertimos el JSON recibido en un hash
         content_type :json
         request_body = request.body.read
         params = JSON.parse(request_body)
 
+        # Extraemos al usuario desde los parametros y lo buscamos
         user_id = params['user_id']
         @current_user = User.find(user_id)
 
+        # Caso donde el usuario SI puede comprar el comodin
         if @current_user&.cant_coins.to_i >= 200
             session[:inmunity] = true
             @current_user.update!(cant_coins: @current_user.cant_coins - 200)
-
+            # Devolvemos un JSON con el estado exitoso
             { status: 'success' }.to_json
         else
+            # Devolvemos un JSON con un mensaje de error
             { status: 'error', message: 'Not enough coins' }.to_json
         end
     end
@@ -423,25 +439,54 @@ class App < Sinatra::Application
     end
 
     post '/gamemodes/free' do
+        # Buscamos al usuario
         @current_user = User.find_by(username: session[:username]) if session[:username]
-
-        if params[:timeout] == 'true'
-            # cuando se acabo el tiempo para responder una pregunta
-            @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-            # si al acabarse el tiempo se queda sin vidas
-            if @current_user.cant_life == 0
-                session[:message] = "You have 0 lives. Please wait for lives to regenerate."
-                session[:color] = "red"
-                redirect '/gamemodes'
-            else
-                # sino sigue respondiendo preguntas
-                session[:message] = "Time's up! Incorrect!"
-                session[:color] = "red"
-            end
+    
+        # Verificamos que el usuario pueda jugar
+        unless @current_user&.can_play?
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+            session[:color] = "red"
+            return redirect '/gamemodes'
+        end
+    
+        # Si se acabo el tiempo para responder y no tiene activada la inmunidad
+        if params[:timeout] == 'true' && !session[:inmunity]
+            # Metodo que maneja la expiracion del tiempo
+            handle_free_timeout
         else
+            # Si no se agoto el tiempo, o tiene inmunidad, llamamos al metodo que maneja
+            # la opcion seleccionada
+            handle_free_option_submission
+        end
+    
+        redirect '/gamemodes/free'
+    end
+    
+    private
+    
+    # Metodo que maneja lo que pasa cuando el tiempo para responder se acaba
+    def handle_free_timeout
+        # Restamos 1 vida al usuario
+        @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+        # Verificamos si el usuario puede seguir jugando o no
+        if @current_user.cant_life.zero?
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+            session[:color] = "red"
+            redirect '/gamemodes'
+        else
+            session[:message] = "Time's up! Incorrect!"
+            session[:color] = "red"
+        end
+    end
+    
+    # Metodo que maneja la opcion seleccionada por el usuario
+    def handle_free_option_submission
+        # Si el usuario selecciono una opcion
+        if params[:option_id].to_i > 0
+            # Buscamos la opcion y su pregunta relacionada
             @option = Option.find(params[:option_id].to_i)
             @question = @option.question
-
+            # Si la opcion es correcta
             if @option.correct
                 Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
                 @current_user.increment!(:cant_coins, 10)
@@ -449,25 +494,46 @@ class App < Sinatra::Application
                 $racha = $racha + 1
                 session[:message] = "Correct! Well done."
                 session[:color] = "green"
+            elsif session[:inmunity]
+                # Si la opcion es incorrecta pero tiene la inmunidad activada
+                session[:inmunity] = false
+                session[:message] = "Activate inmunity"
+                session[:color] = "green"
             else
-                @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
-                if @current_user.cant_life == 0
-                    session[:message] = "You have 0 lives. Please wait for lives to regenerate."
-                    session[:color] = "red"
-                    redirect '/gamemodes'
-                else
-                session[:message] = "Incorrect!"
-                session[:color] = "red"
-                end
-            session[:message] = "Incorrect!"
-            session[:color] = "red"
+                # Si la opcion es incorrecta y no tiene la inmunidad activada llamamos
+                # al metodo que maneja la respuesta incorrecta
+                handle_free_incorrect_answer
             end
-
+            # Guardamos la pregunta respondida asi no vuelve a aparecer
             session[:answered_free_questions] ||= []
             session[:answered_free_questions] << @question.id
+        elsif session[:inmunity]
+            # Si el usuario no selecciono una opcion pero tiene la inmundad activada
+            session[:inmunity] = false
+            session[:message] = "Activate inmunity"
+            session[:color] = "green"
+        else
+            # Si el usuario no selecciono ninguna opcion
+            session[:message] = "Invalid option ID"
+            session[:color] = "red"
+            redirect '/gamemodes'
         end
-
-        redirect '/gamemodes/free'
+    end
+    
+    # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
+    def handle_free_incorrect_answer
+        # Reseteamos la recha y le restamos 1 vida
+        $racha = 1
+        @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
+        # Verificamos que el usuario pueda seguir jugando
+        if @current_user.cant_life.zero?
+            session[:message] = "You have 0 lives. Please wait for lives to regenerate."
+            session[:color] = "red"
+            redirect '/gamemodes'
+        else
+            session[:message] = "Incorrect!"
+            session[:color] = "red"
+        end
     end
 
 end
