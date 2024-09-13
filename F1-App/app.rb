@@ -98,6 +98,33 @@ class App < Sinatra::Application
         end
     end
 
+    post '/profile/change_password' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+
+        if @current_user
+          current_password = params[:current_password]
+          new_password = params[:new_password]
+          confirm_password = params[:confirm_password]
+
+          # Verificar si la contraseña actual coincide
+          if @current_user.password == current_password # Considerar hashing si usas bcrypt
+            # Verificar si la nueva contraseña coincide con la confirmación
+            if new_password == confirm_password
+              # Actualizar la contraseña
+              @current_user.update(password: new_password)
+              redirect '/profile'
+            else
+              "Las nuevas contraseñas no coinciden."
+            end
+          else
+            "La contraseña actual es incorrecta."
+          end
+        else
+          "Usuario no encontrado."
+        end
+    end
+
+
     get '/logout' do
         session.clear
         redirect '/'
@@ -441,14 +468,14 @@ class App < Sinatra::Application
     post '/gamemodes/free' do
         # Buscamos al usuario
         @current_user = User.find_by(username: session[:username]) if session[:username]
-    
+
         # Verificamos que el usuario pueda jugar
         unless @current_user&.can_play?
             session[:message] = "You have 0 lives. Please wait for lives to regenerate."
             session[:color] = "red"
             return redirect '/gamemodes'
         end
-    
+
         # Si se acabo el tiempo para responder y no tiene activada la inmunidad
         if params[:timeout] == 'true' && !session[:inmunity]
             # Metodo que maneja la expiracion del tiempo
@@ -458,12 +485,12 @@ class App < Sinatra::Application
             # la opcion seleccionada
             handle_free_option_submission
         end
-    
+
         redirect '/gamemodes/free'
     end
-    
+
     private
-    
+
     # Metodo que maneja lo que pasa cuando el tiempo para responder se acaba
     def handle_free_timeout
         # Restamos 1 vida al usuario
@@ -478,7 +505,7 @@ class App < Sinatra::Application
             session[:color] = "red"
         end
     end
-    
+
     # Metodo que maneja la opcion seleccionada por el usuario
     def handle_free_option_submission
         # Si el usuario selecciono una opcion
@@ -519,7 +546,7 @@ class App < Sinatra::Application
             redirect '/gamemodes'
         end
     end
-    
+
     # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
     def handle_free_incorrect_answer
         # Reseteamos la recha y le restamos 1 vida
