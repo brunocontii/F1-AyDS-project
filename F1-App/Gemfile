@@ -9,6 +9,7 @@ gem "sqlite3", "~> 1.4"
 gem 'rake'
 gem 'simplecov'
 gem 'database_cleaner-active_record'
+gem 'sinatra-flash'
 
 group :test, :development do
     gem 'rspec'

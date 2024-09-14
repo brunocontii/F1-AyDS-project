@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'sinatra/flash'
 
 set :database_file, './config/database.yml'
 set :public_folder, File.dirname(__FILE__) + '/public'
@@ -98,33 +99,6 @@ class App < Sinatra::Application
         end
     end
 
-    post '/profile/change_password' do
-        @current_user = User.find_by(username: session[:username]) if session[:username]
-
-        if @current_user
-          current_password = params[:current_password]
-          new_password = params[:new_password]
-          confirm_password = params[:confirm_password]
-
-          # Verificar si la contraseña actual coincide
-          if @current_user.password == current_password # Considerar hashing si usas bcrypt
-            # Verificar si la nueva contraseña coincide con la confirmación
-            if new_password == confirm_password
-              # Actualizar la contraseña
-              @current_user.update(password: new_password)
-              redirect '/profile'
-            else
-              "Las nuevas contraseñas no coinciden."
-            end
-          else
-            "La contraseña actual es incorrecta."
-          end
-        else
-          "Usuario no encontrado."
-        end
-    end
-
-
     get '/logout' do
         session.clear
         redirect '/'
@@ -166,6 +140,42 @@ class App < Sinatra::Application
             @profile.update(profile_picture: params[:profile_picture])
         end
         redirect '/profile'
+    end
+
+    get '/profile/change-password' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @profile = @current_user.profile
+        erb :'profiles/change-pass', locals: { profile: @profile}
+    end
+
+    post '/profile/change_password' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+
+        if @current_user
+            current_password = params[:current_password]
+            new_password = params[:new_password]
+            confirm_password = params[:confirm_password]
+
+            # Verificar si la contraseña actual coincide
+            if @current_user.password == current_password # Considerar hashing si usas bcrypt
+                # Verificar si la nueva contraseña coincide con la confirmación
+                if new_password == confirm_password
+                    # Actualizar la contraseña
+                    @current_user.update(password: new_password)
+                    flash[:success] = "Password changed successfully."
+                    redirect '/profile'
+                else
+                    flash[:error] = "The new passwords do not match."
+                    redirect '/profile/change-password'
+                end
+            else
+                flash[:error] = "The current password is incorrect."
+                redirect '/profile/change-password'
+            end
+        else
+            flash[:error] = "User not found."
+            redirect '/profile/change-password'
+        end
     end
 
     get '/gamemodes' do

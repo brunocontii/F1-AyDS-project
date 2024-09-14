@@ -106,7 +106,7 @@ main {
     backdrop-filter: blur(10px);
     margin: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 60vw;
+    width: 25vw;
     height: auto;
     max-width: 800px;
 }
@@ -120,142 +120,57 @@ main {
     margin-bottom: 20px;
 }
 
-.profile-details {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.profile-details p {
-    margin: 5px 0;
-    font-size: 1.2rem;
-}
-
-.profile-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    width: 100%;
-}
-
-.stat-item {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    font-size: 1.2rem;
-}
-
-.progress-bar {
-    width: 100%;
-    background-color: #ddd;
-    overflow: hidden;
-    margin-top: 10px;
-    height: 15px;
-}
-
-.progress {
-    height: 100%;
-    background-color: #4caf50;
-}
-
-.change-picture-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #ffcc00;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-
 .change-password {
-    position: absolute;
-    top: 50px;
-    right: 10px;
-    background-color: #ffcc00;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-
-.change-picture-btn:hover {
-    background-color: #e6b800;
-}
-
-.change-password:hover {
-    background-color: #e6b800;
-}
-
-/* Estilos para el modal de selección de imagen */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    position: relative;
-}
-
-.modal-content h2 {
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 100%;
 }
 
-.profile-pictures {
+.change-password h3 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.change-password form {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     gap: 10px;
 }
 
-.profile-pictures .profile-picture {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: transform 0.3s;
+.change-password label {
+    font-size: 1rem;
 }
 
-.profile-pictures .profile-picture:hover {
-    transform: scale(1.1);
+.change-password input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
+.change-password-btn {
+    background-color: #ffcc00;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
 }
 
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+.change-password-btn:hover {
+    background-color: #e6b800;
+}
+
+.flash {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
 }
 
 .flash.success {
@@ -263,3 +178,10 @@ main {
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+
+.flash.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+

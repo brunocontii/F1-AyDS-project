@@ -21,6 +21,32 @@
             updateLives();
         });
     </script>
+    <script>
+        function toggleProfileMenu() {
+            var menu = document.getElementById('profile-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function chooseProfilePicture() {
+            document.getElementById('profile-picture-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('profile-picture-modal').style.display = 'none';
+        }
+
+        function selectProfilePicture(url) {
+            document.getElementById('selected-profile-picture').value = url;
+            document.getElementById('update-profile-picture-form').submit();
+        }
+
+        setTimeout(function() {
+            var flashMessages = document.querySelectorAll('.flash');
+            flashMessages.forEach(function(message) {
+                message.style.display = 'none';
+            });
+        }, 5000);
+    </script>
 </head>
 <body>
     <header>
@@ -52,40 +78,22 @@
         </div>
     </header>
     <main>
-        
-
         <div class="profile-container">
             <button class="change-picture-btn" onclick="chooseProfilePicture()">Change Picture</button>
+            <button class="change-password" onclick="window.location.href='/profile/change-password'">Change Password</button>
             <div class="profile-picture">
                 <img src="<%= profile.profile_picture %>" alt="Profile Picture">
             </div>
+            <% if flash[:success] %>
+                <div class="flash success">
+                    <%= flash[:success] %>
+                </div>
+            <% end %>
             <div class="profile-details">
                 <p><strong>Name:</strong> <%= profile.name %> <%= profile.lastName %></p>
                 <p><strong>Age:</strong> <%= profile.age %> years</p>
                 <p><strong>Description:</strong> <%= profile.description %></p>
             </div>
-
-            <!-- Formulario para cambiar contraseña -->
-            <div class="change-password">
-                <h3>Change Password</h3>
-                <form action="/profile/change_password" method="post">
-                    <label for="current-password">Current Password:</label>
-                    <br>
-                    <input type="password" id="current-password" name="current_password" required>
-                    <br>
-                    <label for="new-password">New Password:</label>
-                    <br>
-                    <input type="password" id="new-password" name="new_password" required>
-                    <br>
-                    <label for="confirm-password">Confirm New Password:</label>
-                    <br>
-                    <input type="password" id="confirm-password" name="confirm_password" required>
-                    <br>
-                    <button type="submit" class="change-password-btn">Update Password</button>
-                </form>
-            </div>
-        
-            <!-- Estadísticas de perfil -->
             <div class="profile-stats">
                 <div class="stat-item">
                     <p>Pilot percentage: <%= countPi %>%</p>
@@ -115,7 +123,6 @@
         </div>
 
     </main>
-
     <div id="profile-picture-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
@@ -127,29 +134,8 @@
             </div>
         </div>
     </div>
-
     <form id="update-profile-picture-form" action="/profile/picture" method="post" style="display:none;">
         <input type="hidden" name="profile_picture" id="selected-profile-picture">
     </form>
-
-    <script>
-        function toggleProfileMenu() {
-            var menu = document.getElementById('profile-menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function chooseProfilePicture() {
-            document.getElementById('profile-picture-modal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('profile-picture-modal').style.display = 'none';
-        }
-
-        function selectProfilePicture(url) {
-            document.getElementById('selected-profile-picture').value = url;
-            document.getElementById('update-profile-picture-form').submit();
-        }
-    </script>
 </body>
 </html>
