@@ -15,14 +15,15 @@ users.each do |user|
 end
 
 profiles = [
-    {name: 'Juan Cruz', lastName: 'Gonzalez', description: 'f1 lover', age: 22, user_id: 3, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
-    {name: 'Bruno', lastName: 'Conti', description: 'messi lover', age: 21, user_id: 2, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
-    {name: 'Erich', lastName: 'Vollenweider', description: 'KTM Group', age: 25, user_id: 4, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
-    {name: 'Joaquin', lastName: 'Mezzano', description: 'intento de programador', age: 23, user_id: 1, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Juan Cruz', lastName: 'Gonzalez', email:'juancruzg30@gmail.com', description: 'f1 lover', age: 22, user_id: 3, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Bruno', lastName: 'Conti', email:'brunocse.5@gmail.com', description: 'messi lover', age: 21, user_id: 2, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Erich', lastName: 'Vollenweider', email:'vollenweidererich@gmail.com', description: 'KTM Group', age: 25, user_id: 4, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'Joaquin', lastName: 'Mezzano', email:'mezzanojoaquin@gmail.com', description: 'intento de programador', age: 23, user_id: 1, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
 ]
 
 profiles.each do |profile|
     Profile.find_or_create_by(name: profile[:name], lastName: profile[:lastName]) do |u|
+        u.email = profile[:email]
         u.description = profile[:description]
         u.age = profile[:age]
         u.user_id = profile[:user_id]

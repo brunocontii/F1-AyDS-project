@@ -3,6 +3,7 @@ class CreateProfilesTable < ActiveRecord::Migration[7.1]
     create_table :profiles do |t|
       t.string :name
       t.string :lastName
+      t.string :email
       t.text :description
       t.integer :age
       t.string :profile_picture

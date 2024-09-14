@@ -63,8 +63,9 @@ section {
     font-weight: bold;
 }
 
-input:focus ~ label,
-input:valid ~ label {
+input:not([name="email"]):focus ~ label,
+input:not([name="email"]):valid ~ label,
+.label-email.mostrar {
     top: -5px;
 }
 

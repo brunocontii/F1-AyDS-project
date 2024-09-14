@@ -81,6 +81,7 @@ class App < Sinatra::Application
         rpassword = params[:repeat_password]
         name = params[:name]
         lastname = params[:lastname]
+        email = params[:email]
         description = params[:description]
         age = params[:age]
         profile_picture = params[:profile_pic]
@@ -96,7 +97,7 @@ class App < Sinatra::Application
             user = User.new(username: username, password: password, cant_life: 3, cant_coins: 0, total_points: 0)
             # Intentamos guardar el usuario y verificamos si se guardo correctamente
             if user.save
-                Profile.create(name: name, lastName: lastname, description: description, age: age, user: user, profile_picture: profile_picture)
+                Profile.create(name: name, lastName: lastname, email: email, description: description, age: age, user: user, profile_picture: profile_picture)
                 session[:username] = user.username
                 redirect '/gamemodes'    
             else
