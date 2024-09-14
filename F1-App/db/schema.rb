@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_202132) do
 
   create_table "users", force: :cascade do |t|
     t.string "username"
-    t.string "password"
+    t.string "password_digest"
     t.integer "cant_life"
     t.integer "cant_coins"
     t.integer "total_points"

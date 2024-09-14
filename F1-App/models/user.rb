@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class User < ActiveRecord::Base
     has_one :profile
     has_and_belongs_to_many :gamemode
@@ -32,6 +34,14 @@ class User < ActiveRecord::Base
     def can_play?
         regenerate_life_if_needed
         cant_life > 0
+    end
+
+    def password=(new_password)
+        self.password_digest = BCrypt::Password.create(new_password)
+    end
+
+    def authenticate(password)
+        BCrypt::Password.new(self.password_digest) == password
     end
 
 end

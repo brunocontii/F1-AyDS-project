@@ -10,6 +10,7 @@ gem 'rake'
 gem 'simplecov'
 gem 'database_cleaner-active_record'
 gem 'sinatra-flash'
+gem 'bcrypt'
 
 group :test, :development do
     gem 'rspec'

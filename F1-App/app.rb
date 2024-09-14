@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
+require 'bcrypt'
 
 set :database_file, './config/database.yml'
 set :public_folder, File.dirname(__FILE__) + '/public'
@@ -55,9 +56,9 @@ class App < Sinatra::Application
         username = params[:username]
         password = params[:password]
         # buscamos el usuario y contraseña en la base de datos
-        user = User.find_by(username: username, password: password)
+        user = User.find_by(username: username)
         # si existe va derecho a gamemodes
-        if user
+        if user && user.authenticate(password)
             session[:username] = user.username # Guardar el nombre de usuario en la sesión
             redirect "/gamemodes"
         else # escribiste mal algo o no existe el usuario o no estas logueado (es mas generico)
@@ -92,10 +93,16 @@ class App < Sinatra::Application
             @error = "Passwords are different"
             erb :'register/register'
         else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
-            user = User.create(username: username, password: password, cant_life: 3, cant_coins: 0, total_points: 0)
-            Profile.create(name: name, lastName: lastname, description: description, age: age, user: user, profile_picture: profile_picture)
-            session[:username] = user.username
-            redirect '/gamemodes' # redirecciona a jugar
+            user = User.new(username: username, password: password, cant_life: 3, cant_coins: 0, total_points: 0)
+            # Intentamos guardar el usuario y verificamos si se guardo correctamente
+            if user.save
+                Profile.create(name: name, lastName: lastname, description: description, age: age, user: user, profile_picture: profile_picture)
+                session[:username] = user.username
+                redirect '/gamemodes'    
+            else
+                @error = "Failed to create the account. Please try again."
+                erb :'register/register'
+            end
         end
     end
 
@@ -157,7 +164,7 @@ class App < Sinatra::Application
             confirm_password = params[:confirm_password]
 
             # Verificar si la contraseña actual coincide
-            if @current_user.password == current_password # Considerar hashing si usas bcrypt
+            if @current_user.authenticate(current_password)
                 # Verificar si la nueva contraseña coincide con la confirmación
                 if new_password == confirm_password
                     # Actualizar la contraseña
