@@ -158,30 +158,24 @@ class App < Sinatra::Application
 
     post '/profile/change_password' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
+        current_password = params[:current_password]
+        new_password = params[:new_password]
+        confirm_password = params[:confirm_password]
 
-        if @current_user
-            current_password = params[:current_password]
-            new_password = params[:new_password]
-            confirm_password = params[:confirm_password]
-
-            # Verificar si la contraseña actual coincide
-            if @current_user.authenticate(current_password)
-                # Verificar si la nueva contraseña coincide con la confirmación
-                if new_password == confirm_password
-                    # Actualizar la contraseña
-                    @current_user.update(password: new_password)
-                    flash[:success] = "Password changed successfully."
-                    redirect '/profile'
-                else
-                    flash[:error] = "The new passwords do not match."
-                    redirect '/profile/change-password'
-                end
+        # Verificar si la contraseña actual coincide
+        if @current_user.authenticate(current_password)
+            # Verificar si la nueva contraseña coincide con la confirmación
+            if new_password == confirm_password
+                # Actualizar la contraseña
+                @current_user.update(password: new_password)
+                flash[:success] = "Password changed successfully."
+                redirect '/profile'
             else
-                flash[:error] = "The current password is incorrect."
+                flash[:error] = "The new passwords do not match."
                 redirect '/profile/change-password'
             end
         else
-            flash[:error] = "User not found."
+            flash[:error] = "The current password is incorrect."
             redirect '/profile/change-password'
         end
     end

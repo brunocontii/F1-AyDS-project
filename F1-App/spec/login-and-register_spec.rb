@@ -101,6 +101,23 @@ RSpec.describe 'The App' do
             expect(last_response).to be_ok
             expect(last_response.body).to include('Passwords are different')
         end
+
+        # Test para cuando falla la creacion del usuario
+        it 'fails to create the user and shows an error message' do
+            allow_any_instance_of(User).to receive(:save).and_return(false) # Simulamos que el guardado falla
+            post '/register', {
+                username: 'invaliduser',
+                password: 'password123',
+                repeat_password: 'password123',
+                name: 'First',
+                lastname: 'Last',
+                description: 'A new user',
+                age: '25',
+                profile_pic: 'profile1.png'
+            }
+            expect(last_response).to be_ok
+            expect(last_response.body).to include('Failed to create the account. Please try again.')
+        end
     end
 
 end
