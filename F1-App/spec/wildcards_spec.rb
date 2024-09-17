@@ -107,4 +107,37 @@ RSpec.describe 'The App' do
       end
   end
 
+  describe 'POST /inmunity' do
+    let!(:user) { User.create(username: 'testuser', password: 'password123', cant_coins: 250) }
+
+    before do
+      env 'rack.session', { username: user.username }
+    end
+
+    context 'when the user has enough coins' do
+        it 'reduces the user coins and returns success status' do
+            request_body = { user_id: user.id }.to_json
+
+            post '/inmunity', request_body, { 'CONTENT_TYPE' => 'application/json' }
+            expect(last_response.content_type).to eq('application/json')
+            expect(last_response.status).to eq(200)
+            updated_user = User.find(user.id)
+            expect(updated_user.reload.cant_coins).to eq(50) # Se espera que se reduzcan 200 monedas
+
+            # Respuesta JSON sea la esperada
+            json_response = JSON.parse(last_response.body)
+            expect(json_response).to eq({ 'status' => 'success' })
+        end
+    end
+
+    context 'when the user does not have enough coins' do
+        it 'does not reduce the coins and does not return success' do
+            user.update(cant_coins: 50)
+            request_body = { user_id: user.id }.to_json
+            post '/inmunity', request_body, { 'CONTENT_TYPE' => 'application/json' }
+            expect(user.reload.cant_coins).to eq(50) # Las monedas deben permanecer igual
+        end
+    end
+  end
+
 end
