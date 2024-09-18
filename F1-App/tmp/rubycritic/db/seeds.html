@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ruby Critic - Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- StyleSheets -->
+    <link href="../assets/vendor/stylesheets/bootstrap.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/vendor/stylesheets/font-awesome.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/vendor/stylesheets/prettify.custom_theme.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/stylesheets/application.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <a href="#menu-toggle" class="btn btn-default hidden-lg visible-sm-* hidden-md visible-xs-* pull-left" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <a href="../overview.html"><img src="../assets/images/logo.png" alt="Ruby Critic Logo" title="Ruby Critic Logo" width="55"><span class="logo">RUBYCRITIC</span></a>
+      
+    </header>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <aside id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="../overview.html" class="project-nav-item overview-nav"><i class="fa fa-dashboard"></i>Overview</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../code_index.html" class="project-nav-item code-index-nav"><i class="fa fa-code"></i>Code</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../smells_index.html" class="project-nav-item smells-index-nav"><i class="fa fa-warning"></i>Smells</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../simple_cov_index.html" class="project-nav-item coverage-index-nav"><i class="fa fa-umbrella"></i>Coverage</a>
+          </li>
+        </ul>
+      </aside>
+      <!-- /#sidebar-wrapper -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+  <!--Page Title -->
+  <div class="Page_Title">
+    <div class="file-time">
+      <span class="committed-at">
+        
+          Updated <time class='js-timeago' datetime='2024-09-14 13:47:26 -0300'>2024-09-14 13:47:26 -0300</time>
+        
+      </span>
+    </div>
+    <div>
+      <h3><small>db /</small> seeds.rb</h3>
+    </div>
+  </div>
+  <!--End Page Title -->
+  <div class="Content_Wrapper">
+    <!-- code detail -->
+    <div class="code-top-detail clearfix row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-1">
+            <div class="rating a big">
+              A
+            </div>
+          </div>
+          <div class="code-statistics col-md-11">
+            <div class="col-md-3">
+              <div><span class="metric">715</span><small> lines of codes</small></div>
+              <div><span class="metric">0</span><small> methods</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">N/A</span><small> complexity/method</small></div>
+              <div><span class="metric">25</span><small> churn</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">0.0</span><small> complexity</small></div>
+              <div><span class="metric">0</span><small> duplications</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="code-tabs">
+          <ul class="nav nav-pills right-to-left">
+            <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
+            <li class="active">
+              <a href="#" id="toggle-smells" class="toggle-button button">
+                0
+                smell
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <code class="prettyprint linenums lang-ruby file-code js-file-code">users = [
+    {username: &#39;Joaco&#39;, password: &#39;jondoe&#39;, cant_life: 3, cant_coins: 20, total_points: 0},
+    {username: &#39;Foden&#39;, password: &#39;messi&#39;, cant_life: 3, cant_coins: 100, total_points: 0},
+    {username: &#39;Juancho&#39;, password: &#39;Juancho1234&#39;, cant_life: 3, cant_coins: 100, total_points: 0},
+    {username: &#39;erich&#39;, password: &#39;Hamilton&#39;, cant_life: 3, cant_coins: 80, total_points: 0},
+]
+
+users.each do |user|
+    User.find_or_create_by(username: user[:username]) do |u|
+        u.password = user[:password]
+        u.cant_life = user[:cant_life]
+        u.cant_coins = user[:cant_coins]
+        u.total_points = user[:total_points]
+    end
+end
+
+profiles = [
+    {name: &#39;Juan Cruz&#39;, lastName: &#39;Gonzalez&#39;, email:&#39;juancruzg30@gmail.com&#39;, description: &#39;f1 lover&#39;, age: 22, user_id: 3, profile_picture: &#39;/profile_pictures/charles-leclerc-2024.png&#39;},
+    {name: &#39;Bruno&#39;, lastName: &#39;Conti&#39;, email:&#39;brunocse.5@gmail.com&#39;, description: &#39;messi lover&#39;, age: 21, user_id: 2, profile_picture: &#39;/profile_pictures/charles-leclerc-2024.png&#39;},
+    {name: &#39;Erich&#39;, lastName: &#39;Vollenweider&#39;, email:&#39;vollenweidererich@gmail.com&#39;, description: &#39;KTM Group&#39;, age: 25, user_id: 4, profile_picture: &#39;/profile_pictures/charles-leclerc-2024.png&#39;},
+    {name: &#39;Joaquin&#39;, lastName: &#39;Mezzano&#39;, email:&#39;mezzanojoaquin@gmail.com&#39;, description: &#39;intento de programador&#39;, age: 23, user_id: 1, profile_picture: &#39;/profile_pictures/charles-leclerc-2024.png&#39;},
+]
+
+profiles.each do |profile|
+    Profile.find_or_create_by(name: profile[:name], lastName: profile[:lastName]) do |u|
+        u.email = profile[:email]
+        u.description = profile[:description]
+        u.age = profile[:age]
+        u.user_id = profile[:user_id]
+        u.profile_picture = profile[:profile_picture]
+    end
+end
+
+
+questions = [
+    {name_question: &#39;Who are the drivers with the most World Championships?&#39;, level: &#39;easy&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which of the following drivers is known as &quot;The Iceman&quot;?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which driver holds the record for the most pole positions in history?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Who is the youngest driver to have won a race?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which of the following drivers debuted at the youngest age in a race?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which driver is known as &quot;the professor&quot; due to his strategy and calculation in races?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which of the following drivers is the son of a world rally champion?&#39;, level: &#39;easy&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which of the mentioned drivers is Australian?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which driver won the most races in the Monaco Grand Prix?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Who is the youngest driver to win an F1 championship?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Who is the only driver to win a championship with Renault?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Who is the first driver to win a race for Ferrari in history?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Who was the only driver to win the World Championship with Brawn GP?&#39;, level: &#39;impossible&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;How many world titles does former driver Juan Manuel Fangio have?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Who is the driver with the most podiums (13) without winning a race?&#39;, level: &#39;impossible&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;In what year did Juan Manuel Fangio win his last world championship?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;For which country did Emerson Fittipaldi and Felipe Massa race?&#39;, level: &#39;easy&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which drivers currently make up the MC-LAREN team?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;What nationality is former driver Sebastian Vettel?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;How many championships did Jim Clark win?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which driver was involved in the remembered accident losing his life in Imola, Italy?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;What is the nationality of current driver Sergio &quot;Checo&quot; Perez?&#39;, level: &#39;easy&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Is there currently an Argentine driver in F1?&#39;, level: &#39;normal&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;How many races did driver Michael Schumacher win?&#39;, level: &#39;difficult&#39;, theme: &#39;pilot&#39; },
+    {name_question: &#39;Which driver, nicknamed “The Flying Scot,” won three World Championships in Formula 1?&#39;, level: &#39;easy&#39;, theme: &#39;pilot&#39; },
+
+    {name_question: &#39;How many circuits have hosted races in the F1 world championship?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;In which circuit was the first F1 race held?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What is the longest circuit used in the history of F1?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;How long is the longest circuit used in the history of F1?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What is the circuit with the most editions?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;How many editions did the most used circuit have?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which of the following is NOT a type of circuit:&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What was the last circuit added to date?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which country has the most circuits in its territory?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What is the shortest circuit used in the history of F1?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What is the name of the section of the Pescara circuit where Guy Moll died during 1934?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;During which years was the Adelaide Street Circuit (Australia) active?&#39;, level: &#39;impossible&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What is the name of the only Argentine circuit that was in F1?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which circuit is completely oval in shape?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;How many circuits are currently raced?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which circuit was not raced in the 21st century?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What is the approximate spectator capacity of the Monaco circuit?&#39;, level: &#39;impossible&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Who holds the record for the fastest lap at the Monaco circuit?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;How many corners does the Monaco circuit have?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What types of events do NOT take place at the Monaco circuit, aside from F1?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;What type of run-off areas does the Monza circuit NOT have?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which circuit has the largest spectator capacity?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which circuit is over 100 years old since its first race?&#39;, level: &#39;difficult&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;How many circuits that were in F1 are located in South America?&#39;, level: &#39;normal&#39;, theme: &#39;circuit&#39; },
+    {name_question: &#39;Which continent has the most circuits raced in F1?&#39;, level: &#39;easy&#39;, theme: &#39;circuit&#39; },
+
+    {name_question: &#39;How many drivers does each team compete with in each race?&#39;, level: &#39;easy&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Red Bull drivers?&#39;, level: &#39;easy&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Mercedes drivers?&#39;, level: &#39;easy&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Ferrari drivers?&#39;, level: &#39;easy&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current McLaren drivers?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Aston Martin drivers?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Alpine drivers?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Williams drivers?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current RB drivers?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Stake drivers?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who are the current Haas drivers?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;In what year did Red Bull start in motorsport?&#39;, level: &#39;impossible&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who was the founder of Red Bull?&#39;, level: &#39;impossible&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the predecessor team to Red Bull?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the best position in the Constructors\&#39; World Championship for Red Bull?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the best position in the Drivers\&#39; World Championship for Red Bull?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What is the nationality of Red Bull?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What is the nationality of Mercedes?&#39;, level: &#39;difficult&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who was the founder of Mercedes?&#39;, level: &#39;impossible&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the best position in the Constructors\&#39; World Championship for Mercedes?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the best position in the Drivers\&#39; World Championship for Mercedes?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What is the nationality of Ferrari?&#39;, level: &#39;easy&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;Who was the founder of Ferrari?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the best position in the Constructors\&#39; World Championship for Ferrari?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+    {name_question: &#39;What was the best position in the Drivers\&#39; World Championship for Ferrari?&#39;, level: &#39;normal&#39;, theme: &#39;team&#39; },
+
+    {name_question: &#39;What does the checkered flag indicate?&#39;, level: &#39;easy&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the green flag indicate?&#39;, level: &#39;easy&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the yellow flag indicate?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the yellow flag next to sign Safety Car indicate?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the yellow flag next to sign Virtual Safety Car indicate?&#39;, level: &#39;impossible&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the red flag indicate?&#39;, level: &#39;easy&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the black flag with the driver\&#39;s number indicate?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does a black flag with an orange circle mean?&#39;, level: &#39;impossible&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the split (black and white) flag with the number indicate?&#39;, level: &#39;impossible&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the blue flag indicate?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the yellow flag with red stripes indicate?&#39;, level: &#39;impossible&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What does the white flag indicate?&#39;, level: &#39;easy&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What is the qualifying system used in Formula 1?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What is the maximum number of laps allowed in a Formula 1 race?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What is the approximate duration of a Formula 1 race?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What is the common number of drivers on a Formula 1 starting grid?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What happens if a driver consistently exceeds track limits during the race?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What is the maximum speed allowed in the pit lane during a Formula 1 race?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;How are drivers and teams rewarded according to their performance in the Formula 1 race?&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;How many points does the driver who achieves the fastest lap in a race receive?&#39;, level: &#39;easy&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;How many drivers receive points at the end of each race?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;In what year was the first race in F1 history??&#39;, level: &#39;normal&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What technical regulations govern car specifications in Formula 1?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What do drivers have to do at the end of a race?&#39;, level: &#39;impossible&#39;, theme: &#39;career&#39; },
+    {name_question: &#39;What happens if a driver ignores three consecutive blue flags?&#39;, level: &#39;difficult&#39;, theme: &#39;career&#39; },
+
+    {name_question: &#39;Which driver is joining Ferrari in 2025?&#39;, level: &#39;easy&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;How do you win the drivers championship at the end of the world championship?&#39;, level: &#39;easy&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;Which driver is leaving Ferrari this year (2024)?&#39;, level: &#39;normal&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;Who was the pilot of Mercedes in 2022 accompanying Lewis Hamilton?&#39;, level: &#39;normal&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;What type of garment has to be fireproof according to the FIA regulations?&#39;, level: &#39;difficult&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;Which team has the most Constructors Championships in F1 history?&#39;, level: &#39;difficult&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;In what year were hybrid engines introduced in F1?&#39;, level: &#39;impossible&#39;, theme: &#39;free&#39; },
+    {name_question: &#39;What are drivers prohibited from using during a race?&#39;, level: &#39;impossible&#39;, theme: &#39;free&#39; }
+
+]
+
+
+questions.each do |question_data|
+    Question.find_or_create_by(name_question: question_data[:name_question]) do |q|
+        q.level = question_data[:level]
+        q.theme = question_data[:theme]
+    end
+end
+
+options = [
+
+    ######                 PILOT                     ######
+    {name_option: &#39;Lewis Hamilton and Michael Schumacher&#39; , question_id: 1, correct: true},
+    {name_option: &#39;Lewis Hamilton and Esteban Ocon&#39; , question_id: 1, correct: false},
+    {name_option: &#39;Lewis Hamilton and Franco Colapinto&#39; , question_id: 1, correct: false},
+    {name_option: &#39;Lewis Hamilton and Sergio &quot;Checo&quot; Perez&#39; , question_id: 1, correct: false},
+
+    {name_option: &#39;Fernando Alonso&#39; , question_id: 2, correct: false},
+    {name_option: &#39;Lewis Hamilton&#39; , question_id: 2, correct: false},
+    {name_option: &#39;Kimi Raikkonen&#39; , question_id: 2, correct: true},
+    {name_option: &#39;George Russell&#39; , question_id: 2, correct: false},
+
+    {name_option: &#39;Lewis Hamilton&#39;, question_id: 3, correct: true},
+    {name_option: &#39;Michael Schumacher&#39;, question_id: 3, correct: false},
+    {name_option: &#39;Ayrton Senna&#39;, question_id: 3, correct: false},
+    {name_option: &#39;Sebastian Vettel&#39;, question_id: 3, correct: false},
+
+    {name_option: &#39;Max Verstappen&#39;, question_id: 4, correct: true},
+    {name_option: &#39;Sebastian Vettel&#39;, question_id: 4, correct: false},
+    {name_option: &#39;Fernando Alonso&#39;, question_id: 4, correct: false},
+    {name_option: &#39;Lewis Hamilton&#39;, question_id: 4, correct: false},
+
+    {name_option: &#39;Max Verstappen&#39;, question_id: 5, correct: true},
+    {name_option: &#39;Sebastian Vettel&#39;, question_id: 5, correct: false},
+    {name_option: &#39;Jose Froilan Gonzalez&#39;, question_id: 5, correct: false},
+    {name_option: &#39;George Russell&#39;, question_id: 5, correct: false},
+
+    {name_option: &#39;Niki Lauda&#39;, question_id: 6, correct: false},
+    {name_option: &#39;Alain Prost&#39;, question_id: 6, correct: true},
+    {name_option: &#39;Nigel Mansell&#39;, question_id: 6, correct: false},
+    {name_option: &#39;Jackie Stewart&#39;, question_id: 6, correct: false},
+
+    {name_option: &#39;George Russell&#39;, question_id: 7, correct: false},
+    {name_option: &#39;Lando Norris&#39;, question_id: 7, correct: false},
+    {name_option: &#39;Pierre Gasly&#39;, question_id: 7, correct: false},
+    {name_option: &#39;Carlos Sainz Jr&#39;, question_id: 7, correct: true},
+
+    {name_option: &#39;Daniel Ricciardo&#39;, question_id: 8, correct: true},
+    {name_option: &#39;Lando Norris&#39;, question_id: 8, correct: false},
+    {name_option: &#39;Esteban Ocon&#39;, question_id: 8, correct: false},
+    {name_option: &#39;Sergio Perez&#39;, question_id: 8, correct: false},
+
+    {name_option: &#39;Lewis Hamilton&#39;, question_id: 9, correct: false},
+    {name_option: &#39;Ayrton Senna&#39;, question_id: 9, correct: true},
+    {name_option: &#39;Michael Schumacher&#39;, question_id: 9, correct: false},
+    {name_option: &#39;Nico Rosberg&#39;, question_id: 9, correct: false},
+
+    {name_option: &#39;Sebastian Vettel&#39;, question_id: 10, correct: true},
+    {name_option: &#39;Lewis Hamilton&#39;, question_id: 10, correct: false},
+    {name_option: &#39;Fernando Alonso&#39;, question_id: 10, correct: false},
+    {name_option: &#39;Max Verstappen&#39;, question_id: 10, correct: false},
+
+    {name_option: &#39;Fernando Alonso&#39;, question_id: 11, correct: true},
+    {name_option: &#39;Alain Prost&#39;, question_id: 11, correct: false},
+    {name_option: &#39;Nigel Mansell&#39;, question_id: 11, correct: false},
+    {name_option: &#39;Damon Hill&#39;, question_id: 11, correct: false},
+
+    {name_option: &#39;José Froilán González&#39;, question_id: 12, correct: true},
+    {name_option: &#39;Alberto Ascari&#39;, question_id: 12, correct: false},
+    {name_option: &#39;Juan Manuel Fangio&#39;, question_id: 12, correct: false},
+    {name_option: &#39;Nino Farina&#39;, question_id: 12, correct: false},
+
+    {name_option: &#39;Jenson Button&#39;, question_id: 13, correct: true},
+    {name_option: &#39;Rubens Barrichello&#39;, question_id: 13, correct: false},
+    {name_option: &#39;Lewis Hamilton&#39;, question_id: 13, correct: false},
+    {name_option: &#39;Michael Schumacher&#39;, question_id: 13, correct: false},
+
+    {name_option: &#39;5&#39;, question_id: 14, correct: true},
+    {name_option: &#39;4&#39;, question_id: 14, correct: false},
+    {name_option: &#39;3&#39;, question_id: 14, correct: false},
+    {name_option: &#39;6&#39;, question_id: 14, correct: false},
+
+    {name_option: &#39;Nick Heidfeld&#39;, question_id: 15, correct: true},
+    {name_option: &#39;Romain Grosjean&#39;, question_id: 15, correct: false},
+    {name_option: &#39;Nico Hulkenberg&#39;, question_id: 15, correct: false},
+    {name_option: &#39;Kevin Magnussen&#39;, question_id: 15, correct: false},
+
+    {name_option: &#39;1957&#39;, question_id: 16, correct: true},
+    {name_option: &#39;1956&#39;, question_id: 16, correct: false},
+    {name_option: &#39;1955&#39;, question_id: 16, correct: false},
+    {name_option: &#39;1958&#39;, question_id: 16, correct: false},
+
+    {name_option: &#39;Brazil&#39;, question_id: 17, correct: true},
+    {name_option: &#39;Argentina&#39;, question_id: 17, correct: false},
+    {name_option: &#39;Spain&#39;, question_id: 17, correct: false},
+    {name_option: &#39;Italy&#39;, question_id: 17, correct: false},
+
+    {name_option: &#39;Lando Norris and Oscar Piastri&#39;, question_id: 18, correct: true},
+    {name_option: &#39;Carlos Sainz and Lando Norris&#39;, question_id: 18, correct: false},
+    {name_option: &#39;Daniel Ricciardo and Lando Norris&#39;, question_id: 18, correct: false},
+    {name_option: &#39;Lando Norris and Stoffel Vandoorne&#39;, question_id: 18, correct: false},
+
+    {name_option: &#39;German&#39;, question_id: 19, correct: true},
+    {name_option: &#39;Austrian&#39;, question_id: 19, correct: false},
+    {name_option: &#39;Swiss&#39;, question_id: 19, correct: false},
+    {name_option: &#39;French&#39;, question_id: 19, correct: false},
+
+    {name_option: &#39;2&#39;, question_id: 20, correct: true},
+    {name_option: &#39;1&#39;, question_id: 20, correct: false},
+    {name_option: &#39;3&#39;, question_id: 20, correct: false},
+    {name_option: &#39;4&#39;, question_id: 20, correct: false},
+
+    {name_option: &#39;Ayrton Senna&#39;, question_id: 21, correct: true},
+    {name_option: &#39;Roland Ratzenberger&#39;, question_id: 21, correct: false},
+    {name_option: &#39;Jules Bianchi&#39;, question_id: 21, correct: false},
+    {name_option: &#39;Gilles Villeneuve&#39;, question_id: 21, correct: false},
+
+    {name_option: &#39;Mexican&#39;, question_id: 22, correct: true},
+    {name_option: &#39;Spanish&#39;, question_id: 22, correct: false},
+    {name_option: &#39;Brazilian&#39;, question_id: 22, correct: false},
+    {name_option: &#39;Argentinian&#39;, question_id: 22, correct: false},
+
+    {name_option: &#39;No&#39;, question_id: 23, correct: true},
+    {name_option: &#39;Yes&#39;, question_id: 23, correct: false},
+    {name_option: &#39;Yes, in tests&#39;, question_id: 23, correct: false},
+    {name_option: &#39;Yes, in reserve&#39;, question_id: 23, correct: false},
+
+    {name_option: &#39;91&#39;, question_id: 24, correct: true},
+    {name_option: &#39;85&#39;, question_id: 24, correct: false},
+    {name_option: &#39;88&#39;, question_id: 24, correct: false},
+    {name_option: &#39;95&#39;, question_id: 24, correct: false},
+
+    {name_option: &#39;Jackie Stewart&#39;, question_id: 25, correct: true},
+    {name_option: &#39;James Hunt&#39;, question_id: 25, correct: false},
+    {name_option: &#39;Graham Hill&#39;, question_id: 25, correct: false},
+    {name_option: &#39;Jochen Rindt&#39;, question_id: 25, correct: false},
+
+    ######                 CIRCUIT                     ######
+
+    {name_option: &#39;74&#39;, question_id: 26, correct: true},
+    {name_option: &#39;75&#39;, question_id: 26, correct: false},
+    {name_option: &#39;73&#39;, question_id: 26, correct: false},
+    {name_option: &#39;78&#39;, question_id: 26, correct: false},
+
+    {name_option: &#39;Albert Park&#39;, question_id: 27, correct: false},
+    {name_option: &#39;Silverstone&#39;, question_id: 27, correct: true},
+    {name_option: &#39;Fuji&#39;, question_id: 27, correct: false},
+    {name_option: &#39;Jerez&#39;, question_id: 27, correct: false},
+
+    {name_option: &#39;Monza&#39;, question_id: 28, correct: false},
+    {name_option: &#39;Sochi&#39;, question_id: 28, correct: false},
+    {name_option: &#39;Pescara&#39;, question_id: 28, correct: true},
+    {name_option: &#39;Zolder&#39;, question_id: 28, correct: false},
+
+    {name_option: &#39;25.602km&#39;, question_id: 29, correct: false},
+    {name_option: &#39;25.954km&#39;, question_id: 29, correct: false},
+    {name_option: &#39;26.122km&#39;, question_id: 29, correct: false},
+    {name_option: &#39;25.801km&#39;, question_id: 29, correct: true},
+
+    {name_option: &#39;Monza&#39;, question_id: 30, correct: true},
+    {name_option: &#39;Mónaco&#39;, question_id: 30, correct: false},
+    {name_option: &#39;Silverstone&#39;, question_id: 30, correct: false},
+    {name_option: &#39;Hungaroring&#39;, question_id: 30, correct: false},
+
+    {name_option: &#39;69&#39;, question_id: 31, correct: false},
+    {name_option: &#39;72&#39;, question_id: 31, correct: true},
+    {name_option: &#39;57&#39;, question_id: 31, correct: false},
+    {name_option: &#39;75&#39;, question_id: 31, correct: false},
+
+    {name_option: &#39;Autodrome&#39;, question_id: 32, correct: false},
+    {name_option: &#39;Hybrid&#39;, question_id: 32, correct: false},
+    {name_option: &#39;Rural&#39;, question_id: 32, correct: true},
+    {name_option: &#39;Street circuit&#39;, question_id: 32, correct: false},
+
+    {name_option: &#39;Riverside&#39;, question_id: 33, correct: false},
+    {name_option: &#39;Miami&#39;, question_id: 33, correct: false},
+    {name_option: &#39;Mugello&#39;, question_id: 33, correct: false},
+    {name_option: &#39;Las Vegas&#39;, question_id: 33, correct: true},
+
+    {name_option: &#39;United States&#39;, question_id: 34, correct: true},
+    {name_option: &#39;Spain&#39;, question_id: 34, correct: false},
+    {name_option: &#39;England&#39;, question_id: 34, correct: false},
+    {name_option: &#39;Italy&#39;, question_id: 34, correct: false},
+
+    {name_option: &#39;AVUS&#39;, question_id: 35, correct: false},
+    {name_option: &#39;Mónaco&#39;, question_id: 35, correct: true},
+    {name_option: &#39;Yeda&#39;, question_id: 35, correct: false},
+    {name_option: &#39;Zolder&#39;, question_id: 35, correct: false},
+
+    {name_option: &#39;The Chapel&#39;, question_id: 36, correct: false},
+    {name_option: &#39;Mount Silvano&#39;, question_id: 36, correct: false},
+    {name_option: &#39;The Flying Kilometer&#39;, question_id: 36, correct: true},
+    {name_option: &#39;The Flat Point&#39;, question_id: 36, correct: false},
+
+    {name_option: &#39;1986-1992&#39;, question_id: 37, correct: false},
+    {name_option: &#39;1999-2009&#39;, question_id: 37, correct: false},
+    {name_option: &#39;1975-1983&#39;, question_id: 37, correct: false},
+    {name_option: &#39;1985-1995&#39;, question_id: 37, correct: true},
+
+    {name_option: &#39;Oscar and Juan Gálvez&#39;, question_id: 38, correct: true},
+    {name_option: &#39;Juan Manuel Fangio&#39;, question_id: 38, correct: false},
+    {name_option: &#39;Julio Argentino Roca&#39;, question_id: 38, correct: false},
+    {name_option: &#39;Diego Armando Maradona&#39;, question_id: 38, correct: false},
+
+    {name_option: &#39;Jerez&#39;, question_id: 39, correct: false},
+    {name_option: &#39;Indianapolis&#39;, question_id: 39, correct: true},
+    {name_option: &#39;Las Vegas&#39;, question_id: 39, correct: false},
+    {name_option: &#39;Mónaco&#39;, question_id: 39, correct: false},
+
+    {name_option: &#39;19&#39;, question_id: 40, correct: false},
+    {name_option: &#39;20&#39;, question_id: 40, correct: false},
+    {name_option: &#39;21&#39;, question_id: 40, correct: true},
+    {name_option: &#39;22&#39;, question_id: 40, correct: false},
+
+    {name_option: &#39;Monza&#39;, question_id: 41, correct: false},
+    {name_option: &#39;Silverstone&#39;, question_id: 41, correct: false},
+    {name_option: &#39;Zandvoort&#39;, question_id: 41, correct: false},
+    {name_option: &#39;Aintree&#39;, question_id: 41, correct: true},
+
+    {name_option: &#39;37.000&#39;, question_id: 42, correct: true},
+    {name_option: &#39;38.000&#39;, question_id: 42, correct: false},
+    {name_option: &#39;36.000&#39;, question_id: 42, correct: false},
+    {name_option: &#39;40.000&#39;, question_id: 42, correct: false},
+
+    {name_option: &#39;Fernando Alonso&#39;, question_id: 43, correct: false},
+    {name_option: &#39;Lewis Hamilton&#39;, question_id: 43, correct: true},
+    {name_option: &#39;Rubens Barrichello&#39;, question_id: 43, correct: false},
+    {name_option: &#39;Max Verstappen&#39;, question_id: 43, correct: false},
+
+    {name_option: &#39;20&#39;, question_id: 44, correct: false},
+    {name_option: &#39;21&#39;, question_id: 44, correct: false},
+    {name_option: &#39;19&#39;, question_id: 44, correct: true},
+    {name_option: &#39;22&#39;, question_id: 44, correct: false},
+
+    {name_option: &#39;Fórmula 2&#39;, question_id: 45, correct: false},
+    {name_option: &#39;Fórmula 3&#39;, question_id: 45, correct: false},
+    {name_option: &#39;Fórmula E&#39;, question_id: 45, correct: false},
+    {name_option: &#39;Karting&#39;, question_id: 45, correct: true},
+
+    {name_option: &#39;Asphalt&#39;, question_id: 46, correct: true},
+    {name_option: &#39;Grass&#39;, question_id: 46, correct: false},
+    {name_option: &#39;Gravel&#39;, question_id: 46, correct: false},
+    {name_option: &#39;Grass and Gravel&#39;, question_id: 46, correct: false},
+
+    {name_option: &#39;AVUS&#39;, question_id: 47, correct: false},
+    {name_option: &#39;Indianapolis&#39;, question_id: 47, correct: true},
+    {name_option: &#39;Mónaco&#39;, question_id: 47, correct: false},
+    {name_option: &#39;Enzo e Dino Ferrari&#39;, question_id: 47, correct: false},
+
+    {name_option: &#39;Reims-Gueux&#39;, question_id: 48, correct: false},
+    {name_option: &#39;Bremgarten&#39;, question_id: 48, correct: false},
+    {name_option: &#39;None&#39;, question_id: 48, correct: true},
+    {name_option: &#39;Silverstone&#39;, question_id: 48, correct: false},
+
+    {name_option: &#39;2&#39;, question_id: 49, correct: false},
+    {name_option: &#39;6&#39;, question_id: 49, correct: false},
+    {name_option: &#39;4&#39;, question_id: 49, correct: false},
+    {name_option: &#39;3&#39;, question_id: 49, correct: true},
+
+    {name_option: &#39;Europe&#39;, question_id: 50, correct: true},
+    {name_option: &#39;América&#39;, question_id: 50, correct: false},
+    {name_option: &#39;Asia&#39;, question_id: 50, correct: false},
+    {name_option: &#39;Ocenía&#39;, question_id: 50, correct: false},
+
+    ######                 TEAM                     ######
+
+    {name_option: &#39;1 driver&#39;, question_id: 51, correct: false},
+    {name_option: &#39;2 drivers&#39;, question_id: 51, correct: true},
+    {name_option: &#39;3 drivers&#39;, question_id: 51, correct: false},
+    {name_option: &#39;4 drivers&#39;, question_id: 51, correct: false},
+
+    {name_option: &#39;Max Verstappen and Sergio Perez&#39;, question_id: 52, correct: true},
+    {name_option: &#39;Max Verstappen and Kevin Magnussen&#39;, question_id: 52, correct: false},
+    {name_option: &#39;Max Verstappen and Pierre Gasly&#39;, question_id: 52, correct: false},
+    {name_option: &#39;Alexander Albon and George Russell&#39;, question_id: 52, correct: false},
+
+    {name_option: &#39;Lewis Hamilton and George Russell&#39;, question_id: 53, correct: true},
+    {name_option: &#39;Lewis Hamilton and Valtteri Bottas&#39;, question_id: 53, correct: false},
+    {name_option: &#39;Lewis Hamilton and Logan Sargeant&#39;, question_id: 53, correct: false},
+    {name_option: &#39;Esteban Ocon and Nico Hulkenberg&#39;, question_id: 53, correct: false},
+
+    {name_option: &#39;Charles Leclerc and Carlos Sainz Jr&#39;, question_id: 54, correct: true},
+    {name_option: &#39;Charles Leclerc and Sebastian Vettel&#39;, question_id: 54, correct: false},
+    {name_option: &#39;Charles Leclerc and Sergio Perez&#39;, question_id: 54, correct: false},
+    {name_option: &#39;Fernando Alonso and Lewis Hamilton&#39;, question_id: 54, correct: false},
+
+    {name_option: &#39;Lando Norris and Oscar Piastri&#39;, question_id: 55, correct: true},
+    {name_option: &#39;Lando Norris and Esteban Ocon&#39;, question_id: 55, correct: false},
+    {name_option: &#39;Lando Norris and George Russell&#39;, question_id: 55, correct: false},
+    {name_option: &#39;Lance Stroll and Pierre Gasly&#39;, question_id: 55, correct: false},
+
+    {name_option: &#39;Sebastian Vettel and Daniel Ricciardo&#39;, question_id: 56, correct: false},
+    {name_option: &#39;Lance Stroll and Fernando Alonso&#39;, question_id: 56, correct: true},
+    {name_option: &#39;Lance Stroll and George Russell&#39;, question_id: 56, correct: false},
+    {name_option: &#39;Lance Stroll and Carlos Sainz Jr&#39;, question_id: 56, correct: false},
+
+    {name_option: &#39;Esteban Ocon and Pierre Gasly&#39;, question_id: 57, correct: true},
+    {name_option: &#39;Esteban Oocon and Fernando Alonso&#39;, question_id: 57, correct: false},
+    {name_option: &#39;Esteban Ocon and Nico Rosberg&#39;, question_id: 57, correct: false},
+    {name_option: &#39;Sergio Pérez and Alexander Albon&#39;, question_id: 57, correct: false},
+
+    {name_option: &#39;Alexander Albon and Logan Sargeant&#39;, question_id: 58, correct: true},
+    {name_option: &#39;Alexander Albon and Nicholas Latifi&#39;, question_id: 58, correct: false},
+    {name_option: &#39;Alexander Albon and Jack Aitken&#39;, question_id: 58, correct: false},
+    {name_option: &#39;Robert Kubica and Yuki Tsunoda&#39;, question_id: 58, correct: false},
+
+    {name_option: &#39;Yuki Tsunoda and Daniel Ricciardo&#39;, question_id: 59, correct: true},
+    {name_option: &#39;Sergio Pérez and Charles Leclerc&#39;, question_id: 59, correct: false},
+    {name_option: &#39;Yuki Tsunoda and Pierre Gasly&#39;, question_id: 59, correct: false},
+    {name_option: &#39;Yuki Tsunoda and Alexander Albon&#39;, question_id: 59, correct: false},
+
+    {name_option: &#39;Valtteri Bottas and Guanyu Zhou&#39;, question_id: 60, correct: true},
+    {name_option: &#39;Valtteri Bottas and Max Verstappen&#39;, question_id: 60, correct: false},
+    {name_option: &#39;Valtteri Bottas and Logan Sargeant&#39;, question_id: 60, correct: false},
+    {name_option: &#39;Lewis Hamilton and Carlos Sainz Jr&#39;, question_id: 60, correct: false},
+
+    {name_option: &#39;Kevin Magnussen and Nico Hulkenberg&#39;, question_id: 61, correct: true},
+    {name_option: &#39;Kevin Magnussen and Lando Norris&#39;, question_id: 61, correct: false},
+    {name_option: &#39;Kevin Magnussen and Felipe Massa&#39;, question_id: 61, correct: false},
+    {name_option: &#39;Fernando Alonso and Sergio Perez&#39;, question_id: 61, correct: false},
+
+    {name_option: &#39;1987&#39;, question_id: 62, correct: true},
+    {name_option: &#39;1988&#39;, question_id: 62, correct: false},
+    {name_option: &#39;1986&#39;, question_id: 62, correct: false},
+    {name_option: &#39;1985&#39;, question_id: 62, correct: false},
+
+    {name_option: &#39;Dietrich Mateschitz&#39;, question_id: 63, correct: true},
+    {name_option: &#39;Charlerm Yoovidhya&#39;, question_id: 63, correct: false},
+    {name_option: &#39;Christian Horner&#39;, question_id: 63, correct: false},
+    {name_option: &#39;Helmut Marko&#39;, question_id: 63, correct: false},
+
+    {name_option: &#39;Jaguar&#39;, question_id: 64, correct: true},
+    {name_option: &#39;Stewart Grand Prix&#39;, question_id: 64, correct: false},
+    {name_option: &#39;Minardi&#39;, question_id: 64, correct: false},
+    {name_option: &#39;Toro Rosso&#39;, question_id: 64, correct: false},
+
+    {name_option: &#39;1st place&#39;, question_id: 65, correct: true},
+    {name_option: &#39;2nd place&#39;, question_id: 65, correct: false},
+    {name_option: &#39;3rd place&#39;, question_id: 65, correct: false},
+    {name_option: &#39;4th place&#39;, question_id: 65, correct: false},
+
+    {name_option: &#39;1st place&#39;, question_id: 66, correct: true},
+    {name_option: &#39;2nd place&#39;, question_id: 66, correct: false},
+    {name_option: &#39;3rd place&#39;, question_id: 66, correct: false},
+    {name_option: &#39;4th place&#39;, question_id: 66, correct: false},
+
+    {name_option: &#39;Austrian&#39;, question_id: 67, correct: true},
+    {name_option: &#39;German&#39;, question_id: 67, correct: false},
+    {name_option: &#39;British&#39;, question_id: 67, correct: false},
+    {name_option: &#39;Italian&#39;, question_id: 67, correct: false},
+
+    {name_option: &#39;Italian&#39;, question_id: 68, correct: false},
+    {name_option: &#39;German&#39;, question_id: 68, correct: true},
+    {name_option: &#39;British&#39;, question_id: 68, correct: false},
+    {name_option: &#39;Austrian&#39;, question_id: 68, correct: false},
+
+    {name_option: &#39;Karl Benz and Gottlieb Daimler&#39;, question_id: 69, correct: true},
+    {name_option: &#39;Wilhelm Maybach and Gottlieb Daimler&#39;, question_id: 69, correct: false},
+    {name_option: &#39;Ferdinand Porsche and Helmut Marko&#39;, question_id: 69, correct: false},
+    {name_option: &#39;Karl Benz and Christian Horner&#39;, question_id: 69, correct: false},
+
+    {name_option: &#39;1st place&#39;, question_id: 70, correct: true},
+    {name_option: &#39;2nd place&#39;, question_id: 70, correct: false},
+    {name_option: &#39;3rd place&#39;, question_id: 70, correct: false},
+    {name_option: &#39;4th place&#39;, question_id: 70, correct: false},
+
+    {name_option: &#39;1st place&#39;, question_id: 71, correct: true},
+    {name_option: &#39;2nd place&#39;, question_id: 71, correct: false},
+    {name_option: &#39;3rd place&#39;, question_id: 71, correct: false},
+    {name_option: &#39;4th place&#39;, question_id: 71, correct: false},
+
+    {name_option: &#39;Italian&#39;, question_id: 72, correct: true},
+    {name_option: &#39;German&#39;, question_id: 72, correct: false},
+    {name_option: &#39;British&#39;, question_id: 72, correct: false},
+    {name_option: &#39;Austrian&#39;, question_id: 72, correct: false},
+
+    {name_option: &#39;Enzo Ferrari&#39;, question_id: 73, correct: true},
+    {name_option: &#39;Piero Ferrari&#39;, question_id: 73, correct: false},
+    {name_option: &#39;Luigi Chinetti&#39;, question_id: 73, correct: false},
+    {name_option: &#39;Niki Lauda&#39;, question_id: 73, correct: false},
+
+    {name_option: &#39;1st place&#39;, question_id: 74, correct: true},
+    {name_option: &#39;2nd place&#39;, question_id: 74, correct: false},
+    {name_option: &#39;3rd place&#39;, question_id: 74, correct: false},
+    {name_option: &#39;4th place&#39;, question_id: 74, correct: false},
+
+    {name_option: &#39;1st place&#39;, question_id: 75, correct: true},
+    {name_option: &#39;2nd place&#39;, question_id: 75, correct: false},
+    {name_option: &#39;3rd place&#39;, question_id: 75, correct: false},
+    {name_option: &#39;4th place&#39;, question_id: 75, correct: false},
+
+    ######                 CAREER                     ######
+
+    {name_option: &#39;Indicates the end of the race&#39;, question_id: 76, correct: true},
+    {name_option: &#39;Indicates the start of the race&#39;, question_id: 76, correct: false},
+    {name_option: &#39;Indicates danger on track&#39;, question_id: 76, correct: false},
+    {name_option: &#39;Indicates to slow down&#39;, question_id: 76, correct: false},
+
+    {name_option: &#39;Indicates that the safety car or virtual safety car is coming out&#39;, question_id: 77, correct: false},
+    {name_option: &#39;Indicates the start of the race&#39;, question_id: 77, correct: false},
+    {name_option: &#39;Indicates that the danger on track has ended&#39;, question_id: 77, correct: true},
+    {name_option: &#39;Indicates the final lap&#39;, question_id: 77, correct: false},
+
+    {name_option: &#39;Indicates that the driver must slow down&#39;, question_id: 78, correct: true},
+    {name_option: &#39;Indicates the safety car is coming out&#39;, question_id: 78, correct: false},
+    {name_option: &#39;Indicates danger on track&#39;, question_id: 78, correct: false},
+    {name_option: &#39;Indicates to slow down&#39;, question_id: 78, correct: false},
+
+    {name_option: &#39;Indicates the start of the race&#39;, question_id: 79, correct: false},
+    {name_option: &#39;Indicates to slow down&#39;, question_id: 79, correct: false},
+    {name_option: &#39;Indicates danger on track&#39;, question_id: 79, correct: false},
+    {name_option: &#39;Indicates the safety car is coming out&#39;, question_id: 79, correct: true},
+
+    {name_option: &#39;Indicates the safety car is coming out&#39;, question_id: 80, correct: false},
+    {name_option: &#39;Same as with a Safety Car but the safety car does not come out&#39;, question_id: 80, correct: true},
+    {name_option: &#39;Indicates to slow down&#39;, question_id: 80, correct: false},
+    {name_option: &#39;Indicates the end of the race&#39;, question_id: 80, correct: false},
+
+    {name_option: &#39;Indicates that the session is completely stopped&#39;, question_id: 81, correct: true},
+    {name_option: &#39;Indicates the safety car is coming out&#39;, question_id: 81, correct: false},
+    {name_option: &#39;Indicates danger on track&#39;, question_id: 81, correct: false},
+    {name_option: &#39;Indicates to slow down&#39;, question_id: 81, correct: false},
+
+    {name_option: &#39;Indicates that the warned driver will be excluded from the session&#39;, question_id: 82, correct: true},
+    {name_option: &#39;Indicates that the pilot has a 10 second penalty&#39;, question_id: 82, correct: false},
+    {name_option: &#39;Indicates driver change&#39;, question_id: 82, correct: false},
+    {name_option: &#39;Indicates that the driver must enter the pit&#39;, question_id: 82, correct: false},
+
+    {name_option: &#39;The race has benn suspended&#39;, question_id: 83, correct: false},
+    {name_option: &#39;Mechanical problem in the car, must return to the pits&#39;, question_id: 83, correct: true},
+    {name_option: &#39;Penalty for dangerous driving&#39;, question_id: 83, correct: false},
+    {name_option: &#39;Return all drivers to the pits&#39;, question_id: 83, correct: false},
+
+    {name_option: &#39;Warns drivers of engine failure&#39;, question_id: 84, correct: false},
+    {name_option: &#39;Indicates to drivers to enter the pit to refuel&#39;, question_id: 84, correct: false},
+    {name_option: &#39;Indicates to drivers to enter the pit to change tires&#39;, question_id: 84, correct: false},
+    {name_option: &#39;Warns drivers of a dangerous or unsporting maneuver on track&#39;, question_id: 84, correct: true},
+
+    {name_option: &#39;Always shown in practice and races statically at the end of the pit lane to indicate that cars are approaching&#39;, question_id: 85, correct: false},
+    {name_option: &#39;In practice session, the driver must let a faster car pass without changing their line&#39;, question_id: 85, correct: false},
+    {name_option: &#39;In race situation, the driver who will be lapped by another that has completed an additional lap will be alerted&#39;, question_id: 85, correct: false},
+    {name_option: &#39;All options are correct&#39;, question_id: 85, correct: true},
+
+    {name_option: &#39;Indicates to drivers that the safety car is coming out&#39;, question_id: 86, correct: false},
+    {name_option: &#39;Indicates to drivers that there was an accident on track&#39;, question_id: 86, correct: false},
+    {name_option: &#39;Indicates to drivers that the track conditions are not optimal for driving at the limit&#39;, question_id: 86, correct: true},
+    {name_option: &#39;Indicates to drivers to return to the pits&#39;, question_id: 86, correct: false},
+
+    {name_option: &#39;Indicates that a driver has retired from the race&#39;, question_id: 87, correct: false},
+    {name_option: &#39;Indicates that there is an excessively slow vehicle on track, such as a crane or medical car&#39;, question_id: 87, correct: true},
+    {name_option: &#39;Indicates the final lap of the race&#39;, question_id: 87, correct: false},
+    {name_option: &#39;Indicates that all vehicles must return to the pits&#39;, question_id: 87, correct: false},
+
+    {name_option: &#39;Practice session times&#39;, question_id: 88, correct: false},
+    {name_option: &#39;Order of arrival in the previous race&#39;, question_id: 88, correct: false},
+    {name_option: &#39;Driver standings based on their championship results&#39;, question_id: 88, correct: false},
+    {name_option: &#39;Timed lap qualifying session&#39;, question_id: 88, correct: true},
+
+    {name_option: &#39;60 laps&#39;, question_id: 89, correct: false},
+    {name_option: &#39;100 laps&#39;, question_id: 89, correct: false},
+    {name_option: &#39;75 laps&#39;, question_id: 89, correct: false},
+    {name_option: &#39;No lap limit&#39;, question_id: 89, correct: true},
+
+    {name_option: &#39;1 hour&#39;, question_id: 90, correct: false},
+    {name_option: &#39;2 hours&#39;, question_id: 90, correct: false},
+    {name_option: &#39;30 minutes&#39;, question_id: 90, correct: false},
+    {name_option: &#39;Depends on the circuit and race conditions&#39;, question_id: 90, correct: true},
+
+    {name_option: &#39;18 drivers&#39;, question_id: 91, correct: false},
+    {name_option: &#39;20 drivers&#39;, question_id: 91, correct: true},
+    {name_option: &#39;22 drivers&#39;, question_id: 91, correct: false},
+    {name_option: &#39;24 drivers&#39;, question_id: 91, correct: false},
+
+    {name_option: &#39;A time penalty is awarded at the end of the race&#39;, question_id: 92, correct: false},
+    {name_option: &#39;Receives a warning from the team&#39;, question_id: 92, correct: false},
+    {name_option: &#39;May receive a time penalty or a drive-through&#39;, question_id: 92, correct: true},
+    {name_option: &#39;No consequences&#39;, question_id: 92, correct: false},
+
+    {name_option: &#39;80 km/h&#39;, question_id: 93, correct: true},
+    {name_option: &#39;100 km/h&#39;, question_id: 93, correct: false},
+    {name_option: &#39;120 km/h&#39;, question_id: 93, correct: false},
+    {name_option: &#39;150 km/h&#39;, question_id: 93, correct: false},
+
+    {name_option: &#39;By the maximun speed reached&#39;, question_id: 94, correct: false},
+    {name_option: &#39;By the amount of progress&#39;, question_id: 94, correct: false},
+    {name_option: &#39;For the total race time&#39;, question_id: 94, correct: false},
+    {name_option: &#39;By the specific scoring system&#39;, question_id: 94, correct: true},
+
+    {name_option: &#39;2 points&#39;, question_id: 95, correct: false},
+    {name_option: &#39;1 point&#39;, question_id: 95, correct: true},
+    {name_option: &#39;5 point&#39;, question_id: 95, correct: false},
+    {name_option: &#39;Does not receive points&#39;, question_id: 95, correct: false},
+
+    {name_option: &#39;The first 5 pilots&#39;, question_id: 96, correct: false},
+    {name_option: &#39;The first 10 pilots&#39;, question_id: 96, correct: true},
+    {name_option: &#39;The first 8 pilots&#39;, question_id: 96, correct: false},
+    {name_option: &#39;All drivers who finish the race&#39;, question_id: 96, correct: false},
+
+    {name_option: &#39;1965&#39;, question_id: 97, correct: false},
+    {name_option: &#39;1950&#39;, question_id: 97, correct: true},
+    {name_option: &#39;1955&#39;, question_id: 97, correct: false},
+    {name_option: &#39;1953&#39;, question_id: 97, correct: false},
+
+    {name_option: &#39;Satefy regulations&#39;, question_id: 98, correct: false},
+    {name_option: &#39;Race rules&#39;, question_id: 98, correct: false},
+    {name_option: &#39;Technical regulations&#39;, question_id: 98, correct: true},
+    {name_option: &#39;Classification rules&#39;, question_id: 98, correct: false},
+
+    {name_option: &#39;Weight himself&#39;, question_id: 99, correct: false},
+    {name_option: &#39;Weigh yourself without touching anyone&#39;, question_id: 99, correct: true},
+    {name_option: &#39;Take a bath&#39;, question_id: 99, correct: false},
+    {name_option: &#39;None is correct&#39;, question_id: 99, correct: false},
+
+    {name_option: &#39;Get a warning&#39;, question_id: 100, correct: false},
+    {name_option: &#39;He is disqualified from the race&#39;, question_id: 100, correct: true},
+    {name_option: &#39;Receive a time penalty&#39;, question_id: 100, correct: false},
+    {name_option: &#39;Lose points in the championship&#39;, question_id: 100, correct: false},
+
+    ######                 FREES                     ######
+
+    {name_option: &#39;Lewis Hamilton&#39; , question_id: 101, correct: true},
+    {name_option: &#39;Esteban Ocon&#39; , question_id: 101, correct: false},
+    {name_option: &#39;Franco Colapinto&#39; , question_id: 101, correct: false},
+    {name_option: &#39;Sergio &quot;Checo&quot; Perez&#39; , question_id: 101, correct: false},
+
+    {name_option: &#39;The one with the most points&#39; , question_id: 102, correct: true},
+    {name_option: &#39;Winning the last race&#39; , question_id: 102, correct: false},
+    {name_option: &#39;The one with the fewest penalties&#39; , question_id: 102, correct: false},
+    {name_option: &#39;Whoever has the fastest lap in the last race&#39; , question_id: 102, correct: false},
+
+    {name_option: &#39;Michael Schumacher&#39; , question_id: 103, correct: false},
+    {name_option: &#39;Carlos Sainz jr&#39; , question_id: 103, correct: true},
+    {name_option: &#39;Lando Norris&#39; , question_id: 103, correct: false},
+    {name_option: &#39;Romain Grosjean&#39; , question_id: 103, correct: false},
+
+    {name_option: &#39;Valtteri Bottas&#39;, question_id: 104, correct: true},
+    {name_option: &#39;Carlos Sainz jr&#39;, question_id: 104, correct: false},
+    {name_option: &#39;Charles Leclerc&#39;, question_id: 104, correct: false},
+    {name_option: &#39;Juan Manuel Fangio&#39;, question_id: 104, correct: false},
+
+    {name_option: &#39;Nomex, Gloves and Helmets&#39; , question_id: 105, correct: true},
+    {name_option: &#39;Nomex and Gloves&#39; , question_id: 105, correct: false},
+    {name_option: &#39;Nomex and Helmets&#39; , question_id: 105, correct: false},
+    {name_option: &#39;Nomex, Gloves, Helmets and underwear&#39; , question_id: 105, correct: false},
+
+    {name_option: &#39;Ferrari&#39; , question_id: 106, correct: true},
+    {name_option: &#39;Mercedes&#39; , question_id: 106, correct: false},
+    {name_option: &#39;RB&#39; , question_id: 106, correct: false},
+    {name_option: &#39;Red Bull&#39; , question_id: 106, correct: false},
+
+    {name_option: &#39;2014&#39; , question_id: 107, correct: true},
+    {name_option: &#39;2013&#39; , question_id: 107, correct: false},
+    {name_option: &#39;2015&#39; , question_id: 107, correct: false},
+    {name_option: &#39;2012&#39; , question_id: 107, correct: false},
+
+    {name_option: &#39;Jewelry&#39; , question_id: 108, correct: true},
+    {name_option: &#39;They have no prohibitions&#39; , question_id: 108, correct: false},
+    {name_option: &#39;Very long hair&#39; , question_id: 108, correct: false},
+    {name_option: &#39;Maximum weight&#39; , question_id: 108, correct: false},
+
+]
+
+options.each do |option|
+    existing_option = Option.find_by(name_option: option[:name_option], question_id: option[:question_id])
+    Option.create(name_option: option[:name_option], question_id: option[:question_id], correct: option[:correct]) if existing_option.nil?
+end
+</code>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScripts -->
+    <script src="../assets/vendor/javascripts/jquery.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.tablesorter.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.scrollTo.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.timeago.js"></script>
+    <script src="../assets/vendor/javascripts/highcharts.src-4.0.1.js"></script>
+    <script src="../assets/vendor/javascripts/prettify.js"></script>
+    <script src="../assets/vendor/javascripts/bootstrap.min.js"></script>
+    <script src="../assets/javascripts/application.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.filtertable.min.js"></script>
+  </body>
+</html>

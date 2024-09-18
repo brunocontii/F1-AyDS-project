@@ -11,6 +11,7 @@ gem 'simplecov'
 gem 'database_cleaner-active_record'
 gem 'sinatra-flash'
 gem 'bcrypt'
+gem 'rubycritic'
 
 group :test, :development do
     gem 'rspec'

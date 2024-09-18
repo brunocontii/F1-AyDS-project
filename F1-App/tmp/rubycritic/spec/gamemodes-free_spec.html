@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ruby Critic - Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- StyleSheets -->
+    <link href="../assets/vendor/stylesheets/bootstrap.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/vendor/stylesheets/font-awesome.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/vendor/stylesheets/prettify.custom_theme.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/stylesheets/application.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <a href="#menu-toggle" class="btn btn-default hidden-lg visible-sm-* hidden-md visible-xs-* pull-left" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <a href="../overview.html"><img src="../assets/images/logo.png" alt="Ruby Critic Logo" title="Ruby Critic Logo" width="55"><span class="logo">RUBYCRITIC</span></a>
+      
+    </header>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <aside id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="../overview.html" class="project-nav-item overview-nav"><i class="fa fa-dashboard"></i>Overview</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../code_index.html" class="project-nav-item code-index-nav"><i class="fa fa-code"></i>Code</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../smells_index.html" class="project-nav-item smells-index-nav"><i class="fa fa-warning"></i>Smells</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../simple_cov_index.html" class="project-nav-item coverage-index-nav"><i class="fa fa-umbrella"></i>Coverage</a>
+          </li>
+        </ul>
+      </aside>
+      <!-- /#sidebar-wrapper -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+  <!--Page Title -->
+  <div class="Page_Title">
+    <div class="file-time">
+      <span class="committed-at">
+        
+          Updated <time class='js-timeago' datetime='2024-09-18 13:10:30 -0300'>2024-09-18 13:10:30 -0300</time>
+        
+      </span>
+    </div>
+    <div>
+      <h3><small>spec /</small> gamemodes-free_spec.rb</h3>
+    </div>
+  </div>
+  <!--End Page Title -->
+  <div class="Content_Wrapper">
+    <!-- code detail -->
+    <div class="code-top-detail clearfix row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-1">
+            <div class="rating f big">
+              F
+            </div>
+          </div>
+          <div class="code-statistics col-md-11">
+            <div class="col-md-3">
+              <div><span class="metric">288</span><small> lines of codes</small></div>
+              <div><span class="metric">1</span><small> methods</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">919.5</span><small> complexity/method</small></div>
+              <div><span class="metric">4</span><small> churn</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">919.5</span><small> complexity</small></div>
+              <div><span class="metric">186</span><small> duplications</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="code-tabs">
+          <ul class="nav nav-pills right-to-left">
+            <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
+            <li class="active">
+              <a href="#" id="toggle-smells" class="toggle-button button">
+                15
+                smells
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <code class="prettyprint linenums lang-ruby file-code js-file-code">ENV[&#39;APP_ENV&#39;] = &#39;test&#39;
+
+require_relative &#39;../app.rb&#39;
+require &#39;rspec&#39;
+require &#39;rack/test&#39;
+
+RSpec.describe &#39;The App&#39; do
+    include Rack::Test::Methods
+
+    def app
+        # Sinatra::Appplication
+        App
+    end
+
+    describe &#39;GET /gamemodes/free&#39; do
+        # Creaciones de elementos temporales a utilizar
+        let!(:user) { User.create(username: &#39;testuser&#39;, password: &#39;password123&#39;, cant_life: 3, cant_coins: 0) }
+        let!(:question) { Question.create(name_question: &#39;Sample Question&#39;, level: &#39;easy&#39;, theme: &#39;free&#39;) }
+        let!(:correct_option) { Option.create(name_option:&#39;Correct Option&#39;, question_id: question.id, correct: true) }
+        let!(:incorrect_option) { Option.create(name_option:&#39;Incorrect Option 1&#39;, question_id: question.id, correct: false) }
+
+        before do
+            env &#39;rack.session&#39;, { username: user.username }
+        end
+
+        # Cuando el usuario no tiene vidas tiene que redireccionar a /gamemodes
+        context &#39;when the user has no lives left&#39; do
+            before do
+                user.update(cant_life: 0)
+            end
+
+            it &#39;redirects to /gamemodes with a message&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context(when the user has no lives left)::it#redirects to /gamemodes with a message has a flog score of 36</span>          </div>  </li></ol>
+                get &#39;/gamemodes/free&#39;
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&#39;You have 0 lives. Please wait for lives to regenerate.&#39;)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes&#39;)
+            end
+        end
+
+        # Cuando el modo es reseteado tiene que eliminar todas las preguntas anteriores y reiniciar el flag de reset
+        # Simula que cree el una respuesta que resetea todo y se fija que dicha respuesta este vacia que es lo que tendria que pasar
+        context &#39;when the mode is reset&#39; do
+            let!(:answered_question) { Answer.create(question_id: question.id, user_id: user.id, option_id: correct_option.id) }
+            before do
+                env &#39;rack.session&#39;, { username: user.username, reset_free_mode: true }
+                get &#39;/gamemodes/free&#39;
+            end
+        
+            it &#39;deletes previous answers and resets the reset_free_mode flag&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context(when the mode is reset)::it#deletes previous answers and resets the reset_free_mode flag has a flog score of 28</span>          </div>  </li></ol>
+                expect(Answer.where(id: answered_question.id)).to be_empty
+                # espera que sea false el reseteo ya que ya reseteed
+                expect(last_request.env[&#39;rack.session&#39;][:reset_free_mode]).to be_falsey
+            end
+        end
+        
+        # Cuando hay respuesta no contestadas en la dificultad actual las pone en la cola para responder
+        context &#39;when there are unanswered questions in the current difficulty&#39; do
+            before do
+                get &#39;/gamemodes/free&#39;
+            end
+        
+            it &#39;assigns an unanswered question to @question&#39; do
+                expect(last_response.body).to include(&#39;Sample Question&#39;)
+            end
+        end
+        
+        # Cuando se contestan todas las preguntas de la dificultad &#39;easy&#39; se pasa a &#39;normal&#39;
+        context &#39;when the user has answered all questions in the easy difficulty&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context#when the user has answered all questions in the easy difficulty has a flog score of 31</span>          </div>  </li></ol>
+            let!(:easy_question) { Question.create(name_question: &#39;Easy Question&#39;, level: &#39;easy&#39;, theme: &#39;free&#39;) }
+        
+            before do
+                # Simula que el usuario ha respondido todas las preguntas de dificultad &#39;easy&#39;
+                Answer.create(user: user, question: easy_question, option: correct_option)
+                Question.where(level: &#39;easy&#39;, theme: &#39;free&#39;).each do |question|
+                    Answer.create(user: user, question: question, option: correct_option)
+                end
+            
+                env &#39;rack.session&#39;, { username: user.username, free_mode_difficulty: &#39;easy&#39;, answered_free_questions: Question.where(level: &#39;easy&#39;, theme: &#39;free&#39;).pluck(:id) }
+                get &#39;/gamemodes/free&#39;
+            end
+        
+            it &#39;increases the difficulty to normal and shows the appropriate message&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context(when the user has answered all questions in the easy difficulty)::it#increases the difficulty to normal and shows the appropriate message has a flog score of 49</span>          </div>  </li></ol>
+                expect(last_request.env[&#39;rack.session&#39;][:free_mode_difficulty]).to eq(&#39;normal&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;You&#39;ve answered all the easy questions. Now the medium questions will appear.&quot;)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes/free&#39;)
+            end
+        end          
+        
+        # Cuando se contestan todas las preguntas de la dificultad &#39;normal&#39; se pasa a &#39;difficult&#39;
+        context &#39;when the user has answered all questions in the normal difficulty&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 2 nodes</span>              <span>Locations:</span>                  <a href="gamemodes-free_spec.html#L93" class="js-smell-location">0</a>                  <a href="gamemodes-free_spec.html#L116" class="js-smell-location">1</a>                  </div>  </li></ol>
+            let!(:normal_question) { Question.create(name_question: &#39;Normal Question&#39;, level: &#39;normal&#39;, theme: &#39;free&#39;) }
+        
+            before do
+                # Simula que el usuario ha respondido todas las preguntas de dificultad &#39;normal&#39;
+                Question.where(level: &#39;normal&#39;, theme: &#39;free&#39;).each do |question|
+                    Answer.create(user: user, question: question, option: correct_option)
+                end
+                
+                env &#39;rack.session&#39;, { username: user.username, free_mode_difficulty: &#39;normal&#39;, answered_free_questions: Question.where(level: &#39;normal&#39;, theme: &#39;free&#39;).pluck(:id) }
+                get &#39;/gamemodes/free&#39;
+            end
+            
+            it &#39;increases the difficulty to difficult and shows the appropriate message&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context(when the user has answered all questions in the normal difficulty)::it#increases the difficulty to difficult and shows the appropriate message has a flog score of 49</span>          </div>  </li></ol>
+                expect(last_request.env[&#39;rack.session&#39;][:free_mode_difficulty]).to eq(&#39;difficult&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;You&#39;ve answered all the medium questions. Now the hard questions will appear.&quot;)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes/free&#39;)
+            end
+        end
+
+        # Cuando se contestan todas las preguntas de la dificultad &#39;difficult&#39; se pasa a &#39;impossible&#39;
+        context &#39;when the user has answered all questions in the difficult difficulty&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 2 nodes</span>              <span>Locations:</span>                  <a href="gamemodes-free_spec.html#L93" class="js-smell-location">0</a>                  <a href="gamemodes-free_spec.html#L116" class="js-smell-location">1</a>                  </div>  </li></ol>
+            let!(:difficult_question) { Question.create(name_question: &#39;Difficult Question&#39;, level: &#39;difficult&#39;, theme: &#39;free&#39;) }
+            
+            before do
+                # Simula que el usuario ha respondido todas las preguntas de dificultad &#39;difficult&#39;
+                Question.where(level: &#39;difficult&#39;, theme: &#39;free&#39;).each do |question|
+                    Answer.create(user: user, question: question, option: correct_option)
+                end
+                
+                env &#39;rack.session&#39;, { username: user.username, free_mode_difficulty: &#39;difficult&#39;, answered_free_questions: Question.where(level: &#39;difficult&#39;, theme: &#39;free&#39;).pluck(:id) }
+                get &#39;/gamemodes/free&#39;
+            end
+            
+            it &#39;increases the difficulty to impossible and shows the appropriate message&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context(when the user has answered all questions in the difficult difficulty)::it#increases the difficulty to impossible and shows the appropriate message has a flog score of 49</span>          </div>  </li></ol>
+                expect(last_request.env[&#39;rack.session&#39;][:free_mode_difficulty]).to eq(&#39;impossible&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;You&#39;ve answered all the hard questions. Now the impossible questions will appear.&quot;)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes/free&#39;)
+            end
+        end          
+
+        # Cuando se contestan todas las preguntas de la dificultad &#39;impossible&#39; se resetea el modo free
+        context &#39;when the user completes the impossible level&#39; do
+            let!(:impossible_question) { Question.create(name_question: &#39;Impossible Question&#39;, level: &#39;impossible&#39;, theme: &#39;free&#39;) }
+            
+            before do
+                # Simula que el usuario ha respondido todas las preguntas de dificultad &#39;impossible&#39;
+                Question.where(level: &#39;impossible&#39;, theme: &#39;free&#39;).each do |question|
+                    Answer.create(user: user, question: question, option: correct_option)
+                end
+                
+                env &#39;rack.session&#39;, { username: user.username, free_mode_difficulty: &#39;impossible&#39;, answered_free_questions: Question.where(level: &#39;impossible&#39;, theme: &#39;free&#39;).pluck(:id) }
+                get &#39;/gamemodes/free&#39;
+            end
+            
+            it &#39;resets the difficulty to easy, resets answered questions, and shows the completion message&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>VeryHighComplexity</b></a>        </span>      </div>      <span>describe(GET /gamemodes/free)::context(when the user completes the impossible level)::it#resets the difficulty to easy, resets answered questions, and shows the completion message has a flog score of 77</span>          </div>  </li></ol>
+                expect(last_request.env[&#39;rack.session&#39;][:free_mode_difficulty]).to eq(&#39;easy&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:answered_free_questions]).to be_empty
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;Congratulations! You&#39;ve completed the Free Mode.&quot;)
+                expect(last_request.env[&#39;rack.session&#39;][:reset_free_mode]).to be_truthy
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes&#39;)
+            end
+        end
+
+        #aca agregar test para la linea que falta de cubrir en simplecov
+    end
+
+    describe &#39;POST /gamemodes/free&#39; do
+        # Preparando usuario y pregunta con sus respuestas
+        let!(:user) { User.create(username: &#39;testuser&#39;, password: &#39;password123&#39;, cant_life: 3, cant_coins: 0) }
+        let!(:question) { Question.create(name_question: &#39;Sample Question&#39;, level: &#39;easy&#39;, theme: &#39;free&#39;) }
+        let!(:correct_option) { Option.create(name_option:&#39;Correct Answer&#39;, correct: true, question: question) }
+        let!(:incorrect_option) { Option.create(name_option:&#39;Incorrect Answer&#39;, correct: false, question: question) }
+
+        before do
+            env &#39;rack.session&#39;, { username: user.username }
+        end
+
+        # Cuando el usuario no tiene vidas
+        context &#39;when the user has no lives left&#39; do
+            it &#39;redirects to /gamemodes&#39; do
+                user.update(cant_life: 0)
+                post &#39;/gamemodes/free&#39;
+                
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes&#39;)
+            end
+        end
+
+        # Cuando no tenemos más tiempo
+        context &#39;when you dont have more time left&#39; do
+            # Y vida tiene una
+            it &#39;reduces the users lives and redirects to /gamemodes if lives reaches 0&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when you dont have more time left)::it#reduces the users lives and redirects to /gamemodes if lives reaches 0 has a flog score of 37</span>          </div>  </li></ol>
+                user.update(cant_life: 1)
+                post &#39;/gamemodes/free&#39;, { timeout: &#39;true&#39; }
+
+                expect(user.reload.cant_life).to eq(0)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes&#39;)
+            end
+
+            # Y vida tiene mas de una
+            it &#39;reduces the users lives and continues if lives are still remaining&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>VeryHighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when you dont have more time left)::it#reduces the users lives and continues if lives are still remaining has a flog score of 68</span>          </div>  </li></ol>
+                initial_lives = user.cant_life
+                post &#39;/gamemodes/free&#39;, { timeout: &#39;true&#39; }
+
+                expect(user.reload.cant_life).to eq(initial_lives - 1)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include(&#39;/gamemodes/free&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;Time&#39;s up! Incorrect!&quot;)
+                expect(last_request.env[&#39;rack.session&#39;][:color]).to eq(&quot;red&quot;)
+            end
+        end
+
+        # Cuando una opción incorrecta es seleccionada
+        context &#39;when an incorrect option is selected&#39; do
+            # Y vida tiene una
+            it &#39;reduces the users lives and redirects if lives reached 0&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when an incorrect option is selected)::it#reduces the users lives and redirects if lives reached 0 has a flog score of 41</span>          </div>  </li></ol>
+                user.update(cant_life: 1)
+                post &#39;/gamemodes/free&#39;, { option_id: incorrect_option.id }
+
+                expect(user.reload.cant_life).to eq(0)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes&#39;)
+            end
+
+            # Y vida tiene mas de una
+            it &#39;reduces the users lives and continues if lives are still remaining&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>VeryHighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when an incorrect option is selected)::it#reduces the users lives and continues if lives are still remaining has a flog score of 72</span>          </div>  </li></ol>
+                initial_lives = user.cant_life
+                post &#39;/gamemodes/free&#39;, { option_id: incorrect_option.id }
+
+                expect(user.reload.cant_life).to eq(initial_lives-1)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include(&#39;/gamemodes/free&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;Incorrect!&quot;)
+                expect(last_request.env[&#39;rack.session&#39;][:color]).to eq(&quot;red&quot;)
+            end
+
+            # Pero tiene la inmunidad
+            it &#39;activates inmunity and does not reduce life&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when an incorrect option is selected)::it#activates inmunity and does not reduce life has a flog score of 47</span>          </div>  </li></ol>
+                user.update(cant_life: 1)
+                env &#39;rack.session&#39;, { username: user.username, inmunity: true }
+                post &#39;/gamemodes/free&#39;, {option_id: incorrect_option.id}
+                expect(user.reload.cant_life).to eq(1)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes/free&#39;)
+            end
+        end
+
+        # Cuando una opción correcta es seleccionada
+        context &#39;when a correct option is selected&#39; do
+            # Gana 10
+            it &#39;increments the users coins and redirects to /gamemodes/free&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>VeryHighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when a correct option is selected)::it#increments the users coins and redirects to /gamemodes/free has a flog score of 63</span>          </div>  </li></ol>
+                post &#39;/gamemodes/free&#39;, { option_id: correct_option.id }
+
+                expect(user.reload.cant_coins).to eq(10)
+                expect(last_response).to be_redirect
+                expect(last_response.location).to include(&#39;/gamemodes/free&#39;)
+                expect(last_request.env[&#39;rack.session&#39;][:message]).to eq(&quot;Correct! Well done.&quot;)
+                expect(last_request.env[&#39;rack.session&#39;][:color]).to eq(&quot;green&quot;)
+            end
+        end
+
+        # Cuando el usuario selecciona un id invalido 
+        context &#39;when the user selects an invalid option id&#39; do
+            # Mostramos mensaje de error
+            it &#39;displays an error message and redirects to /gamemodes&#39; do
+                post &#39;/gamemodes/free&#39;, {option_id: 0}
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes&#39;)
+            end
+
+            # Pero tiene la inmunidad
+            it &#39;activates inmunity and does not reduce life&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(POST /gamemodes/free)::context(when the user selects an invalid option id)::it#activates inmunity and does not reduce life has a flog score of 43</span>          </div>  </li></ol>
+                user.update(cant_life: 1)
+                env &#39;rack.session&#39;, { username: user.username, inmunity: true }
+                post &#39;/gamemodes/free&#39;, {option_id: 0}
+                expect(user.reload.cant_life).to eq(1)
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq(&#39;/gamemodes/free&#39;)
+            end
+        end
+    end
+end
+</code>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScripts -->
+    <script src="../assets/vendor/javascripts/jquery.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.tablesorter.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.scrollTo.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.timeago.js"></script>
+    <script src="../assets/vendor/javascripts/highcharts.src-4.0.1.js"></script>
+    <script src="../assets/vendor/javascripts/prettify.js"></script>
+    <script src="../assets/vendor/javascripts/bootstrap.min.js"></script>
+    <script src="../assets/javascripts/application.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.filtertable.min.js"></script>
+  </body>
+</html>
