@@ -444,29 +444,29 @@ class App < Sinatra::Application
         else
             @question = Question.where(level: session[:free_mode_difficulty])
                                 .order('RANDOM()').first
-        case session[:free_mode_difficulty]
-        when 'easy'
-            session[:free_mode_difficulty] = 'normal'
-            session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
-        when 'normal'
-            session[:free_mode_difficulty] = 'difficult'
-            session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
-        when 'difficult'
-            session[:free_mode_difficulty] = 'impossible'
-            session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
-        when 'impossible'
-            session[:free_mode_difficulty] = 'easy'
-            session[:answered_free_questions] = []
-            session[:message] = "Congratulations! You've completed the Free Mode."
-            session[:reset_free_mode] = true
-            all_questions = Question.all
+            case session[:free_mode_difficulty]
+            when 'easy'
+                session[:free_mode_difficulty] = 'normal'
+                session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
+            when 'normal'
+                session[:free_mode_difficulty] = 'difficult'
+                session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
+            when 'difficult'
+                session[:free_mode_difficulty] = 'impossible'
+                session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
+            when 'impossible'
+                session[:free_mode_difficulty] = 'easy'
+                session[:answered_free_questions] = []
+                session[:message] = "Congratulations! You've completed the Free Mode."
+                session[:reset_free_mode] = true
+                all_questions = Question.all
 
-            if all_questions.exists?
-                @question = all_questions.order('RANDOM()').first
+                if all_questions.exists?
+                    @question = all_questions.order('RANDOM()').first
+                end
+                redirect '/gamemodes'
             end
-            redirect '/gamemodes'
-        end
-        redirect '/gamemodes/free'
+            redirect '/gamemodes/free'
         end
 
         @options = @question.options.shuffle
