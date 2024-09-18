@@ -51,18 +51,19 @@ class App < Sinatra::Application
         erb :'login/login'
     end
 
-    # post para loguearse que pedimos el usuario y contraseña.
+    # post para loguearse que pedimos el usuario/mail y contraseña.
     post '/login' do
-        username = params[:username]
+        username_or_email = params[:username]
         password = params[:password]
-        # buscamos el usuario y contraseña en la base de datos
-        user = User.find_by(username: username)
-        # si existe va derecho a gamemodes
+        # Busca por username o por email
+        user = User.find_by(username: username_or_email) || Profile.find_by(email: username_or_email)&.user
+        # Si el usuario existe y la contraseña es correcta
         if user && user.authenticate(password)
             session[:username] = user.username # Guardar el nombre de usuario en la sesión
             redirect "/gamemodes"
-        else # escribiste mal algo o no existe el usuario o no estas logueado (es mas generico)
-            @error = "Invalid username or password."
+        else
+            # Si el login falla por username/email o por contraseña incorrecta
+            @error = "Invalid username/email or password."
             erb :'login/login'
         end
     end
