@@ -35,7 +35,7 @@ RSpec.describe 'The App' do
         it 'fails to log in with incorrect credentials' do
             post '/login', username: 'testuser', password: 'wrongpassword'
             expect(last_response).to be_ok
-            expect(last_response.body).to include('Invalid username or password.')
+            expect(last_response.body).to include('Invalid username/email or password.')
         end
     end
 
