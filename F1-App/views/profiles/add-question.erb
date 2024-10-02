@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/styleChangePass.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <link rel="icon" href='/icons/icon-1-50.png'>
+    <title>Change Password</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        setTimeout(function() {
+            var flashMessages = document.querySelectorAll('.flash');
+            flashMessages.forEach(function(message) {
+                message.style.display = 'none';
+            });
+        }, 5000);
+
+        function toggleProfileMenu() {
+            var menu = document.getElementById('profile-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="left">
+            <a href="/profile" class="menu-item" id="back"> <i class="fa-solid fa-arrow-left"> </i></a>
+        </div>
+        <div class="right">
+            <div class="user-info">
+                <div class="points">
+                    <% if @current_user.admin %>
+                        <i class="fa-solid fa-star"></i>
+                    <% end %>
+                </div>
+                <div class="currency">
+                    <img src="/icons/coin.png" alt="Monedas" class="icon">
+                    <span><%= @current_user ? @current_user.cant_coins : 0 %></span>
+                </div>
+                <div class="lives">
+                    <img src="/icons/heart.png" alt="Vidas" class="icon">
+                    <span id="lives-count"><%= @current_user ? @current_user.cant_life : 0 %></span>
+                </div>
+                <div class="points">
+                    <img src="/icons/points.png" alt="Vidas" class="icon">
+                    <span id="points-count"><%= @current_user ? @current_user.total_points : 0 %></span>
+                </div>
+                <div class="profile">
+                    <img src="<%= profile.profile_picture %>" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <div id="profile-menu" class="profile-menu">
+                        <a href="/profile">Profile</a>
+                        <a href="/logout">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="profile-container">
+            <div class="profile-picture">
+                <img src="<%= profile.profile_picture %>" alt="Profile Picture">
+            </div>
+            <div class="change-password">
+                <% if flash[:success] %>
+                    <div class="flash success">
+                        <%= flash[:success] %>
+                    </div>
+                <% elsif flash[:error] %>
+                    <div class="flash error">
+                        <%= flash[:error] %>
+                    </div>
+                <% end %>
+                <h3>Change Password</h3>
+                <form action="/profile/change_password" method="post">
+                    <label for="current-password">Current Password:</label>
+                    <input type="password" id="current-password" name="current_password" required>
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password" name="new_password" required>
+                    <label for="confirm-password">Confirm New Password:</label>
+                    <input type="password" id="confirm-password" name="confirm_password" required>
+                    <button type="submit" class="change-password-btn">Update Password</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

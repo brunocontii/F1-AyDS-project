@@ -89,6 +89,12 @@
             <div class="profile-picture">
                 <img src="<%= profile.profile_picture %>" alt="Profile Picture">
             </div>
+            <% if @current_user.admin %>
+                <div class="admin-options">
+                    <button class="add-question-btn" onclick="window.location.href='/profile/add-question'">Add Question</button>
+                </div>
+            <% end %>
+
             <% if flash[:success] %>
                 <div class="flash success">
                     <%= flash[:success] %>
