@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Actividad 2" company="" webLink="http://" view-date="2024-09-05" view-index="0" gantt-divider-location="658" resource-divider-location="300" version="3.3.3309" locale="es_ES">
+<?xml version="1.0" encoding="UTF-8"?><project name="Actividad 2" company="" webLink="http://" view-date="2024-10-02" view-index="0" gantt-divider-location="658" resource-divider-location="300" version="3.3.3309" locale="es_ES">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd14" name="Nueva tarea" width="20" order="0"/>
@@ -11,7 +11,7 @@
         <option id="filter.dueTodayTasks" value="false"/>
         <option id="filter.overdueTasks" value="false"/>
         <option id="filter.inProgressTodayTasks" value="false"/>
-        <option id="color.recent"><![CDATA[#330000 #000000 #009999 #00cccc #ff00ff #ffff33 #0000cc #33ff33 #ff0000]]></option>
+        <option id="color.recent"><![CDATA[#003300 #ff9966 #9900ff #33ffff #33ff33 #ff0000 #ff3333 #330000 #000000 #009999]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Nombre" width="210" order="0"/>
@@ -49,7 +49,7 @@
         <task id="1" uid="618f21634170415e9e86a3b5d49858f1" name="Srs" color="#33ff33" meeting="false" start="2024-09-10" duration="1" complete="0" expand="true">
             <notes><![CDATA[Actualizacion con requerimientos funcionales nuevos en el srs]]></notes>
         </task>
-        <task id="4" uid="df82bf0233f84decbbcb51dd14d9dc86" name="Planning poker" color="#0000cc" meeting="false" start="2024-09-11" duration="1" complete="0" expand="true">
+        <task id="4" uid="df82bf0233f84decbbcb51dd14d9dc86" name="Planning poker actividad 2" color="#0000cc" meeting="false" start="2024-09-11" duration="1" complete="0" expand="true">
             <notes><![CDATA[Reunion para decision de puntos de historia de usuario y estimacion.]]></notes>
         </task>
         <task id="2" uid="66fa5664d820487ca86a040cea079f42" name="Historia de usuario: Ranking" color="#ffff33" meeting="false" start="2024-09-12" duration="5" complete="0" expand="true">
@@ -64,11 +64,39 @@
         <task id="5" uid="a9bc6eab2a6f40f988d5092b7319c72a" name="Historia de usuario: Poder cambiar contraseña" color="#00cccc" meeting="false" start="2024-09-16" duration="1" complete="0" expand="true">
             <notes><![CDATA[En una seccion nueva poder cambiar la contraseña del usuario.]]></notes>
         </task>
-        <task id="6" uid="a145c637f3d94b45a6caa4a631229e89" name="Historia de usaurio: Agregar mail a el perfil" color="#000000" meeting="false" start="2024-09-16" duration="2" complete="0" expand="true">
+        <task id="6" uid="a145c637f3d94b45a6caa4a631229e89" name="Historia de usuario: Agregar mail a el perfil" color="#000000" meeting="false" start="2024-09-16" duration="2" complete="0" expand="true">
             <notes><![CDATA[Poder agregar el mail a el perfil como dato nuevo]]></notes>
         </task>
         <task id="7" uid="0d31631625ea4d41a6d9b08dfa48653f" name="Historia de usuario: Encriptacion contraseña" color="#330000" meeting="false" start="2024-09-16" duration="4" complete="0" expand="true">
             <notes><![CDATA[Encriptacion de contraseña para mas seguridad.]]></notes>
+            <depend id="8" type="2" difference="8" hardness="Strong"/>
+        </task>
+        <task id="8" uid="44a8305649434d56b3e86187486e983a" name="Planning poker actividad 3" color="#ff0000" meeting="false" start="2024-10-02" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Reunion para decision de puntos de historia de usuario y estimacion.]]></notes>
+            <depend id="9" type="2" difference="0" hardness="Strong"/>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <depend id="11" type="2" difference="0" hardness="Strong"/>
+            <depend id="12" type="2" difference="0" hardness="Strong"/>
+            <depend id="13" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="9" uid="fff4fc32f6fa40fc8beabf6895ce7bd2" name="Actualizacion srs actividad 3" color="#33ff33" meeting="false" start="2024-10-03" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Actualizacion con requerimientos funcionales nuevos en el srs]]></notes>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <depend id="11" type="2" difference="0" hardness="Strong"/>
+            <depend id="12" type="2" difference="0" hardness="Strong"/>
+            <depend id="13" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="10" uid="a68918c9ca1147908dbb7260da6cbff3" name="Historia de usuario: Agregar usuario administrador" color="#33ffff" meeting="false" start="2024-10-04" duration="2" complete="0" expand="true">
+            <notes><![CDATA[Distinguir en la app un usuario comun sin permisos y un usuario administrador (con permisos para crear preguntas pj)]]></notes>
+        </task>
+        <task id="11" uid="250969d3291a423798d099a9cdf7b769" name="Historia de usuario: Formulario alta preguntas" color="#9900ff" meeting="false" start="2024-10-04" duration="3" complete="0" expand="true">
+            <notes><![CDATA[Mediante un formulario un usuario con permiso de administador va a poder dar de alta preguntas y sus respectivas respuestas en la app]]></notes>
+        </task>
+        <task id="12" uid="267c7351936445299e9940d7637d01ac" name="Historia de usuario: Listado de preguntas correctas e incorrectas" color="#ff9966" meeting="false" start="2024-10-04" duration="2" complete="0" expand="true">
+            <notes><![CDATA[El usuario administrador podra consultar estadisticas sobre cada pregunta como por ejemplo cantidad de veces que una pregunta fue respondida de manera correcta y/o incorrecta]]></notes>
+        </task>
+        <task id="13" uid="dbf5336f960647ccb2b92adf9f9a276e" name="Historia de usuario: Modo de juego grandprix" color="#003300" meeting="false" start="2024-10-04" duration="6" complete="0" expand="true">
+            <notes><![CDATA[nuevo modo de juego llamado grandprix donde las preguntas son imagenes de pistas de carreras.]]></notes>
         </task>
     </tasks>
     <resources>
@@ -83,19 +111,30 @@
         <allocation task-id="2" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
         <allocation task-id="0" resource-id="0" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="5" resource-id="0" function="Default:1" responsible="true" load="40.0"/>
+        <allocation task-id="8" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="0" function="Default:1" responsible="true" load="20.0"/>
+        <allocation task-id="13" resource-id="0" function="Default:1" responsible="true" load="80.0"/>
         <allocation task-id="2" resource-id="1" function="Default:1" responsible="true" load="100.0"/>
         <allocation task-id="4" resource-id="1" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="0" resource-id="1" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="6" resource-id="1" function="Default:1" responsible="false" load="45.0"/>
+        <allocation task-id="8" resource-id="1" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="10" resource-id="1" function="Default:1" responsible="true" load="40.0"/>
+        <allocation task-id="13" resource-id="1" function="Default:1" responsible="false" load="66.0"/>
         <allocation task-id="3" resource-id="2" function="Default:1" responsible="true" load="100.0"/>
         <allocation task-id="4" resource-id="2" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="0" resource-id="2" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="5" resource-id="2" function="Default:1" responsible="false" load="40.0"/>
         <allocation task-id="7" resource-id="2" function="Default:1" responsible="true" load="70.0"/>
+        <allocation task-id="8" resource-id="2" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="11" resource-id="2" function="Default:1" responsible="true" load="60.0"/>
+        <allocation task-id="13" resource-id="2" function="Default:1" responsible="false" load="30.0"/>
         <allocation task-id="3" resource-id="3" function="Default:1" responsible="true" load="100.0"/>
         <allocation task-id="4" resource-id="3" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="0" resource-id="3" function="Default:1" responsible="true" load="50.0"/>
         <allocation task-id="6" resource-id="3" function="Default:1" responsible="true" load="45.0"/>
+        <allocation task-id="8" resource-id="3" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="12" resource-id="3" function="Default:1" responsible="true" load="40.0"/>
     </allocations>
     <vacations/>
     <previous/>
