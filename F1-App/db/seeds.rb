@@ -3,6 +3,7 @@ users = [
     {username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100, total_points: 0},
     {username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100, total_points: 0},
     {username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80, total_points: 0},
+    {username: 'admin', password: 'admin', cant_life: 99999, cant_coins: 99999, total_points: 99999, admin: true},
 ]
 
 users.each do |user|
@@ -11,6 +12,7 @@ users.each do |user|
         u.cant_life = user[:cant_life]
         u.cant_coins = user[:cant_coins]
         u.total_points = user[:total_points]
+        u.admin = user[:admin]
     end
 end
 
@@ -19,6 +21,7 @@ profiles = [
     {name: 'Bruno', lastName: 'Conti', email:'brunocse.5@gmail.com', description: 'messi lover', age: 21, user_id: 2, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
     {name: 'Erich', lastName: 'Vollenweider', email:'vollenweidererich@gmail.com', description: 'KTM Group', age: 25, user_id: 4, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
     {name: 'Joaquin', lastName: 'Mezzano', email:'mezzanojoaquin@gmail.com', description: 'intento de programador', age: 23, user_id: 1, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
+    {name: 'admin', lastName: 'admin', email:'admin@admin.com', description: 'El admin', age: 99, user_id: 5, profile_picture: '/profile_pictures/charles-leclerc-2024.png'},
 ]
 
 profiles.each do |profile|

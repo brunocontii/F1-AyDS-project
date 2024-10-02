@@ -11,6 +11,7 @@ class CreateProfilesTable < ActiveRecord::Migration[7.1]
 
       t.datetime :created_at
       t.datetime :updated_at
+      t.boolean :admin
     end
   end
 end
