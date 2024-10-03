@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/styles/styleChangePass.css">
+    <link rel="stylesheet" href="/styles/styleAddQuestion.css">
     <link rel="stylesheet" href="/fontawesome/css/all.min.css">
     <link rel="icon" href='/icons/icon-1-50.png'>
-    <title>Change Password</title>
+    <title>Add Question</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         setTimeout(function() {
@@ -57,10 +57,7 @@
     </header>
     <main>
         <div class="profile-container">
-            <div class="profile-picture">
-                <img src="<%= profile.profile_picture %>" alt="Profile Picture">
-            </div>
-            <div class="change-password">
+            <div class="add-question">
                 <% if flash[:success] %>
                     <div class="flash success">
                         <%= flash[:success] %>
@@ -70,15 +67,46 @@
                         <%= flash[:error] %>
                     </div>
                 <% end %>
-                <h3>Change Password</h3>
-                <form action="/profile/change_password" method="post">
-                    <label for="current-password">Current Password:</label>
-                    <input type="password" id="current-password" name="current_password" required>
-                    <label for="new-password">New Password:</label>
-                    <input type="password" id="new-password" name="new_password" required>
-                    <label for="confirm-password">Confirm New Password:</label>
-                    <input type="password" id="confirm-password" name="confirm_password" required>
-                    <button type="submit" class="change-password-btn">Update Password</button>
+                <h3>Add New Question</h3>
+                <form action="/profile/add-question" method="post">
+                    <label for="question">Question:</label>
+                    <input type="text" id="question" name="question" required>
+
+                    <label for="option1">Option 1:</label>
+                    <input type="text" id="option1" name="option1" required>
+                    <label for="option2">Option 2:</label>
+                    <input type="text" id="option2" name="option2" required>
+                    <label for="option3">Option 3:</label>
+                    <input type="text" id="option3" name="option3" required>
+                    <label for="option4">Option 4:</label>
+                    <input type="text" id="option4" name="option4" required>
+
+                    <label for="correct-answer">Correct Answer:</label>
+                    <select id="correct-answer" name="correct_answer" required>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                        <option value="option4">Option 4</option>
+                    </select>
+
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty" name="difficulty" required>
+                        <option value="easy">Easy</option>
+                        <option value="normal">Normal</option>
+                        <option value="difficult">Difficult</option>
+                        <option value="impossible">Impossible</option>
+                    </select>
+
+                    <label for="theme">Theme:</label>
+                    <select id="theme" name="theme" required>
+                        <option value="circuit">Circuit</option>
+                        <option value="team">Team</option>
+                        <option value="career">Career</option>
+                        <option value="pilot">Pilot</option>
+                        <option value="free">Free</option>
+                    </select>
+
+                    <button type="submit" class="add-question-btn">Add Question</button>
                 </form>
             </div>
         </div>

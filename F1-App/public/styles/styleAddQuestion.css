@@ -97,7 +97,7 @@ main {
     align-items: center;
 }
 
-.profile-container {
+.add-question {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -111,47 +111,37 @@ main {
     max-width: 800px;
 }
 
-.profile-picture img {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border: 2px solid #ddd;
-    margin-bottom: 20px;
-}
-
-.change-password {
-    padding: 20px;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 100%;
-}
-
-.change-password h3 {
+.add-question h3 {
     margin-bottom: 15px;
     font-size: 1.5rem;
 }
 
-.change-password form {
+.add-question form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
-.change-password label {
+.add-question label {
     font-size: 1rem;
 }
 
-.change-password input {
+.add-question input[type="text"],
+.add-question select {
     padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 16px;
     width: 100%;
-    box-sizing: border-box;
 }
 
-.change-password-btn {
+.add-question input[type="text"]:focus,
+.add-question select:focus {
+    border-color: #333;
+    outline: none;
+}
+
+.add-question-btn {
     background-color: #ffcc00;
     color: white;
     padding: 10px;
@@ -162,7 +152,7 @@ main {
     font-size: 1rem;
 }
 
-.change-password-btn:hover {
+.add-question-btn:hover {
     background-color: #e6b800;
 }
 

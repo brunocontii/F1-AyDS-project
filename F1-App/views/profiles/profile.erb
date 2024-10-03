@@ -100,6 +100,12 @@
                     <%= flash[:success] %>
                 </div>
             <% end %>
+
+            <% if flash[:error] %>
+                <div class="flash error">
+                    <%= flash[:error] %>
+                </div>
+            <% end %>
             <div class="profile-details">
                 <p><strong>Name:</strong> <%= profile.name %> <%= profile.lastName %></p>
                 <p><strong>Age:</strong> <%= profile.age %> years</p>

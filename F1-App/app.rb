@@ -181,6 +181,49 @@ class App < Sinatra::Application
         end
     end
 
+    get '/profile/add-question' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @profile = @current_user.profile
+        erb :'profiles/add-question', locals: {current_user: @current_user, profile: @profile}
+    end
+
+    post '/profile/add-question' do
+        # Verificar si la pregunta ya existe en la base de datos
+        existing_question = Question.find_by(name_question: params[:question])
+        
+        if existing_question
+            # Si la pregunta ya existe, mostrar un mensaje de error
+            flash[:error] = "The question already exists in the database."
+        else
+            # Crear una nueva pregunta
+            question = Question.new(
+                name_question: params[:question],
+                level: params[:difficulty],
+                theme: params[:theme]
+            )
+            
+            if question.save
+                # Guardar las opciones asociadas a la pregunta
+                options = []
+                (1..4).each do |i|
+                    options << Option.create(
+                        name_option: params["option#{i}"],
+                        question_id: question.id,
+                        correct: params[:correct_answer] == "option#{i}"
+                    )
+                end
+            
+                # Mensaje de exito
+                flash[:success] = "Question added successfully!"
+            else
+                # Si ocurre un error al guardar la pregunta
+                flash[:error] = "There was an error adding the question. Please try again."
+            end
+        end
+
+        redirect '/profile'
+    end
+
     get '/gamemodes' do
         # Intenta obtener los 10 usuarios con más puntos en orden descendente
         @users = User.order(total_points: :desc).limit(10) || []
