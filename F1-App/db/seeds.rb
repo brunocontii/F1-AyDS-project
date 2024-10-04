@@ -792,7 +792,7 @@ options = [
     {name_option: 'Monza' , question_id: 116, correct: false},
 
     {name_option: 'Sakhir' , question_id: 117, correct: true},
-    {name_option: 'Americas' , question_id: 117, correct: false},
+    {name_option: 'Austin' , question_id: 117, correct: false},
     {name_option: 'AVUS' , question_id: 117, correct: false},
     {name_option: 'Baku' , question_id: 117, correct: false},
 
@@ -804,25 +804,25 @@ options = [
     {name_option: 'Imola' , question_id: 119, correct: true},
     {name_option: 'Lusail' , question_id: 119, correct: false},
     {name_option: 'Spa-Francorchamps' , question_id: 119, correct: false},
-    {name_option: 'Losail' , question_id: 119, correct: false},
+    {name_option: 'Suzuka' , question_id: 119, correct: false},
 
     {name_option: 'Baku' , question_id: 120, correct: true},
     {name_option: 'Aintree' , question_id: 120, correct: false},
     {name_option: 'Fuji' , question_id: 120, correct: false},
-    {name_option: 'Losail' , question_id: 120, correct: false},
+    {name_option: 'Lusail' , question_id: 120, correct: false},
 
     {name_option: 'Singapore' , question_id: 121, correct: true},
     {name_option: 'Monsanto Park' , question_id: 121, correct: false},
     {name_option: 'Monza' , question_id: 121, correct: false},
-    {name_option: 'Losail' , question_id: 121, correct: false},
+    {name_option: 'Jeddah' , question_id: 121, correct: false},
 
     {name_option: 'Lusail' , question_id: 122, correct: true},
     {name_option: 'Buddh' , question_id: 122, correct: false},
     {name_option: 'Sochi' , question_id: 122, correct: false},
-    {name_option: 'Las Vegas Strip' , question_id: 122, correct: false},
+    {name_option: 'Las Vegas' , question_id: 122, correct: false},
 
     {name_option: 'Yas Marina' , question_id: 123, correct: true},
-    {name_option: 'Hermanos Rodriguez' , question_id: 123, correct: false},
+    {name_option: 'Mexico City' , question_id: 123, correct: false},
     {name_option: 'Jeddah' , question_id: 123, correct: false},
     {name_option: 'Fuji' , question_id: 123, correct: false},
 
@@ -836,7 +836,7 @@ options = [
     {name_option: 'Las Vegas' , question_id: 125, correct: false},
     {name_option: 'Monza' , question_id: 125, correct: false},
 
-    {name_option: 'Hungaroring' , question_id: 126, correct: true},
+    {name_option: 'Budapest' , question_id: 126, correct: true},
     {name_option: 'Adelaida' , question_id: 126, correct: false},
     {name_option: 'Algarve' , question_id: 126, correct: false},
     {name_option: 'Buddh' , question_id: 126, correct: false},
@@ -861,7 +861,7 @@ options = [
     {name_option: 'Mugello' , question_id: 130, correct: false},
     {name_option: 'Okayama' , question_id: 130, correct: false},
 
-    {name_option: 'Las Vegas Strip' , question_id: 131, correct: true},
+    {name_option: 'Las Vegas' , question_id: 131, correct: true},
     {name_option: 'Kyalami' , question_id: 131, correct: false},
     {name_option: 'Nelson Piquet' , question_id: 131, correct: false},
     {name_option: 'Austin' , question_id: 131, correct: false},
@@ -884,7 +884,7 @@ options = [
     {name_option: 'Monza' , question_id: 135, correct: true},
     {name_option: 'Aintree' , question_id: 135, correct: false},
     {name_option: 'Fuji' , question_id: 135, correct: false},
-    {name_option: 'Losail' , question_id: 135, correct: false},
+    {name_option: 'Lusail' , question_id: 135, correct: false},
 
     {name_option: 'Sao Paulo' , question_id: 136, correct: true},
     {name_option: 'Kyalami' , question_id: 136, correct: false},
@@ -909,7 +909,7 @@ options = [
     {name_option: 'Melbourne' , question_id: 140, correct: true},
     {name_option: 'Aintree' , question_id: 140, correct: false},
     {name_option: 'Fuji' , question_id: 140, correct: false},
-    {name_option: 'Losail' , question_id: 140, correct: false},
+    {name_option: 'Lusail' , question_id: 140, correct: false},
 
 
 ]
