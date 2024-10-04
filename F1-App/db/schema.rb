@@ -48,12 +48,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_202132) do
     t.integer "user_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "admin"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
     t.string "name_question"
+    t.string "image_question"
     t.string "level"
     t.string "theme"
     t.datetime "created_at"
@@ -69,7 +69,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_202132) do
     t.datetime "last_life_lost_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "admin"
   end
 
   add_foreign_key "answers", "options"
