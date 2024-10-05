@@ -290,3 +290,13 @@ main {
     text-align: center;
     width: 100%;
 }
+
+.img-question {
+    max-width: 100%; /* Limita el ancho al 100% del contenedor */
+    max-height: 300px; /* Ajusta la altura máxima según prefieras */
+    width: auto; /* Deja que el navegador ajuste el ancho manteniendo la proporción */
+    height: auto; /* Deja que el navegador ajuste la altura manteniendo la proporción */
+    display: block; /* Para que las imágenes se comporten de manera más predecible */
+    margin: 0 auto; /* Centra la imagen dentro del contenedor */
+}
+  

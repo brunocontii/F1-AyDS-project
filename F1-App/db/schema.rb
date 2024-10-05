@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_202132) do
     t.datetime "last_life_lost_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "admin"
   end
 
   add_foreign_key "answers", "options"
