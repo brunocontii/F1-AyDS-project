@@ -38,6 +38,12 @@ header {
     align-items: center;
 }
 
+.adminuser {
+    display: flex;
+    margin-right: 20px;
+    color: #ffcc00;
+}
+
 .currency, .lives, .points {
     display: flex;
     align-items: center;

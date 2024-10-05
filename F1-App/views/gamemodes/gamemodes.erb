@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamemodes</title>
     <link rel="icon" href="/icons/icon-1-50.png">
@@ -30,7 +31,7 @@
         </div>
         <div class="right">
             <div class="user-info">
-                <div class="points">
+                <div class="adminuser">
                     <% if @current_user.admin %>
                         <i class="fa-solid fa-star"></i>
                     <% end %>
@@ -81,6 +82,9 @@
             </a>
             <a href="/gamemodes/free" class="gamemode">
                 <i class="fas fa-gamepad"></i> Free
+            </a>
+            <a href="/gamemodes/grandprix" class="gamemode">
+                <i class="fa-solid fa-car"></i> Grand Prix
             </a>
         </div>
         <div class="leaderboard">

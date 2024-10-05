@@ -4,8 +4,9 @@
     <title>Questions</title>
     <link rel="icon" href="/icons/icon-1-50.png">
     <link rel="stylesheet" href="/styles/styleTheme.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <script src="https://kit.fontawesome.com/a2dd6045c4.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             function updateLives() {
@@ -16,7 +17,6 @@
             }
 
             setInterval(updateLives, 20000);
-
             updateLives();
         });
     </script>
@@ -28,7 +28,7 @@
             const formElement = document.getElementById('question-form');
             const extraTimeButton = document.getElementById('extra-time-button');
             const fiftyFiftyButton = document.getElementById('fifty-fifty-button');
-            const inmunity = document.getElementById('inmunity-button')
+            const inmunity = document.getElementById('inmunity-button');
 
             const countdown = setInterval(() => {
                 timeLeft -= 1;
@@ -143,7 +143,7 @@
     </div>
     <div class="right">
         <div class="user-info">
-            <div class="points">
+            <div class="adminuser">
                 <% if @current_user.admin %>
                     <i class="fa-solid fa-star"></i>
                 <% end %>
@@ -197,7 +197,13 @@
                     <div class="timer">
                         <div id="timer-bar"></div>
                     </div>
-                    <h2 class="question-title"><%= @question.name_question %></h2>
+                    <!-- Verificación si es una imagen o texto -->
+                    <% if question.image_question %>
+                        <img src= <%= question.image_question %> alt="Pregunta" class="img-question"> 
+                    <% else %>
+                        <h2 class="question-title"><%= question.name_question %></h2>
+                    <% end %>
+
                     <form id="question-form" action="<%= @form_action %>" method="post" class="question-form">
                         <% @options.each do |option| %>
                             <div class="option">
