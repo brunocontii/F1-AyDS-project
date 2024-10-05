@@ -3,7 +3,7 @@ users = [
     {username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100, total_points: 0},
     {username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100, total_points: 0},
     {username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80, total_points: 0},
-    {username: 'admin', password: 'admin', cant_life: 99999, cant_coins: 99999, total_points: 99999, admin: true},
+    {username: 'admin', password: 'admin', cant_life: 99999, cant_coins: 99999, total_points: 0, admin: true},
 ]
 
 users.each do |user|
