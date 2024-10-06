@@ -188,40 +188,69 @@ class App < Sinatra::Application
     end
 
     post '/profile/add-question' do
-        # Verificar si la pregunta ya existe en la base de datos
-        existing_question = Question.find_by(name_question: params[:question])
+        question_type = params[:question_type]
         
-        if existing_question
-            # Si la pregunta ya existe, mostrar un mensaje de error
-            flash[:error] = "The question already exists in the database."
-        else
-            # Crear una nueva pregunta
-            question = Question.new(
-                name_question: params[:question],
-                level: params[:difficulty],
-                theme: params[:theme]
-            )
-            
-            if question.save
-                # Guardar las opciones asociadas a la pregunta
-                options = []
-                (1..4).each do |i|
-                    options << Option.create(
-                        name_option: params["option#{i}"],
-                        question_id: question.id,
-                        correct: params[:correct_answer] == "option#{i}"
-                    )
-                end
-            
-                # Mensaje de exito
-                flash[:success] = "Question added successfully!"
+        if question_type == "text"
+            # Verificar si la pregunta de texto ya existe
+            existing_question = Question.find_by(name_question: params[:question_text])
+            if existing_question
+                flash[:error] = "The question already exists in the database."
+                redirect '/profile/add-question'
             else
-                # Si ocurre un error al guardar la pregunta
-                flash[:error] = "There was an error adding the question. Please try again."
+                # Crear la pregunta de texto
+                question = Question.new(
+                    name_question: params[:question_text],
+                    level: params[:difficulty],
+                    theme: params[:theme]
+                )
+            end
+        elsif question_type == "image"
+            if params[:question_image] && params[:question_image][:filename]
+                filename = params[:question_image][:filename]
+                file = params[:question_image][:tempfile]
+                
+                # Validacion de tipo de archivo
+                allowed_file_types = [".jpg", ".jpeg", ".png"]
+                if !allowed_file_types.include?(File.extname(filename).downcase)
+                    flash[:error] = "Invalid image format. Only JPG, JPEG and PNG are allowed."
+                    redirect '/profile/add-question'
+                end
+
+                # Guardar la imagen en la carpeta publica
+                save_path = File.join("public/grandprix", filename)
+                File.open(save_path, 'wb') do |f|
+                    f.write(file.read)
+                end
+                
+                puts "Valor de theme: #{params[:theme]}"
+                # Crear la pregunta con la ruta de la imagen
+                question = Question.new(
+                    image_question: "/grandprix/#{filename}",
+                    level: params[:difficulty],
+                    theme: params[:theme]
+                )
+            else
+                flash[:error] = "Please upload an image."
+                redirect '/profile/add-question'
             end
         end
-
-        redirect '/profile'
+        
+        if question.save
+            # Guardar las opciones
+            options = []
+            (1..4).each do |i|
+                options << Option.create(
+                name_option: params["option#{i}"],
+                question_id: question.id,
+                correct: params[:correct_answer] == "option#{i}"
+            )
+            end
+            flash[:success] = "Question added successfully!"
+        else
+            flash[:error] = "There was an error adding the question: #{question.errors.full_messages.join(', ')}"
+        end
+            
+        redirect '/profile/add-question'
     end
 
     get '/gamemodes' do
@@ -371,7 +400,6 @@ class App < Sinatra::Application
             session[:color] = "red"
         end
     end
-
 
     post '/use_extra_time' do
         # Obtenemos la solicitud y convertimos el JSON recibido en un hash
@@ -545,8 +573,8 @@ class App < Sinatra::Application
         redirect '/gamemodes/free'
     end
 
-     # Modo Grand Prix
-     get '/gamemodes/grandprix' do
+    # Modo Grand Prix
+    get '/gamemodes/grandprix' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
 
         # Reinicia el modo de juego si el usuario vuelve a ingresar
@@ -718,8 +746,8 @@ class App < Sinatra::Application
         end
     end
 
-     # Metodo que maneja lo que pasa cuando el tiempo para responder se acaba
-     def handle_grandprix_timeout
+    # Metodo que maneja lo que pasa cuando el tiempo para responder se acaba
+    def handle_grandprix_timeout
         # Restamos 1 vida al usuario
         @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
         # Verificamos si el usuario puede seguir jugando o no

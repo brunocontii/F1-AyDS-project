@@ -19,6 +19,34 @@
             var menu = document.getElementById('profile-menu');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
+
+        function toggleQuestionInput() {
+            var questionType = document.getElementById("question-type").value;
+            var themeSelect = document.getElementById("theme");
+
+            if (questionType === "text") {
+                document.getElementById("text-question").style.display = "block";
+                document.getElementById("image-question").style.display = "none";
+                themeSelect.disabled = false;
+            } else {
+                document.getElementById("text-question").style.display = "none";
+                document.getElementById("image-question").style.display = "block";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            toggleQuestionInput();
+        });
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('image-preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
     </script>
 </head>
 <body>
@@ -68,9 +96,27 @@
                     </div>
                 <% end %>
                 <h3>Add New Question</h3>
-                <form action="/profile/add-question" method="post">
-                    <label for="question">Question:</label>
-                    <input type="text" id="question" name="question" required>
+                <form action="/profile/add-question" method="post" enctype="multipart/form-data">
+                    <label for="question-type">Question Type:</label>
+                    <select id="question-type" name="question_type" onchange="toggleQuestionInput()" required>
+                        <option value="text">Text</option>
+                        <option value="image">Image</option>
+                    </select>
+
+                    <div id="text-question" style="display: block;">
+                        <label for="question">Question (Text):</label>
+                        <input type="text" id="question" name="question_text">
+                    </div>
+
+                    <div id="image-question" style="display: none;">
+                        <label for="question-image" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload Image
+                        </label>
+                        <input type="file" id="question-image" name="question_image" accept="image/*" onchange="previewImage(event)">
+
+                        <img id="image-preview" src="#" alt="Image Preview">
+                    </div>
+
 
                     <label for="option1">Option 1:</label>
                     <input type="text" id="option1" name="option1" required>
@@ -104,6 +150,7 @@
                         <option value="career">Career</option>
                         <option value="pilot">Pilot</option>
                         <option value="free">Free</option>
+                        <option value="grandprix">Grandprix</option>
                     </select>
 
                     <button type="submit" class="add-question-btn">Add Question</button>
