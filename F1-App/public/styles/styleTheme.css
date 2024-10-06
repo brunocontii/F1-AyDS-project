@@ -303,6 +303,9 @@ main {
     width: auto; /* Deja que el navegador ajuste el ancho manteniendo la proporción */
     height: auto; /* Deja que el navegador ajuste la altura manteniendo la proporción */
     display: block; /* Para que las imágenes se comporten de manera más predecible */
-    margin: 0 auto; /* Centra la imagen dentro del contenedor */
+    margin: 0 auto; /* Centra la imagen dentro del contenedor */   
+    border: 5px solid black; /* Agrega un borde negro de 5px de grosor */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Añade sombra alrededor de la imagen (opcional) */
 }
+
   
