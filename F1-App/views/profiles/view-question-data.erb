@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/styleDataQuestion.css">
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <link rel="icon" href='/icons/icon-1-50.png'>
+    <title>View Question Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function sortTable(column, order) {
+            window.location.href = `/profile/view-question-data?sort_by=${column}&order=${order}`;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="left">
+            <a href="/profile" class="menu-item" id="back"> <i class="fa-solid fa-arrow-left"> </i></a>
+        </div>
+        <div class="right">
+            <div class="user-info">
+                <div class="adminuser">
+                    <% if @current_user.admin %>
+                        <i class="fa-solid fa-star"></i>
+                    <% end %>
+                </div>
+                <div class="currency">
+                    <img src="/icons/coin.png" alt="Monedas" class="icon">
+                    <span><%= @current_user ? @current_user.cant_coins : 0 %></span>
+                </div>
+                <div class="lives">
+                    <img src="/icons/heart.png" alt="Vidas" class="icon">
+                    <span id="lives-count"><%= @current_user ? @current_user.cant_life : 0 %></span>
+                </div>
+                <div class="points">
+                    <img src="/icons/points.png" alt="Vidas" class="icon">
+                    <span id="points-count"><%= @current_user ? @current_user.total_points : 0 %></span>
+                </div>
+                <div class="profile">
+                    <img src="<%= profile.profile_picture %>" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
+                    <div id="profile-menu" class="profile-menu">
+                        <a href="/profile">Profile</a>
+                        <a href="/logout">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="question-data">
+            <h2>Question Data Ranking</h2>
+            <div class="ranking-container">
+                <div class="ranking-header">
+                    <div class="rank-header">Rank</div>
+                    <div class="id-header">ID</div>
+                    <div class="name-header">Name</div>
+                    <div class="image-header">Image</div>
+                    <div class="correct-header">
+                        Correct
+                        <button onclick="sortTable('correct', 'asc')">▲</button>
+                        <button onclick="sortTable('correct', 'desc')">▼</button>
+                    </div>
+                    <div class="incorrect-header">
+                        Incorrect
+                        <button onclick="sortTable('incorrect', 'asc')">▲</button>
+                        <button onclick="sortTable('incorrect', 'desc')">▼</button>
+                    </div>
+                </div>
+                <div class="ranking-list">
+                    <% @questions.each_with_index do |question, index| %>
+                        <div class="ranking-item">
+                            <div class="rank"><%= index + 1 %></div>
+                            <div class="id"><%= question.id %></div>
+                            <div class="name">
+                                <% if question.name_question %>
+                                    <%= question.name_question %>
+                                <% else %>
+                                    N/A
+                                <% end %>
+                            </div>
+                            <div class="image">
+                                <% if question.image_question %>
+                                    <img src="<%= question.image_question %>" alt="Question Image" style="width: 200px; height: 200px; background-color: white;">
+                                <% else %>
+                                    N/A
+                                <% end %>
+                            </div>
+                            <div class="correct"><%= question.correct %></div>
+                            <div class="incorrect"><%= question.incorrect %></div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

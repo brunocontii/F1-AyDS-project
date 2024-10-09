@@ -56,6 +56,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_202132) do
     t.string "image_question"
     t.string "level"
     t.string "theme"
+    t.integer "correct"
+    t.integer "incorrect"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
