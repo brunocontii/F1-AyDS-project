@@ -189,7 +189,7 @@ class App < Sinatra::Application
 
     post '/profile/add-question' do
         question_type = params[:question_type]
-        
+
         if question_type == "text"
             # Verificar si la pregunta de texto ya existe
             existing_question = Question.find_by(name_question: params[:question_text])
@@ -208,7 +208,7 @@ class App < Sinatra::Application
             if params[:question_image] && params[:question_image][:filename]
                 filename = params[:question_image][:filename]
                 file = params[:question_image][:tempfile]
-                
+
                 # Validacion de tipo de archivo
                 allowed_file_types = [".jpg", ".jpeg", ".png"]
                 if !allowed_file_types.include?(File.extname(filename).downcase)
@@ -221,7 +221,7 @@ class App < Sinatra::Application
                 File.open(save_path, 'wb') do |f|
                     f.write(file.read)
                 end
-                
+
                 puts "Valor de theme: #{params[:theme]}"
                 # Crear la pregunta con la ruta de la imagen
                 question = Question.new(
@@ -234,7 +234,7 @@ class App < Sinatra::Application
                 redirect '/profile/add-question'
             end
         end
-        
+
         if question.save
             # Guardar las opciones
             options = []
@@ -249,8 +249,29 @@ class App < Sinatra::Application
         else
             flash[:error] = "There was an error adding the question: #{question.errors.full_messages.join(', ')}"
         end
-            
+
         redirect '/profile/add-question'
+    end
+
+    get '/profile/view-question-data' do
+        @current_user = User.find_by(username: session[:username]) if session[:username]
+        @profile = @current_user.profile
+        
+        @view_type = params[:view_type]
+        limit = params[:limit].to_i
+        
+        if @view_type && limit
+            if @view_type == 'correct'
+                @questions = Question.order(correct: :desc).limit(limit)
+            else
+                @questions = Question.order(incorrect: :desc).limit(limit)
+            end
+        else 
+            questions = []
+        end
+
+        erb :'profiles/view-question-data', locals: {profile: @profile, questions: @questions}
+
     end
 
     get '/gamemodes' do
@@ -363,6 +384,8 @@ class App < Sinatra::Application
             @question = @option.question
             if @option.correct
                 Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+                # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
+                @question.increment!(:correct)
                 @current_user.increment!(:cant_coins, 10)
                 @current_user.increment!(:total_points, 50*$racha)
                 $racha = $racha + 1
@@ -389,6 +412,8 @@ class App < Sinatra::Application
     end
 
     def handle_incorrect_answer
+        # Incrementa la columna 'incorrect' en la pregunta que fue contestada incorrectamente
+        @question.increment!(:incorrect)
         $racha = 1
         @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
         if @current_user.cant_life.zero?
@@ -699,6 +724,8 @@ class App < Sinatra::Application
             # Si la opcion es correcta
             if @option.correct
                 Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+                # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
+                @question.increment!(:correct)
                 @current_user.increment!(:cant_coins, 10)
                 @current_user.increment!(:total_points, 50*$racha)
                 $racha = $racha + 1
@@ -732,6 +759,8 @@ class App < Sinatra::Application
 
     # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
     def handle_free_incorrect_answer
+        # Incrementa la columna 'incorrect' en la pregunta que fue contestada incorrectamente
+        @question.increment!(:incorrect)
         # Reseteamos la recha y le restamos 1 vida
         $racha = 1
         @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
@@ -771,6 +800,8 @@ class App < Sinatra::Application
             # Si la opcion es correcta
             if @option.correct
                 Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+                # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
+                @question.increment!(:correct)
                 @current_user.increment!(:cant_coins, 10)
                 @current_user.increment!(:total_points, 50*$racha)
                 $racha = $racha + 1
@@ -804,6 +835,8 @@ class App < Sinatra::Application
 
     # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
     def handle_grandprix_incorrect_answer
+        # Incrementa la columna 'incorrect' en la pregunta que fue contestada incorrectamente
+        @question.increment!(:incorrect)
         # Reseteamos la recha y le restamos 1 vida
         $racha = 1
         @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
