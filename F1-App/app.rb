@@ -256,14 +256,23 @@ class App < Sinatra::Application
     get '/profile/view-question-data' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
         @profile = @current_user.profile
-        sort_by = params[:sort_by] || 'correct'
-        order = params[:order] || 'desc'
+        
+        @view_type = params[:view_type]
+        limit = params[:limit].to_i
+        
+        if @view_type && limit
+            if @view_type == 'correct'
+                @questions = Question.order(correct: :desc).limit(limit)
+            else
+                @questions = Question.order(incorrect: :desc).limit(limit)
+            end
+        else 
+            questions = []
+        end
 
-        @questions = Question.order("#{sort_by} #{order}")
+        erb :'profiles/view-question-data', locals: {profile: @profile, questions: @questions}
 
-        erb :'profiles/view-question-data', locals: {profile: @profile, question: @question}
     end
-
 
     get '/gamemodes' do
         # Intenta obtener los 10 usuarios con más puntos en orden descendente

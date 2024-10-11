@@ -85,14 +85,15 @@
     <main>
         <div class="profile-container">
             <button class="change-picture-btn" onclick="chooseProfilePicture()">Change Picture</button>
-            <button class="change-password" onclick="window.location.href='/profile/change-password'">Change Password</button>
-            <button class="view-question-data" onclick="window.location.href='/profile/view-question-data'">View Question Data</button>
+            <button class="change-password-btn" onclick="window.location.href='/profile/change-password'">Change Password</button>
             <div class="profile-picture">
                 <img src="<%= profile.profile_picture %>" alt="Profile Picture">
             </div>
             <% if @current_user.admin %>
                 <div class="admin-options">
+                    <h1 class="admin-title">Opciones de Admin</h1>
                     <button class="add-question-btn" onclick="window.location.href='/profile/add-question'">Add Question</button>
+                    <button class="view-question-data-btn" onclick="window.location.href='/profile/view-question-data'">List Question</button>
                 </div>
             <% end %>
 

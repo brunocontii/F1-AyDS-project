@@ -11,6 +11,26 @@
         function sortTable(column, order) {
             window.location.href = `/profile/view-question-data?sort_by=${column}&order=${order}`;
         }
+
+        $(document).ready(function() {
+            $('#filterForm').on('submit', function(event) {
+                event.preventDefault(); // Prevenir el comportamiento por defecto
+
+                // Obtener los valores seleccionados
+                const view_type = $('#view-type').val();
+                const limit = $('#limit').val();
+
+                // Enviar la solicitud y actualizar la tabla de manera dinámica
+                $.get(`/profile/view-question-data`, { view_type: view_type, limit: limit }, function(data) {
+                    $('#questionsTable').html($(data).find('#questionsTable').html()); // Insertar la tabla desde la respuesta
+                    $('#questionsTable').show(); // Mostrar la tabla
+                });
+            });
+        });
+        function toggleProfileMenu() {
+            var menu = document.getElementById('profile-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </head>
 <body>
@@ -34,7 +54,7 @@
                     <span id="lives-count"><%= @current_user ? @current_user.cant_life : 0 %></span>
                 </div>
                 <div class="points">
-                    <img src="/icons/points.png" alt="Vidas" class="icon">
+                    <img src="/icons/points.png" alt="Puntos" class="icon">
                     <span id="points-count"><%= @current_user ? @current_user.total_points : 0 %></span>
                 </div>
                 <div class="profile">
@@ -49,47 +69,74 @@
     </header>
     <main>
         <div class="question-data">
-            <h2>Question Data Ranking</h2>
-            <div class="ranking-container">
-                <div class="ranking-header">
-                    <div class="rank-header">Rank</div>
-                    <div class="id-header">ID</div>
-                    <div class="name-header">Name</div>
-                    <div class="image-header">Image</div>
-                    <div class="correct-header">
-                        Correct
-                        <button onclick="sortTable('correct', 'asc')">▲</button>
-                        <button onclick="sortTable('correct', 'desc')">▼</button>
-                    </div>
-                    <div class="incorrect-header">
-                        Incorrect
-                        <button onclick="sortTable('incorrect', 'asc')">▲</button>
-                        <button onclick="sortTable('incorrect', 'desc')">▼</button>
-                    </div>
-                </div>
-                <div class="ranking-list">
-                    <% @questions.each_with_index do |question, index| %>
-                        <div class="ranking-item">
-                            <div class="rank"><%= index + 1 %></div>
-                            <div class="id"><%= question.id %></div>
-                            <div class="name">
-                                <% if question.name_question %>
-                                    <%= question.name_question %>
-                                <% else %>
-                                    N/A
-                                <% end %>
-                            </div>
-                            <div class="image">
-                                <% if question.image_question %>
-                                    <img src="<%= question.image_question %>" alt="Question Image" style="width: 200px; height: 200px; background-color: white;">
-                                <% else %>
-                                    N/A
-                                <% end %>
-                            </div>
-                            <div class="correct"><%= question.correct %></div>
-                            <div class="incorrect"><%= question.incorrect %></div>
+            <h2>Question Data</h2>
+            
+            <!-- Formulario para seleccionar el tipo de vista y el límite -->
+            <form id="filterForm">
+                <label for="view-type">View type:</label>
+                <select id="view-type" name="view_type">
+                    <option value="correct">Correct</option>
+                    <option value="incorrect">Incorrect</option>
+                </select>
+
+                <label for="limit">Limit:</label>
+                <select id="limit" name="limit">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select>
+
+                <button class="list-questions-btn" type="submit">List Questions</button>
+            </form>
+
+            <!-- Tabla que estará oculta inicialmente -->
+                <div id="questionsTable" style="display: none;">
+                    <div class="ranking-container">
+                        <div class="ranking-header">
+                            <div class="rank-header">Rank</div>
+                            <div class="id-header">ID</div>
+                            <div class="name-header">Name</div>
+                            <div class="image-header">Image</div>
+                            <% if @view_type == 'correct' %>
+                                <div class="correct-header">Correct</div>
+                            <% elsif @view_type == 'incorrect' %>
+                                <div class="incorrect-header">Incorrect</div>
+                            <% end %>
                         </div>
-                    <% end %>
+
+                        <% if @questions.nil? || @questions.empty? %>
+                            <p>No questions available.</p>
+                        <% else %>
+                            <div class="ranking-list">
+                                <% @questions.each_with_index do |question, index| %>
+                                    <div class="ranking-item">
+                                        <div class="rank"><%= index + 1 %></div>
+                                        <div class="id"><%= question.id %></div>
+                                        <div class="name">
+                                            <% if question.name_question %>
+                                                <%= question.name_question %>
+                                            <% else %>
+                                                N/A
+                                            <% end %>
+                                        </div>
+                                        <div class="image">
+                                            <% if question.image_question %>
+                                                <img src="<%= question.image_question %>" alt="Question Image" style="width: 200px; height: 200px; background-color: white;">
+                                            <% else %>
+                                                N/A
+                                            <% end %>
+                                        </div>
+
+                                        <!-- Mostrar solo la columna seleccionada -->
+                                        <% if @view_type == 'correct' %>
+                                            <div class="correct"><%= question.correct %></div>
+                                        <% elsif @view_type == 'incorrect' %>
+                                            <div class="incorrect"><%= question.incorrect %></div>
+                                        <% end %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>
                 </div>
             </div>
         </div>

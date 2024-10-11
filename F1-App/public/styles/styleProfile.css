@@ -178,7 +178,7 @@ main {
     transition: background-color 0.3s;
 }
 
-.change-password {
+.change-password-btn {
     position: absolute;
     top: 50px;
     right: 10px;
@@ -192,11 +192,50 @@ main {
     transition: background-color 0.3s;
 }
 
+.change-picture-btn:hover {
+    background-color: #e6b800;
+}
+
+.change-password-btn:hover {
+    background-color: #e6b800;
+}
+
+/* opciones de admin */
+
+.admin-options {
+    position: absolute;
+    top: -13px;
+    left: 5px;
+}
+
+.admin-title {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    color: black;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 .add-question-btn {
     position: absolute;
+    top: 50px;
+    left: 5px;
+    background-color: #3f51b5;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.view-question-data-btn {
+    position: absolute;
     top: 90px;
-    right: 10px;
-    background-color: #ffcc00;
+    left: 5px;
+    background-color: #3f51b5;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -207,15 +246,11 @@ main {
 }
 
 .add-question-btn:hover {
-    background-color: #e6b800;
+    background-color: #303f9f;
 }
 
-.change-picture-btn:hover {
-    background-color: #e6b800;
-}
-
-.change-password:hover {
-    background-color: #e6b800;
+.view-question-data-btn:hover {
+    background-color: #303f9f;
 }
 
 /* Estilos para el modal de selección de imagen */
