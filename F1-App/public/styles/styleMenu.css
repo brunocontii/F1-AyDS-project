@@ -90,13 +90,16 @@ header {
 .profile-menu a, .profile-menu .change-language {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px;
     text-decoration: none;
     color: #fff;
     text-align: center;
     cursor: pointer;
     transition: background 0.3s;
+}
+
+.goProfile i, .goLogout i {
+    margin-right: 5px;
 }
 
 .profile-menu a:hover, .profile-menu .change-language:hover {
@@ -188,4 +191,37 @@ main h1 {
 .leaderboard-entry .points {
     font-weight: bold;
     color: #fff;
+}
+
+.leaderboard-entry:nth-child(1) {
+    background-color: rgba(255, 215, 0, 0.5);
+    font-weight: bold;
+}
+
+.leaderboard-entry:nth-child(2) {
+    background-color: rgba(192, 192, 192, 0.5);
+    font-weight: bold;
+}
+
+.leaderboard-entry:nth-child(3) {
+    background-color: rgba(205, 127, 50, 0.5);
+    font-weight: bold;
+}
+
+.titleAndIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.titleAndIcon i {
+    position: absolute;
+    left: 10px;
+    font-size: 2rem;
+}
+
+.titleAndIcon h2 {
+    margin: 0;
+    padding-left: 40px;
 }

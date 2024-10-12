@@ -75,8 +75,8 @@
                 <div class="profile">
                     <img src="<%= profile.profile_picture %>" alt="Profile" class="profile-pic" onclick="toggleProfileMenu()">
                     <div id="profile-menu" class="profile-menu">
-                        <a href="/profile">Profile</a>
-                        <a href="/logout">Log out</a>
+                        <a href="/profile" class="goProfile"> <i class="fa-solid fa-circle-user"></i> Profile</a>
+                        <a href="/logout" class="goLogout"> <i class="fa-solid fa-circle-xmark"></i> Log out</a>
                     </div>
                 </div>
             </div>
@@ -90,8 +90,8 @@
                 <img src="<%= profile.profile_picture %>" alt="Profile Picture">
             </div>
             <% if @current_user.admin %>
+                <i class="fa-solid fa-star admin-title"> Admin Panel</i>
                 <div class="admin-options">
-                    <h1 class="admin-title">Opciones de Admin</h1>
                     <button class="add-question-btn" onclick="window.location.href='/profile/add-question'">Add Question</button>
                     <button class="view-question-data-btn" onclick="window.location.href='/profile/view-question-data'">List Question</button>
                 </div>

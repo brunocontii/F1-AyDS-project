@@ -92,13 +92,16 @@ header {
 .profile-menu a, .profile-menu .change-language {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px;
     text-decoration: none;
     color: #fff;
     text-align: center;
     cursor: pointer;
     transition: background 0.3s;
+}
+
+.goProfile i, .goLogout i {
+    margin-right: 5px;
 }
 
 .profile-menu a:hover, .profile-menu .change-language:hover {

@@ -83,13 +83,16 @@ header {
 .profile-menu a, .profile-menu .change-language {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 10px;
     text-decoration: none;
     color: #fff;
     text-align: center;
     cursor: pointer;
     transition: background 0.3s;
+}
+
+.goProfile i, .goLogout i {
+    margin-right: 5px;
 }
 
 .profile-menu a:hover, .profile-menu .change-language:hover {
@@ -203,28 +206,24 @@ main {
 /* opciones de admin */
 
 .admin-options {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
     position: absolute;
-    top: -13px;
-    left: 5px;
-}
-
-.admin-title {
-    font-family: 'Arial', sans-serif;
-    font-size: 1.5rem;
-    color: black;
-    margin-bottom: 30px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    left: 10px;
+    top: 30px;
+    width: 150px;
+    height: 90px;
+    border-radius: 5%;
 }
 
 .add-question-btn {
-    position: absolute;
-    top: 50px;
-    left: 5px;
     background-color: #3f51b5;
     color: #fff;
     border: none;
     padding: 10px 20px;
+    margin-bottom: 1px;
+    margin-top: 5px;
     cursor: pointer;
     border-radius: 5px;
     font-size: 1rem;
@@ -232,9 +231,6 @@ main {
 }
 
 .view-question-data-btn {
-    position: absolute;
-    top: 90px;
-    left: 5px;
     background-color: #3f51b5;
     color: #fff;
     border: none;
@@ -243,6 +239,14 @@ main {
     border-radius: 5px;
     font-size: 1rem;
     transition: background-color 0.3s;
+    margin-bottom: -8px;
+}
+
+.admin-title {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    font-weight: normal;
 }
 
 .add-question-btn:hover {
