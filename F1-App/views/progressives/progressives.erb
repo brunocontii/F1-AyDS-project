@@ -55,6 +55,11 @@
                     <% end %>                    
                     <div id="profile-menu" class="profile-menu">
                         <a href="/profile" class="goProfile"> <i class="fa-solid fa-circle-user"></i> Profile</a>
+                        <% if @current_user.admin %>
+                            <a href="/profile/add-question" class="goAdd"> <i class="fa-solid fa-circle-plus"></i> Add Question</a>
+                            <a href="/profile/view-question-data" class="goQuestion"> <i class="fa-solid fa-rectangle-list"></i> List Question</a>
+                        <% end %>
+                        <a href="/profile/change-password" class="goChange"> <i class="fa-solid fa-lock"></i> Change Password</a>
                         <a href="/logout" class="goLogout"> <i class="fa-solid fa-circle-xmark"></i> Log out</a>
                     </div>
                 </div>

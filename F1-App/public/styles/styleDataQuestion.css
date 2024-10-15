@@ -142,7 +142,7 @@ main h1 {
 .question-data h2 {
     margin-bottom: 10px;
     font-size: 1.8rem; /* Tamaño ajustado */
-    background-color: #0c00f8;
+    background: fixed;
     padding: 10px;
     border-radius: 5px;
 }
@@ -153,7 +153,7 @@ main h1 {
 
 .ranking-header {
     display: flex; /* Asegúrate de que los encabezados estén en una fila */
-    background-color: #0c00f8; /* Fondo para el encabezado */
+    background: fixed; /* Fondo para el encabezado */
     font-weight: bold;
     border-bottom: 2px solid #444;
 }

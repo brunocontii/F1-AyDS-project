@@ -98,7 +98,7 @@ header {
     transition: background 0.3s;
 }
 
-.goProfile i, .goLogout i {
+.goProfile i, .goLogout i, .goAdd i, .goQuestion i, .goChange i {
     margin-right: 5px;
 }
 
