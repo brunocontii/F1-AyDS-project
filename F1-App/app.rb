@@ -222,7 +222,6 @@ class App < Sinatra::Application
                     f.write(file.read)
                 end
 
-                puts "Valor de theme: #{params[:theme]}"
                 # Crear la pregunta con la ruta de la imagen
                 question = Question.new(
                     image_question: "/grandprix/#{filename}",
@@ -527,17 +526,9 @@ class App < Sinatra::Application
                                     .where.not(id: answered_by_user_ids)
                                     .order('RANDOM()')
 
-        # Preguntas incorrectamente respondidas (no en las respuestas correctas)
-        incorrectly_answered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
-                                            .where.not(id: answered_by_user_ids)
-                                            .where(id: session[:answered_free_questions])
-                                            .order('RANDOM()')
-
         # Seleccionar la siguiente pregunta
         if unanswered_questions.exists?
             @question = unanswered_questions.first
-        elsif incorrectly_answered_questions.exists?
-            @question = incorrectly_answered_questions.first
         else
             @question = Question.where(level: session[:free_mode_difficulty])
                                 .order('RANDOM()').first
@@ -625,17 +616,9 @@ class App < Sinatra::Application
                                     .where.not(id: answered_by_user_ids)
                                     .order('RANDOM()')
 
-        # Preguntas incorrectamente respondidas (no en las respuestas correctas)
-        incorrectly_answered_questions = Question.where(level: session[:grandprix_mode_difficulty], theme: 'grandprix')
-                                            .where.not(id: answered_by_user_ids)
-                                            .where(id: session[:answered_grandprix_questions])
-                                            .order('RANDOM()')
-
         # Seleccionar la siguiente pregunta
         if unanswered_questions.exists?
             @question = unanswered_questions.first
-        elsif incorrectly_answered_questions.exists?
-            @question = incorrectly_answered_questions.first
         else
             @question = Question.where(level: session[:grandprix_mode_difficulty])
                                 .order('RANDOM()').first
