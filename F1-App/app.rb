@@ -38,10 +38,11 @@ class App < Sinatra::Application
 
   before do
     # apenas entras se pueden a estas 5 rutas nada mas.
-    if request.path_info == '/' || request.path_info == '/login' || request.path_info == '/register' || request.path_info == '/how-to-play' || request.path_info == '/team'
+    if request.path_info == '/' || request.path_info == '/login' || request.path_info == '/register' ||
+       request.path_info == '/how-to-play' || request.path_info == '/team'
       pass
     end
-    # redirigir al inicio si no hay usuario en la sesión , ni gamemodes ni progressive nada xq hay siempre un usuario en la sesion.
+    # redirigir al inicio si no hay usuario en la sesión
     redirect '/' unless session[:username]
   end
 
@@ -354,8 +355,8 @@ class App < Sinatra::Application
     @form_action = "/gamemodes/progressive/#{mode}"
 
     erb :'questions/questions',
-        locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message,
-                  feedback_color: feedback_color }
+        locals: { current_user: @current_user, question: @question, options: @options,
+                  feedback_message: feedback_message, feedback_color: feedback_color }
   end
 
   def handle_progressive_mode_submission(mode)
@@ -574,8 +575,8 @@ class App < Sinatra::Application
     @form_action = '/gamemodes/free'
 
     erb :'questions/questions',
-        locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message,
-                  feedback_color: feedback_color }
+        locals: { current_user: @current_user, question: @question, options: @options,
+                  feedback_message: feedback_message, feedback_color: feedback_color }
   end
 
   post '/gamemodes/free' do
@@ -664,8 +665,8 @@ class App < Sinatra::Application
     @form_action = '/gamemodes/grandprix'
 
     erb :'questions/questions',
-        locals: { current_user: @current_user, question: @question, options: @options, feedback_message: feedback_message,
-                  feedback_color: feedback_color }
+        locals: { current_user: @current_user, question: @question, options: @options,
+                  feedback_message: feedback_message, feedback_color: feedback_color }
   end
 
   post '/gamemodes/grandprix' do

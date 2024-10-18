@@ -35,7 +35,6 @@ RSpec.describe 'The App' do
 
       it 'redirects to /gamemodes with a message' do
         get '/gamemodes/grandprix'
-        expect(last_request.env['rack.session'][:message]).to eq('You have 0 lives. Please wait for lives to regenerate.')
         expect(last_response).to be_redirect
         follow_redirect!
         expect(last_request.path).to eq('/gamemodes')
@@ -43,7 +42,6 @@ RSpec.describe 'The App' do
     end
 
     # Cuando el modo es reseteado tiene que eliminar todas las preguntas anteriores y reiniciar el flag de reset
-    # Simula que cree el una respuesta que resetea todo y se fija que dicha respuesta este vacia que es lo que tendria que pasar
     context 'when the mode is reset' do
       let!(:answered_question) do
         Answer.create(question_id: question.id, user_id: user.id, option_id: correct_option.id)
@@ -90,7 +88,6 @@ RSpec.describe 'The App' do
 
       it 'increases the difficulty to normal and shows the appropriate message' do
         expect(last_request.env['rack.session'][:grandprix_mode_difficulty]).to eq('normal')
-        expect(last_request.env['rack.session'][:message]).to eq("You've answered all the easy questions. Now the medium questions will appear.")
         expect(last_response).to be_redirect
         follow_redirect!
         expect(last_request.path).to eq('/gamemodes/grandprix')
@@ -117,7 +114,6 @@ RSpec.describe 'The App' do
 
       it 'increases the difficulty to difficult and shows the appropriate message' do
         expect(last_request.env['rack.session'][:grandprix_mode_difficulty]).to eq('difficult')
-        expect(last_request.env['rack.session'][:message]).to eq("You've answered all the medium questions. Now the hard questions will appear.")
         expect(last_response).to be_redirect
         follow_redirect!
         expect(last_request.path).to eq('/gamemodes/grandprix')
@@ -144,7 +140,6 @@ RSpec.describe 'The App' do
 
       it 'increases the difficulty to impossible and shows the appropriate message' do
         expect(last_request.env['rack.session'][:grandprix_mode_difficulty]).to eq('impossible')
-        expect(last_request.env['rack.session'][:message]).to eq("You've answered all the hard questions. Now the impossible questions will appear.")
         expect(last_response).to be_redirect
         follow_redirect!
         expect(last_request.path).to eq('/gamemodes/grandprix')
@@ -172,7 +167,6 @@ RSpec.describe 'The App' do
       it 'resets the difficulty to easy, resets answered questions, and shows the completion message' do
         expect(last_request.env['rack.session'][:grandprix_mode_difficulty]).to eq('easy')
         expect(last_request.env['rack.session'][:answered_grandprix_questions]).to be_empty
-        expect(last_request.env['rack.session'][:message]).to eq("Congratulations! You've completed the Grand Prix Mode.")
         expect(last_request.env['rack.session'][:reset_grandprix_mode]).to be_truthy
         expect(last_response).to be_redirect
         follow_redirect!

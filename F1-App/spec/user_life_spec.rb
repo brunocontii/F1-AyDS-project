@@ -47,7 +47,8 @@ RSpec.describe User, type: :model do
     # Si la cantidad de vidas == 0 no puede jugar
     it 'returns false if cant_life is 0' do
       user.update(cant_life: 0)
-      allow(Time).to receive(:now).and_return(10.seconds.ago) # Toma 10 segundos antes por que al inicializarse en 0 le suma 1 vida al instante
+      # Toma 10 segundos antes por que al inicializarse en 0 le suma 1 vida al instante
+      allow(Time).to receive(:now).and_return(10.seconds.ago)
       expect(user.can_play?).to be_falsey
     end
 

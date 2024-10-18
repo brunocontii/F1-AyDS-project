@@ -23,7 +23,7 @@ RSpec.describe 'The App' do
     end
   end
 
-  # Test para verificar el comportamiento de la ruta POST /login al iniciar sesion con credenciales tanto correctas como incorrectas.
+  # Login con credenciales correctas e incorrectas
   describe 'POST /login' do
     let!(:user) { User.create(username: 'testuser', password: 'password123') }
 

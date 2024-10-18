@@ -776,14 +776,12 @@ options = [
   { name_option: 'Indicates to drivers to enter the pit to change tires', question_id: 84, correct: false },
   { name_option: 'Warns drivers of a dangerous or unsporting maneuver on track', question_id: 84, correct: true },
 
-  {
-    name_option: 'Always shown in practice and races statically at the end of the pit lane to indicate that cars are approaching', question_id: 85, correct: false
-  },
+  { name_option: 'Always shown in practice and races statically at the end of the pit lane to indicate that
+    cars are approaching', question_id: 85, correct: false },
   { name_option: 'In practice session, the driver must let a faster car pass without changing their line',
     question_id: 85, correct: false },
-  {
-    name_option: 'In race situation, the driver who will be lapped by another that has completed an additional lap will be alerted', question_id: 85, correct: false
-  },
+  { name_option: 'In race situation, the driver who will be lapped by another that has completed an additional
+    lap will be alerted', question_id: 85, correct: false },
   { name_option: 'All options are correct', question_id: 85, correct: true },
 
   { name_option: 'Indicates to drivers that the safety car is coming out', question_id: 86, correct: false },
