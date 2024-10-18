@@ -184,6 +184,11 @@ class App < Sinatra::Application
     get '/profile/add-question' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
         @profile = @current_user.profile
+
+        if (@current_user.admin != true)
+            redirect '/profile'
+        end
+
         erb :'profiles/add-question', locals: {current_user: @current_user, profile: @profile}
     end
 
@@ -255,6 +260,10 @@ class App < Sinatra::Application
     get '/profile/view-question-data' do
         @current_user = User.find_by(username: session[:username]) if session[:username]
         @profile = @current_user.profile
+
+        if (@current_user.admin != true)
+            redirect '/profile'
+        end
         
         @view_type = params[:view_type]
         limit = params[:limit].to_i
@@ -266,7 +275,7 @@ class App < Sinatra::Application
                 @questions = Question.order(incorrect: :desc).limit(limit)
             end
         else 
-            questions = []
+            @questions = []
         end
 
         erb :'profiles/view-question-data', locals: {profile: @profile, questions: @questions}

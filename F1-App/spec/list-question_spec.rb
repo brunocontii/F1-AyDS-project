@@ -19,7 +19,8 @@ RSpec.describe 'The App' do
                     username: 'testuser',
                     password: 'testpassword',
                     cant_life: 3,
-                    cant_coins: 0
+                    cant_coins: 0,
+                    admin: true
                 )
             end
 
@@ -37,7 +38,6 @@ RSpec.describe 'The App' do
             before do
                 env 'rack.session', { username: user.username }
                 profile
-
             end
 
             it 'renders the add question page' do
@@ -53,7 +53,7 @@ RSpec.describe 'The App' do
           
                 get '/profile/view-question-data', view_type: 'correct', limit: 1
                 expect(last_response).to be_ok
-                expect(last_response.body).to include('Question 2') # Asegúrate de que esta pregunta se incluya
+                expect(last_response.body).to include('Question 2')
                 expect(last_response.body).not_to include('Question 1')
             end
       
@@ -77,6 +77,41 @@ RSpec.describe 'The App' do
             end
         end
 
+        context 'when user is logged in but is not admin' do
+            let(:user) do
+                User.create(
+                    username: 'testuser',
+                    password: 'testpassword',
+                    cant_life: 3,
+                    cant_coins: 0,
+                    admin: false
+                )
+            end
+        
+            let(:profile) do
+                Profile.create(
+                    name: 'testname',
+                    lastName: 'testLastName',
+                    description: 'testDescription',
+                    age: 21,
+                    profile_picture: '/profile_pictures/charles-leclerc-2024.png',
+                    user_id: user.id
+                )
+            end
+        
+            before do
+                env 'rack.session', { username: user.username }
+                profile
+            end
+        
+            it 'renders to the profile page' do
+                get '/profile/view-question-data'
+                expect(last_response).to be_redirect
+                follow_redirect!
+                expect(last_request.path).to eq('/profile')
+            end
+        end
+
         context 'when user is not logged in' do
             it 'renders to the home page' do
                 get '/profile/add-question'
@@ -85,6 +120,7 @@ RSpec.describe 'The App' do
                 expect(last_request.path).to eq('/')
             end
         end
+
     end
 
-end
+end 
