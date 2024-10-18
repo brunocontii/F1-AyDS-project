@@ -1,27 +1,29 @@
+# frozen_string_literal: true
+
 class Question < ActiveRecord::Base
-    has_many :answers
-    has_many :options
+  has_many :answers
+  has_many :options
 
-    validates :level, inclusion: { in: %w(easy normal difficult impossible)}
-    validates :theme, inclusion: { in: %w(circuit team career pilot free grandprix)}
-    validates :name_question, presence: true, if: :text_question?
-    validates :image_question, presence: true, if: :image_question?
+  validates :level, inclusion: { in: %w[easy normal difficult impossible] }
+  validates :theme, inclusion: { in: %w[circuit team career pilot free grandprix] }
+  validates :name_question, presence: true, if: :text_question?
+  validates :image_question, presence: true, if: :image_question?
 
-    before_create :initialize_correct_incorrect
+  before_create :initialize_correct_incorrect
 
-    def text_question?
-      name_question.present?
-    end
+  def text_question?
+    name_question.present?
+  end
 
-    def image_question?
-      image_question.present?
-    end
+  def image_question?
+    image_question.present?
+  end
 
-    private
+  private
 
-    # Inicializa correct e incorrect en 0 si no están presentes
-    def initialize_correct_incorrect
-      self.correct ||= 0
-      self.incorrect ||= 0
-    end
+  # Inicializa correct e incorrect en 0 si no están presentes
+  def initialize_correct_incorrect
+    self.correct ||= 0
+    self.incorrect ||= 0
+  end
 end

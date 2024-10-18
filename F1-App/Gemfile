@@ -1,19 +1,22 @@
+# frozen_string_literal: true
+
 ruby '3.2.0'
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'sinatra'
 gem 'activerecord'
-gem 'sinatra-activerecord'
-gem "sqlite3", "~> 1.4"
-gem 'rake'
-gem 'simplecov'
-gem 'database_cleaner-active_record'
-gem 'sinatra-flash'
 gem 'bcrypt'
+gem 'database_cleaner-active_record'
+gem 'rake'
+gem 'rubocop', require: false
 gem 'rubycritic'
+gem 'simplecov'
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'sinatra-flash'
+gem 'sqlite3', '~> 1.4'
 
 group :test, :development do
-    gem 'rspec'
-    gem 'rack-test'
+  gem 'rack-test'
+  gem 'rspec'
 end
