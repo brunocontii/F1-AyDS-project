@@ -54,7 +54,7 @@ RSpec.describe 'The App' do
     # Preparando usuario y pregunta con sus respuestas
     let!(:user) { User.create(username: 'testuser', password: 'password123', cant_coins: 160) }
     let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
-    let!(:correct_option) { Option.create(name_option: 'Correct Answer', correct: true, question: question) }
+    let!(:correct_option) { Option.create(name_option: 'Correct Answer', correct: true, question:) }
     let!(:incorrect_option1) do
       Option.create(name_option: 'Incorrect Option 1', question_id: question.id, correct: false)
     end

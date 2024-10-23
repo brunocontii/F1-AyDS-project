@@ -18,6 +18,8 @@ require './models/question'
 
 enable :sessions
 
+# Esta clase define la aplicación principal utilizando Sinatra.
+# Controla las rutas y la lógica de la aplicación web.
 class App < Sinatra::Application
   $racha = 1
   # para asegurarse de que toda la inicialización necesaria en las clases se realice correctamente
@@ -93,18 +95,18 @@ class App < Sinatra::Application
     profile_picture = params[:profile_pic]
     @profile_pictures = Dir.glob('public/profile_pictures/*').map { |path| path.split('/').last }
 
-    if User.where(username: username).exists?
+    if User.where(username:).exists?
       @error = 'Username already exist'
       erb :'register/register'
     elsif password != rpassword
       @error = 'Passwords are different'
       erb :'register/register'
     else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
-      user = User.new(username: username, password: password, cant_life: 3, cant_coins: 0, total_points: 0)
+      user = User.new(username:, password:, cant_life: 3, cant_coins: 0, total_points: 0)
       # Intentamos guardar el usuario y verificamos si se guardo correctamente
       if user.save
-        Profile.create(name: name, lastName: lastname, email: email, description: description, age: age,
-                       user: user, profile_picture: profile_picture)
+        Profile.create(name:, lastName: lastname, email:, description:, age:,
+                       user:, profile_picture:)
         session[:username] = user.username
         redirect '/gamemodes'
       else
@@ -356,7 +358,7 @@ class App < Sinatra::Application
 
     erb :'questions/questions',
         locals: { current_user: @current_user, question: @question, options: @options,
-                  feedback_message: feedback_message, feedback_color: feedback_color }
+                  feedback_message:, feedback_color: }
   end
 
   def handle_progressive_mode_submission(mode)
@@ -576,7 +578,7 @@ class App < Sinatra::Application
 
     erb :'questions/questions',
         locals: { current_user: @current_user, question: @question, options: @options,
-                  feedback_message: feedback_message, feedback_color: feedback_color }
+                  feedback_message:, feedback_color: }
   end
 
   post '/gamemodes/free' do
@@ -666,7 +668,7 @@ class App < Sinatra::Application
 
     erb :'questions/questions',
         locals: { current_user: @current_user, question: @question, options: @options,
-                  feedback_message: feedback_message, feedback_color: feedback_color }
+                  feedback_message:, feedback_color: }
   end
 
   post '/gamemodes/grandprix' do

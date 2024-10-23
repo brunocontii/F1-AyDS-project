@@ -75,9 +75,9 @@ RSpec.describe 'The App' do
 
       before do
         # Simula que el usuario ha respondido todas las preguntas de dificultad 'easy'
-        Answer.create(user: user, question: easy_question, option: correct_option)
+        Answer.create(user:, question: easy_question, option: correct_option)
         Question.where(level: 'easy', theme: 'free').each do |question|
-          Answer.create(user: user, question: question, option: correct_option)
+          Answer.create(user:, question:, option: correct_option)
         end
 
         env 'rack.session',
@@ -101,7 +101,7 @@ RSpec.describe 'The App' do
       before do
         # Simula que el usuario ha respondido todas las preguntas de dificultad 'normal'
         Question.where(level: 'normal', theme: 'free').each do |question|
-          Answer.create(user: user, question: question, option: correct_option)
+          Answer.create(user:, question:, option: correct_option)
         end
 
         env 'rack.session',
@@ -127,7 +127,7 @@ RSpec.describe 'The App' do
       before do
         # Simula que el usuario ha respondido todas las preguntas de dificultad 'difficult'
         Question.where(level: 'difficult', theme: 'free').each do |question|
-          Answer.create(user: user, question: question, option: correct_option)
+          Answer.create(user:, question:, option: correct_option)
         end
 
         env 'rack.session',
@@ -153,7 +153,7 @@ RSpec.describe 'The App' do
       before do
         # Simula que el usuario ha respondido todas las preguntas de dificultad 'impossible'
         Question.where(level: 'impossible', theme: 'free').each do |question|
-          Answer.create(user: user, question: question, option: correct_option)
+          Answer.create(user:, question:, option: correct_option)
         end
 
         env 'rack.session',
@@ -180,8 +180,8 @@ RSpec.describe 'The App' do
     # Preparando usuario y pregunta con sus respuestas
     let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0) }
     let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
-    let!(:correct_option) { Option.create(name_option: 'Correct Answer', correct: true, question: question) }
-    let!(:incorrect_option) { Option.create(name_option: 'Incorrect Answer', correct: false, question: question) }
+    let!(:correct_option) { Option.create(name_option: 'Correct Answer', correct: true, question:) }
+    let!(:incorrect_option) { Option.create(name_option: 'Incorrect Answer', correct: false, question:) }
 
     before do
       env 'rack.session', { username: user.username }

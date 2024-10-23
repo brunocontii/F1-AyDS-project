@@ -2,6 +2,9 @@
 
 require 'bcrypt'
 
+# Esta clase representa un usuario en la aplicación.
+# Almacena y gestiona información relacionada con el usuario,
+# como su nombre, correo electrónico y estadísticas de juego.
 class User < ActiveRecord::Base
   has_one :profile
   has_and_belongs_to_many :gamemode

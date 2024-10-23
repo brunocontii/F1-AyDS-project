@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Esta migración crea la tabla 'profiles', que almacena los perfiles de los usuarios.
+# La tabla puede contener información adicional del usuario, como avatar, estadísticas
+# y preferencias, vinculadas mediante una relación con la tabla 'users'.
 class CreateProfilesTable < ActiveRecord::Migration[7.1]
   def change
     create_table :profiles do |t|

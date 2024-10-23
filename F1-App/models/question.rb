@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Esta clase representa una pregunta del juego.
+# Almacena el contenido de la pregunta, ya sea en texto o imagen,
+# y está vinculada a las opciones y respuestas.
 class Question < ActiveRecord::Base
   has_many :answers
   has_many :options
