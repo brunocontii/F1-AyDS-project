@@ -221,66 +221,63 @@ class App < Sinatra::Application
   post '/profile/add-question' do
     question_type = params[:question_type]
 
+    # Inicializa la variable question
+    question = nil
+
     if question_type == 'text'
-      # Verificar si la pregunta de texto ya existe
-      existing_question = Question.find_by(name_question: params[:question_text])
-      if existing_question
-        flash[:error] = 'The question already exists in the database.'
-        redirect '/profile/add-question'
-      else
-        # Crear la pregunta de texto
-        question = Question.new(
-          name_question: params[:question_text],
-          level: params[:difficulty],
-          theme: params[:theme]
-        )
-      end
+      question = question_text(params)
     elsif question_type == 'image'
-      if params[:question_image] && params[:question_image][:filename]
-        filename = params[:question_image][:filename]
-        file = params[:question_image][:tempfile]
-
-        # Validacion de tipo de archivo
-        allowed_file_types = ['.jpg', '.jpeg', '.png']
-        unless allowed_file_types.include?(File.extname(filename).downcase)
-          flash[:error] = 'Invalid image format. Only JPG, JPEG and PNG are allowed.'
-          redirect '/profile/add-question'
-        end
-
-        # Guardar la imagen en la carpeta publica
-        save_path = File.join('public/grandprix', filename)
-        File.open(save_path, 'wb') do |f|
-          f.write(file.read)
-        end
-
-        # Crear la pregunta con la ruta de la imagen
-        question = Question.new(
-          image_question: "/grandprix/#{filename}",
-          level: params[:difficulty],
-          theme: params[:theme]
-        )
-      else
-        flash[:error] = 'Please upload an image.'
-        redirect '/profile/add-question'
-      end
+      question = question_image(params)
     end
 
+    save_question(question) if question
+
+    redirect '/profile/add-question'
+  end
+
+  def question_text(params)
+    # Verificar si la pregunta de texto ya existe
+    existing_question = Question.find_by(name_question: params[:question_text])
+    if existing_question
+      flash[:error] = 'The question already exists in the database.'
+    else
+      # Crear la pregunta de texto
+      Question.new(name_question: params[:question_text],
+                   level: params[:difficulty], theme: params[:theme])
+    end
+  end
+
+  def question_image(params)
+    unless params[:question_image]&.dig(:filename)
+      flash[:error] = 'Please upload an image.' and return redirect '/profile/add-question'
+    end
+
+    filename = params[:question_image][:filename]
+    file = params[:question_image][:tempfile]
+
+    # Validación de tipo de archivo
+    unless ['.jpg', '.jpeg', '.png'].include?(File.extname(filename).downcase)
+      flash[:error] = 'Invalid image format.' and return redirect '/profile/add-question'
+    end
+
+    # Guardar la imagen en la carpeta pública
+    File.write(File.join('public/grandprix', filename), file.read, mode: 'wb')
+
+    # Crear la pregunta con la ruta de la imagen
+    Question.new(image_question: "/grandprix/#{filename}", level: params[:difficulty], theme: params[:theme])
+  end
+
+  def save_question(question)
     if question.save
       # Guardar las opciones
-      options = []
       (1..4).each do |i|
-        options << Option.create(
-          name_option: params["option#{i}"],
-          question_id: question.id,
-          correct: params[:correct_answer] == "option#{i}"
-        )
+        Option.create(name_option: params["option#{i}"],
+                      question_id: question.id, correct: params[:correct_answer] == "option#{i}")
       end
       flash[:success] = 'Question added successfully!'
     else
       flash[:error] = "There was an error adding the question: #{question.errors.full_messages.join(', ')}"
     end
-
-    redirect '/profile/add-question'
   end
 
   get '/profile/view-question-data' do
@@ -388,12 +385,7 @@ class App < Sinatra::Application
       return redirect '/gamemodes'
     end
 
-    if params[:timeout] == 'true' && !session[:inmunity]
-      handle_timeout
-    else
-      handle_option_submission
-    end
-
+    params[:timeout] == 'true' && !session[:inmunity] ? handle_timeout : handle_option_submission
     redirect "/gamemodes/progressive/#{mode}"
   end
 
@@ -431,8 +423,7 @@ class App < Sinatra::Application
       else
         handle_incorrect_answer
       end
-      session[:answered_questions] ||= []
-      session[:answered_questions] << @question.id
+      (session[:answered_questions] ||= []) << @question.id
     elsif session[:inmunity]
       session[:inmunity] = false
       session[:message] = 'Activate inmunity'
@@ -554,40 +545,8 @@ class App < Sinatra::Application
 
     session[:answered_free_questions] ||= []
     session[:free_mode_difficulty] ||= 'easy'
-    answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
-    # Preguntas que aún no han sido respondidas en esta dificultad
-    unanswered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
-                                   .where.not(id: answered_by_user_ids)
-                                   .order('RANDOM()')
 
-    # Seleccionar la siguiente pregunta
-    if unanswered_questions.exists?
-      @question = unanswered_questions.first
-    else
-      @question = Question.where(level: session[:free_mode_difficulty])
-                          .order('RANDOM()').first
-      case session[:free_mode_difficulty]
-      when 'easy'
-        session[:free_mode_difficulty] = 'normal'
-        session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
-      when 'normal'
-        session[:free_mode_difficulty] = 'difficult'
-        session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
-      when 'difficult'
-        session[:free_mode_difficulty] = 'impossible'
-        session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
-      when 'impossible'
-        session[:free_mode_difficulty] = 'easy'
-        session[:answered_free_questions] = []
-        session[:message] = "Congratulations! You've completed the Free Mode."
-        session[:reset_free_mode] = true
-        all_questions = Question.all
-
-        @question = all_questions.order('RANDOM()').first if all_questions.exists?
-        redirect '/gamemodes'
-      end
-      redirect '/gamemodes/free'
-    end
+    next_question
 
     @options = @question.options.shuffle
     feedback_message = session.delete(:message)
@@ -597,6 +556,48 @@ class App < Sinatra::Application
     erb :'questions/questions',
         locals: { current_user: @current_user, question: @question, options: @options,
                   feedback_message:, feedback_color: }
+  end
+
+  def next_question
+    answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
+
+    # Preguntas que aún no han sido respondidas en esta dificultad
+    unanswered_questions = Question.where(level: session[:free_mode_difficulty], theme: 'free')
+                                   .where.not(id: answered_by_user_ids)
+                                   .order('RANDOM()')
+
+    # Seleccionar la siguiente pregunta
+    if unanswered_questions.exists?
+      @question = unanswered_questions.first
+    else
+      handle_difficulty_progression
+    end
+  end
+
+  def handle_difficulty_progression
+    @question = Question.where(level: session[:free_mode_difficulty])
+                        .order('RANDOM()').first
+
+    case session[:free_mode_difficulty]
+    when 'easy'
+      session[:free_mode_difficulty] = 'normal'
+      session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
+    when 'normal'
+      session[:free_mode_difficulty] = 'difficult'
+      session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
+    when 'difficult'
+      session[:free_mode_difficulty] = 'impossible'
+      session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
+    when 'impossible'
+      session[:free_mode_difficulty] = 'easy'
+      session[:answered_free_questions] = []
+      session[:message] = "Congratulations! You've completed the Free Mode."
+      session[:reset_free_mode] = true
+      all_questions = Question.all
+
+      @question = all_questions.order('RANDOM()').first if all_questions.exists?
+      redirect '/gamemodes'
+    end
   end
 
   post '/gamemodes/free' do
@@ -756,8 +757,7 @@ class App < Sinatra::Application
         handle_free_incorrect_answer
       end
       # Guardamos la pregunta respondida asi no vuelve a aparecer
-      session[:answered_free_questions] ||= []
-      session[:answered_free_questions] << @question.id
+      (session[:answered_free_questions] ||= []) << @question.id
     elsif session[:inmunity]
       # Si el usuario no selecciono una opcion pero tiene la inmundad activada
       session[:inmunity] = false
@@ -832,8 +832,7 @@ class App < Sinatra::Application
         handle_grandprix_incorrect_answer
       end
       # Guardamos la pregunta respondida asi no vuelve a aparecer
-      session[:answered_grandprix_questions] ||= []
-      session[:answered_grandprix_questions] << @question.id
+      (session[:answered_grandprix_questions] ||= []) << @question.id
     elsif session[:inmunity]
       # Si el usuario no selecciono una opcion pero tiene la inmundad activada
       session[:inmunity] = false
