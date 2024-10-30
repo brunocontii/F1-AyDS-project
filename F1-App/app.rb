@@ -5,10 +5,6 @@ require 'sinatra/base'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'bcrypt'
-
-set :database_file, './config/database.yml'
-set :public_folder, "#{File.dirname(__FILE__)}/public"
-
 require './models/user'
 require './models/profile'
 require './models/gamemode'
@@ -16,12 +12,22 @@ require './models/answer'
 require './models/option'
 require './models/question'
 
+require_relative './controllers/users_controller'
+
+set :database_file, './config/database.yml'
+set :public_folder, "#{File.dirname(__FILE__)}/public"
+
+use UsersController
+
 enable :sessions
 
 # Esta clase define la aplicación principal utilizando Sinatra.
 # Controla las rutas y la lógica de la aplicación web.
 class App < Sinatra::Application
-  $racha = 1
+  configure do
+    set :views, './views'
+  end
+
   # para asegurarse de que toda la inicialización necesaria en las clases se realice correctamente
   def initialize(_app = nil)
     super()
@@ -51,76 +57,6 @@ class App < Sinatra::Application
   # pagina apenas entras a la app.
   get '/' do
     erb :'home/home'
-  end
-
-  # get de logueo.
-  get '/login' do
-    erb :'login/login'
-  end
-
-  # post para loguearse que pedimos el usuario/mail y contraseña.
-  post '/login' do
-    username_or_email = params[:username]
-    password = params[:password]
-    # Busca por username o por email
-    user = User.find_by(username: username_or_email) || Profile.find_by(email: username_or_email)&.user
-    # Si el usuario existe y la contraseña es correcta
-    if user&.authenticate(password)
-      session[:username] = user.username # Guardar el nombre de usuario en la sesión
-      redirect '/gamemodes'
-    else
-      # Si el login falla por username/email o por contraseña incorrecta
-      @error = 'Invalid username/email or password.'
-      erb :'login/login'
-    end
-  end
-
-  # get de registro para mostrar el formulario.
-  get '/register' do
-    # lista de todas las fotos que se encuentran dentro de public/profile_pictures
-    @profile_pictures = Dir.glob('public/profile_pictures/*').map { |path| path.split('/').last }
-    erb :'register/register'
-  end
-
-  # registrar un usuario
-  post '/register' do
-    @profile_pictures = Dir.glob('public/profile_pictures/*').map { |path| path.split('/').last }
-
-    if validate_registration(params)
-      erb :'register/register'
-    elsif create_user_profile(params)
-      session[:username] = params[:username]
-      redirect '/gamemodes'
-    else
-      @error = 'Failed to create the account. Please try again.'
-      erb :'register/register'
-    end
-  end
-
-  def create_user_profile(params)
-    user = User.new(
-      username: params[:username], password: params[:password], cant_life: 3, cant_coins: 0, total_points: 0
-    )
-
-    return unless user.save
-
-    Profile.create(
-      name: params[:name], lastName: params[:lastname], email: params[:email],
-      description: params[:description], age: params[:age], user:, profile_picture: params[:profile_pic]
-    )
-  end
-
-  def validate_registration(params)
-    if User.where(username: params[:username]).exists?
-      @error = 'Username already exists'
-    elsif params[:password] != params[:repeat_password]
-      @error = 'Passwords are different'
-    end
-  end
-
-  get '/logout' do
-    session.clear
-    redirect '/'
   end
 
   # como jugar
