@@ -71,6 +71,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_511_202_132) do
     t.integer 'cant_coins'
     t.integer 'total_points'
     t.datetime 'last_life_lost_at'
+    t.integer 'racha'
     t.datetime 'created_at'
     t.datetime 'updated_at'
     t.boolean 'admin'

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 users = [
-  { username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 20, total_points: 0 },
-  { username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100, total_points: 0 },
-  { username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100, total_points: 0 },
-  { username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80, total_points: 0 },
-  { username: 'admin', password: 'admin', cant_life: 99_999, cant_coins: 99_999, total_points: 0, admin: true }
+  { username: 'Joaco', password: 'jondoe', cant_life: 3, cant_coins: 20, total_points: 0, racha: 1 },
+  { username: 'Foden', password: 'messi', cant_life: 3, cant_coins: 100, total_points: 0, racha: 1 },
+  { username: 'Juancho', password: 'Juancho1234', cant_life: 3, cant_coins: 100, total_points: 0, racha: 1 },
+  { username: 'erich', password: 'Hamilton', cant_life: 3, cant_coins: 80, total_points: 0, racha: 1 },
+  { username: 'admin', password: 'admin', cant_life: 99_999, cant_coins: 99_999, total_points: 0, racha: 1,
+    admin: true }
 ]
 
 users.each do |user|
@@ -14,6 +15,7 @@ users.each do |user|
     u.cant_life = user[:cant_life]
     u.cant_coins = user[:cant_coins]
     u.total_points = user[:total_points]
+    u.racha = user[:racha]
     u.admin = user[:admin]
   end
 end

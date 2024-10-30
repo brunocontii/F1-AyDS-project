@@ -412,8 +412,8 @@ class App < Sinatra::Application
         # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
         @question.increment!(:correct)
         @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * $racha)
-        $racha = $racha + 1
+        @current_user.increment!(:total_points, 50 * @current_user.racha)
+        @current_user.increment!(:racha)
         session[:message] = 'Correct! Well done.'
         session[:color] = 'green'
       elsif session[:inmunity]
@@ -438,7 +438,7 @@ class App < Sinatra::Application
   def handle_incorrect_answer
     # Incrementa la columna 'incorrect' en la pregunta que fue contestada incorrectamente
     @question.increment!(:incorrect)
-    $racha = 1
+    @current_user.update(racha: 1)
     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
     if @current_user.cant_life.zero?
       session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
@@ -742,8 +742,8 @@ class App < Sinatra::Application
         # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
         @question.increment!(:correct)
         @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * $racha)
-        $racha = $racha + 1
+        @current_user.increment!(:total_points, 50 * @current_user.racha)
+        @current_user.increment!(:racha)
         session[:message] = 'Correct! Well done.'
         session[:color] = 'green'
       elsif session[:inmunity]
@@ -776,7 +776,7 @@ class App < Sinatra::Application
     # Incrementa la columna 'incorrect' en la pregunta que fue contestada incorrectamente
     @question.increment!(:incorrect)
     # Reseteamos la recha y le restamos 1 vida
-    $racha = 1
+    @current_user.update(racha: 1)
     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
     # Verificamos que el usuario pueda seguir jugando
     if @current_user.cant_life.zero?
@@ -817,8 +817,8 @@ class App < Sinatra::Application
         # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
         @question.increment!(:correct)
         @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * $racha)
-        $racha = $racha + 1
+        @current_user.increment!(:total_points, 50 * @current_user.racha)
+        @current_user.increment!(:racha)
         session[:message] = 'Correct! Well done.'
         session[:color] = 'green'
       elsif session[:inmunity]
@@ -851,7 +851,7 @@ class App < Sinatra::Application
     # Incrementa la columna 'incorrect' en la pregunta que fue contestada incorrectamente
     @question.increment!(:incorrect)
     # Reseteamos la recha y le restamos 1 vida
-    $racha = 1
+    @current_user.update(racha: 1)
     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
     # Verificamos que el usuario pueda seguir jugando
     if @current_user.cant_life.zero?
