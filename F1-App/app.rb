@@ -21,7 +21,7 @@ enable :sessions
 # Esta clase define la aplicación principal utilizando Sinatra.
 # Controla las rutas y la lógica de la aplicación web.
 class App < Sinatra::Application
-  $racha = 1
+
   # para asegurarse de que toda la inicialización necesaria en las clases se realice correctamente
   def initialize(_app = nil)
     super()
@@ -230,7 +230,9 @@ class App < Sinatra::Application
       question = question_image(params)
     end
 
-    save_question(question) if question
+    if question
+      save_question(question)
+    end
 
     redirect '/profile/add-question'
   end
@@ -240,6 +242,7 @@ class App < Sinatra::Application
     existing_question = Question.find_by(name_question: params[:question_text])
     if existing_question
       flash[:error] = 'The question already exists in the database.'
+      nil
     else
       # Crear la pregunta de texto
       Question.new(name_question: params[:question_text],
@@ -598,6 +601,7 @@ class App < Sinatra::Application
       @question = all_questions.order('RANDOM()').first if all_questions.exists?
       redirect '/gamemodes'
     end
+    redirect '/gamemodes/free'
   end
 
   post '/gamemodes/free' do
