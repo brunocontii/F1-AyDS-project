@@ -84,35 +84,37 @@ class App < Sinatra::Application
 
   # registrar un usuario
   post '/register' do
-    username = params[:username]
-    password = params[:password]
-    rpassword = params[:repeat_password]
-    name = params[:name]
-    lastname = params[:lastname]
-    email = params[:email]
-    description = params[:description]
-    age = params[:age]
-    profile_picture = params[:profile_pic]
     @profile_pictures = Dir.glob('public/profile_pictures/*').map { |path| path.split('/').last }
 
-    if User.where(username:).exists?
-      @error = 'Username already exist'
+    if validate_registration(params)
       erb :'register/register'
-    elsif password != rpassword
+    elsif create_user_profile(params)
+      session[:username] = params[:username]
+      redirect '/gamemodes'
+    else
+      @error = 'Failed to create the account. Please try again.'
+      erb :'register/register'
+    end
+  end
+
+  def create_user_profile(params)
+    user = User.new(
+      username: params[:username], password: params[:password], cant_life: 3, cant_coins: 0, total_points: 0
+    )
+
+    return unless user.save
+
+    Profile.create(
+      name: params[:name], lastName: params[:lastname], email: params[:email],
+      description: params[:description], age: params[:age], user:, profile_picture: params[:profile_pic]
+    )
+  end
+
+  def validate_registration(params)
+    if User.where(username: params[:username]).exists?
+      @error = 'Username already exists'
+    elsif params[:password] != params[:repeat_password]
       @error = 'Passwords are different'
-      erb :'register/register'
-    else # si el usuario no estaba cargado y las contraseñas son iguales se crea un usuario, con 3 vidas y 0 monedas
-      user = User.new(username:, password:, cant_life: 3, cant_coins: 0, total_points: 0)
-      # Intentamos guardar el usuario y verificamos si se guardo correctamente
-      if user.save
-        Profile.create(name:, lastName: lastname, email:, description:, age:,
-                       user:, profile_picture:)
-        session[:username] = user.username
-        redirect '/gamemodes'
-      else
-        @error = 'Failed to create the account. Please try again.'
-        erb :'register/register'
-      end
     end
   end
 
@@ -141,15 +143,31 @@ class App < Sinatra::Application
       # recupero el usuario y traigo el perfil a @profile
       @profile = @current_user.profile
       @profile = @current_user.profile if @current_user
-      @countPi = Question.where(theme: 'pilot').count.positive? ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'pilot' }).count * 100 / Question.where(theme: 'pilot').count : 0
-      @countCi = Question.where(theme: 'circuit').count.positive? ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'circuit' }).count * 100 / Question.where(theme: 'circuit').count : 0
-      @countCa = Question.where(theme: 'career').count.positive? ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'career' }).count * 100 / Question.where(theme: 'career').count : 0
-      @countTe = Question.where(theme: 'team').count.positive? ? Answer.where(user_id: @current_user.id).joins(:question).where(questions: { theme: 'team' }).count * 100 / Question.where(theme: 'team').count : 0
-      @countTotal = Question.count.positive? ? (Answer.where(user_id: @current_user.id).count * 100) / Question.count : 0
+      @count_pi = calculate_progress(@current_user, 'pilot')
+      @count_ci = calculate_progress(@current_user, 'circuit')
+      @count_ca = calculate_progress(@current_user, 'career')
+      @count_te = calculate_progress(@current_user, 'team')
+      @count_tot = calculate_progress(@current_user)
       erb :'profiles/profile',
-          locals: { profile: @profile, countPi: @countPi, countCi: @countCi, countCa: @countCa, countTe: @countTe,
-                    countTotal: @countTotal }
+          locals: { profile: @profile, countPi: @count_pi, countCi: @count_ci,
+                    countCa: @count_ca, countTe: @count_te, countTot: @count_tot }
     end
+  end
+
+  def calculate_progress(user, theme = nil)
+    if theme # es decir no es nil , hay un tema para jugar
+      total_questions = Question.where(theme:).count
+      return 0 unless total_questions.positive?
+
+      correct_answers = Answer.where(user_id: user.id).joins(:question).where(questions: { theme: }).count
+    else
+      total_questions = Question.count
+      return 0 unless total_questions.positive?
+
+      correct_answers = Answer.where(user_id: user.id).count
+    end
+
+    (correct_answers * 100) / total_questions
   end
 
   post '/profile/picture' do
