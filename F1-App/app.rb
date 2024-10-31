@@ -13,11 +13,13 @@ require './models/option'
 require './models/question'
 
 require_relative './controllers/users_controller'
+require_relative './controllers/profile_controller'
 
 set :database_file, './config/database.yml'
 set :public_folder, "#{File.dirname(__FILE__)}/public"
 
 use UsersController
+use ProfileController
 
 enable :sessions
 
@@ -67,82 +69,6 @@ class App < Sinatra::Application
   # Team
   get '/team' do
     erb :'team/team'
-  end
-
-  get '/profile' do
-    @current_user = User.find_by(username: session[:username]) if session[:username]
-
-    if request.xhr?
-      content_type :json
-      { lives: @current_user.cant_life }.to_json
-    else
-      # recupero el usuario y traigo el perfil a @profile
-      @profile = @current_user.profile
-      @profile = @current_user.profile if @current_user
-      @count_pi = calculate_progress(@current_user, 'pilot')
-      @count_ci = calculate_progress(@current_user, 'circuit')
-      @count_ca = calculate_progress(@current_user, 'career')
-      @count_te = calculate_progress(@current_user, 'team')
-      @count_tot = calculate_progress(@current_user)
-      erb :'profiles/profile',
-          locals: { profile: @profile, countPi: @count_pi, countCi: @count_ci,
-                    countCa: @count_ca, countTe: @count_te, countTot: @count_tot }
-    end
-  end
-
-  def calculate_progress(user, theme = nil)
-    if theme # es decir no es nil , hay un tema para jugar
-      total_questions = Question.where(theme:).count
-      return 0 unless total_questions.positive?
-
-      correct_answers = Answer.where(user_id: user.id).joins(:question).where(questions: { theme: }).count
-    else
-      total_questions = Question.count
-      return 0 unless total_questions.positive?
-
-      correct_answers = Answer.where(user_id: user.id).count
-    end
-
-    (correct_answers * 100) / total_questions
-  end
-
-  post '/profile/picture' do
-    @current_user = User.find_by(username: session[:username]) if session[:username]
-    if @current_user
-      @profile = @current_user.profile
-      @profile.update(profile_picture: params[:profile_picture])
-    end
-    redirect '/profile'
-  end
-
-  get '/profile/change-password' do
-    @current_user = User.find_by(username: session[:username]) if session[:username]
-    @profile = @current_user.profile
-    erb :'profiles/change-pass', locals: { profile: @profile }
-  end
-
-  post '/profile/change_password' do
-    @current_user = User.find_by(username: session[:username]) if session[:username]
-    current_password = params[:current_password]
-    new_password = params[:new_password]
-    confirm_password = params[:confirm_password]
-
-    # Verificar si la contraseña actual coincide
-    if @current_user.authenticate(current_password)
-      # Verificar si la nueva contraseña coincide con la confirmación
-      if new_password == confirm_password
-        # Actualizar la contraseña
-        @current_user.update(password: new_password)
-        flash[:success] = 'Password changed successfully.'
-        redirect '/profile'
-      else
-        flash[:error] = 'The new passwords do not match.'
-        redirect '/profile/change-password'
-      end
-    else
-      flash[:error] = 'The current password is incorrect.'
-      redirect '/profile/change-password'
-    end
   end
 
   get '/profile/add-question' do
