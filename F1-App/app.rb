@@ -14,12 +14,14 @@ require './models/question'
 
 require_relative './controllers/users_controller'
 require_relative './controllers/profile_controller'
+require_relative './controllers/wildcards_controller'
 
 set :database_file, './config/database.yml'
 set :public_folder, "#{File.dirname(__FILE__)}/public"
 
 use UsersController
 use ProfileController
+use WildCardsController
 
 enable :sessions
 
@@ -309,80 +311,6 @@ class App < Sinatra::Application
     else
       session[:message] = 'Incorrect!'
       session[:color] = 'red'
-    end
-  end
-
-  post '/use_extra_time' do
-    # Obtenemos la solicitud y convertimos el JSON recibido en un hash
-    content_type :json
-    request_body = request.body.read
-    params = JSON.parse(request_body)
-
-    # Extraemos al usuario desde los parametros y lo buscamos
-    user_id = params['user_id']
-    @current_user = User.find(user_id)
-
-    # Caso donde el usuario SI puede comprar el comodin
-    if @current_user&.cant_coins.to_i >= 75
-      @current_user.update!(cant_coins: @current_user.cant_coins - 75)
-      # Devolvemos un JSON con el estado exitoso
-      { status: 'success' }.to_json
-    else
-      # Devolvemos un JSON con un mensaje de error
-      { status: 'error', message: 'Not enough coins' }.to_json
-    end
-  end
-
-  post '/use_50_50' do
-    # Obtenemos la solicitud y convertimos el JSON recibido en un hash
-    content_type :json
-    request_body = request.body.read
-    params = JSON.parse(request_body)
-
-    # Extraemos al usuario desde los parametros y lo buscamos
-    user_id = params['user_id']
-    @current_user = User.find(user_id)
-    # Estraemos la pregunta desde los parametros y la buscamos
-    # Tambien buscamos las opciones para esa pregunta
-    question_id = params['question_id']
-    question = Question.find(question_id)
-    options = question.options
-
-    # Caso donde el usuario SI puede comprar el comodin
-    if @current_user.cant_coins >= 150
-      @current_user.update(cant_coins: @current_user.cant_coins - 150)
-
-      # Seleccionar 2 opciones incorrectas al azar
-      incorrect_options = options.reject(&:correct).sample(2)
-      incorrect_option_ids = incorrect_options.map(&:id)
-
-      # Devolvemos un JSON con el estado exitoso
-      { status: 'success', removed_options: incorrect_option_ids }.to_json
-    else
-      # Devolvemos un JSON con un mensaje de error
-      { status: 'error', message: 'Not enough coins' }.to_json
-    end
-  end
-
-  post '/inmunity' do
-    # Obtenemos la solicitud y convertimos el JSON recibido en un hash
-    content_type :json
-    request_body = request.body.read
-    params = JSON.parse(request_body)
-
-    # Extraemos al usuario desde los parametros y lo buscamos
-    user_id = params['user_id']
-    @current_user = User.find(user_id)
-
-    # Caso donde el usuario SI puede comprar el comodin
-    if @current_user&.cant_coins.to_i >= 200
-      session[:inmunity] = true
-      @current_user.update!(cant_coins: @current_user.cant_coins - 200)
-      # Devolvemos un JSON con el estado exitoso
-      { status: 'success' }.to_json
-    else
-      # Devolvemos un JSON con un mensaje de error
-      { status: 'error', message: 'Not enough coins' }.to_json
     end
   end
 
