@@ -50,7 +50,7 @@ class AdminController < Sinatra::Base
     else
       # Crear la pregunta de texto
       Question.new(name_question: params[:question_text],
-                    level: params[:difficulty], theme: params[:theme])
+                   level: params[:difficulty], theme: params[:theme])
     end
   end
 
@@ -97,14 +97,14 @@ class AdminController < Sinatra::Base
     limit = params[:limit].to_i
 
     @questions = if @view_type && limit
-                    if @view_type == 'correct'
-                      Question.order(correct: :desc).limit(limit)
-                    else
-                      Question.order(incorrect: :desc).limit(limit)
-                    end
-                  else
-                    []
-                  end
+                   if @view_type == 'correct'
+                     Question.order(correct: :desc).limit(limit)
+                   else
+                     Question.order(incorrect: :desc).limit(limit)
+                   end
+                 else
+                   []
+                 end
 
     erb :'profiles/view-question-data', locals: { profile: @profile, questions: @questions }
   end
