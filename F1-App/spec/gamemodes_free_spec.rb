@@ -16,7 +16,7 @@ RSpec.describe 'The App' do
 
   describe 'GET /gamemodes/free' do
     # Creaciones de elementos temporales a utilizar
-    let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0) }
+    let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0, racha: 0) }
     let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
     let!(:correct_option) { Option.create(name_option: 'Correct Option', question_id: question.id, correct: true) }
     let!(:incorrect_option) do
@@ -178,7 +178,7 @@ RSpec.describe 'The App' do
 
   describe 'POST /gamemodes/free' do
     # Preparando usuario y pregunta con sus respuestas
-    let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0) }
+    let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0, racha: 0) }
     let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'free') }
     let!(:correct_option) { Option.create(name_option: 'Correct Answer', correct: true, question:) }
     let!(:incorrect_option) { Option.create(name_option: 'Incorrect Answer', correct: false, question:) }
@@ -269,6 +269,7 @@ RSpec.describe 'The App' do
         post '/gamemodes/free', { option_id: correct_option.id }
 
         expect(user.reload.cant_coins).to eq(10)
+        expect(user.reload.racha).to eq(1) # Verifica que la racha aumente en 1
         expect(last_response).to be_redirect
         expect(last_response.location).to include('/gamemodes/free')
         expect(last_request.env['rack.session'][:message]).to eq('Correct! Well done.')

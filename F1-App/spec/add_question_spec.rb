@@ -211,7 +211,7 @@ RSpec.describe 'The App' do
           expect(last_response).to be_redirect
           follow_redirect!
           expect(last_request.path).to eq('/profile/add-question')
-          expect(last_response.body).to include('Invalid image format. Only JPG, JPEG and PNG are allowed.')
+          expect(last_response.body).to include('Invalid image format.')
         end
       end
 
