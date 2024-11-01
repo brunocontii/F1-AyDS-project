@@ -119,7 +119,7 @@ RSpec.describe 'The App' do
   end
 
   describe 'POST /gamemodes/progressive/:mode' do
-    let(:user) { User.create(username: 'testuser', password: 'testpassword', cant_life: 3, cant_coins: 0) }
+    let!(:user) { User.create(username: 'testuser', password: 'password123', cant_life: 3, cant_coins: 0, racha: 0) }
     let(:question) { Question.create(name_question: 'What is Ruby?', level: 'easy', theme: mode) }
     let(:correct_option) do
       Option.create(name_option: 'A programming language', question_id: question.id, correct: true)
@@ -164,6 +164,7 @@ RSpec.describe 'The App' do
         it 'increments coins and reloads the mode' do
           post "/gamemodes/progressive/#{mode}", { option_id: correct_option.id }
           expect(user.reload.cant_coins).to eq(10)
+          expect(user.reload.racha).to eq(1) # Verifica que la racha aumente en 1
           expect(last_response).to be_redirect
           follow_redirect!
           expect(last_request.path).to eq("/gamemodes/progressive/#{mode}")
