@@ -7,6 +7,7 @@ require_relative '../models/profile'
 require_relative '../models/question'
 require_relative '../models/answer'
 require_relative '../modules/free_logic'
+require_relative '../helpers/helpers'
 
 # Controlador que maneja el modo Free
 class FreeController < Sinatra::Base
@@ -14,6 +15,7 @@ class FreeController < Sinatra::Base
 
   enable :sessions
   register Sinatra::Flash
+  helpers AppHelpers
 
   configure do
     set :views, './views'
@@ -28,14 +30,11 @@ class FreeController < Sinatra::Base
       session[:reset_free_mode] = false
       free_answers = Answer.joins(:question).where(questions: { theme: 'free' })
 
-      # Restar las respuestas del modo "free" de la tabla completa de respuestas
       Answer.where(id: free_answers.pluck(:id)).destroy_all
     end
 
     unless @current_user&.can_play?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
     end
 
     session[:answered_free_questions] ||= []
@@ -54,14 +53,10 @@ class FreeController < Sinatra::Base
   end
 
   post '/gamemodes/free' do
-    # Buscamos al usuario
     @current_user = User.find_by(username: session[:username]) if session[:username]
 
-    # Verificamos que el usuario pueda jugar
     unless @current_user&.can_play?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      return redirect '/gamemodes'
+      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
     end
 
     # Si se acabo el tiempo para responder y no tiene activada la inmunidad

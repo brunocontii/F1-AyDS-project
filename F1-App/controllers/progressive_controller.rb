@@ -7,6 +7,7 @@ require_relative '../models/profile'
 require_relative '../models/question'
 require_relative '../models/answer'
 require_relative '../modules/progressive_logic'
+require_relative '../helpers/helpers'
 
 # Controlador que maneja todos los modos de juego dentro del modo Progressive
 class ProgressiveController < Sinatra::Base
@@ -14,6 +15,7 @@ class ProgressiveController < Sinatra::Base
 
   enable :sessions
   register Sinatra::Flash
+  helpers AppHelpers
 
   configure do
     set :views, './views'
@@ -38,9 +40,7 @@ class ProgressiveController < Sinatra::Base
 
     # verificamos si tiene vidas para jugar
     unless @current_user&.can_play?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
     end
 
     session[:answered_questions] ||= []
@@ -50,11 +50,7 @@ class ProgressiveController < Sinatra::Base
     # que no haya sido respondida todavia
     @question = Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
 
-    if @question.nil?
-      session[:message] = '¡Congratulations, you finished this theme!'
-      session[:color] = 'green'
-      redirect '/gamemodes'
-    end
+    set_message_and_redirect('¡Congratulations, you finished this theme!', 'green') if @question.nil?
 
     # ordenamos las opciones de manera random
     @options = @question.options.to_a.shuffle
@@ -73,9 +69,7 @@ class ProgressiveController < Sinatra::Base
     @current_user = User.find_by(username: session[:username]) if session[:username]
 
     unless @current_user&.can_play?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      return redirect '/gamemodes'
+      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
     end
 
     params[:timeout] == 'true' && !session[:inmunity] ? handle_timeout : handle_option_submission

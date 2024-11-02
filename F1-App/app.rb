@@ -19,6 +19,7 @@ require_relative './controllers/admin_controller'
 require_relative './controllers/grandprix_controller'
 require_relative './controllers/free_controller'
 require_relative './controllers/progressive_controller'
+require_relative './helpers/helpers'
 
 set :database_file, './config/database.yml'
 set :public_folder, "#{File.dirname(__FILE__)}/public"

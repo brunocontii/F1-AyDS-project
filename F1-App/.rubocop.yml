@@ -1,0 +1,8 @@
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+  TargetRubyVersion: 3.1  # para que no tenga problema con el versionado
+  NewCops: disable
+
+Metrics/MethodLength:
+  Max: 15

@@ -37,23 +37,6 @@ class ProfileController < Sinatra::Base
     end
   end
 
-  # Metodo para calcular el progreso en diferentes temas
-  def calculate_progress(user, theme = nil)
-    if theme
-      total_questions = Question.where(theme: theme).count
-      return 0 unless total_questions.positive?
-
-      correct_answers = Answer.where(user_id: user.id).joins(:question).where(questions: { theme: theme }).count
-    else
-      total_questions = Question.count
-      return 0 unless total_questions.positive?
-
-      correct_answers = Answer.where(user_id: user.id).count
-    end
-
-    (correct_answers * 100) / total_questions
-  end
-
   # Actualizar la foto de perfil
   post '/profile/picture' do
     @current_user = User.find_by(username: session[:username]) if session[:username]
@@ -91,5 +74,24 @@ class ProfileController < Sinatra::Base
       flash[:error] = 'The current password is incorrect.'
       redirect '/profile/change-password'
     end
+  end
+
+  private
+
+  # Metodo para calcular el progreso en diferentes temas
+  def calculate_progress(user, theme = nil)
+    if theme
+      total_questions = Question.where(theme:).count
+      return 0 unless total_questions.positive?
+
+      correct_answers = Answer.where(user_id: user.id).joins(:question).where(questions: { theme: }).count
+    else
+      total_questions = Question.count
+      return 0 unless total_questions.positive?
+
+      correct_answers = Answer.where(user_id: user.id).count
+    end
+
+    (correct_answers * 100) / total_questions
   end
 end
