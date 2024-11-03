@@ -9,11 +9,19 @@ require_relative '../models/option'
 
 # Controlador para las funciones del usuario admin
 class AdminController < Sinatra::Base
-  enable :sessions
-  register Sinatra::Flash
-
   configure do
+    enable :sessions
+    register Sinatra::Flash
     set :views, './views'
+    set :public_folder, './public'
+  end
+
+  before do
+    # Lista de rutas a las que se puede acceder sin estar autenticado
+    routes = ['/', '/login', '/register', '/how-to-play', '/team']
+
+    # Redirigir si el usuario no esta autenticado y la ruta no esta en la lista permitida
+    redirect '/' unless session[:username] || routes.include?(request.path_info)
   end
 
   get '/profile/add-question' do
@@ -71,6 +79,7 @@ class AdminController < Sinatra::Base
     existing_question = Question.find_by(name_question: params[:question_text])
     if existing_question
       flash[:error] = 'The question already exists in the database.'
+      nil
     else
       Question.new(name_question: params[:question_text],
                    level: params[:difficulty], theme: params[:theme])
@@ -78,15 +87,13 @@ class AdminController < Sinatra::Base
   end
 
   def question_image(params)
-    unless params[:question_image]&.dig(:filename)
-      flash[:error] = 'Please upload an image.' and return redirect '/profile/add-question'
-    end
+    flash[:error] = 'Please upload an image.' and return nil unless params[:question_image]&.dig(:filename)
 
     filename = params[:question_image][:filename]
     file = params[:question_image][:tempfile]
 
     unless ['.jpg', '.jpeg', '.png'].include?(File.extname(filename).downcase)
-      flash[:error] = 'Invalid image format.' and return redirect '/profile/add-question'
+      flash[:error] = 'Invalid image format.' and return nil
     end
 
     File.write(File.join('public/grandprix', filename), file.read, mode: 'wb')

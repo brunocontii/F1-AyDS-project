@@ -2,23 +2,32 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
+require_relative '../helpers/helpers'
 require_relative '../models/user'
 require_relative '../models/profile'
 require_relative '../models/question'
 require_relative '../models/answer'
 require_relative '../modules/progressive_logic'
-require_relative '../helpers/helpers'
 
 # Controlador que maneja todos los modos de juego dentro del modo Progressive
 class ProgressiveController < Sinatra::Base
   include ProgressiveLogic
 
-  enable :sessions
-  register Sinatra::Flash
   helpers AppHelpers
 
   configure do
+    enable :sessions
+    register Sinatra::Flash
     set :views, './views'
+    set :public_folder, './public'
+  end
+
+  before do
+    # Lista de rutas a las que se puede acceder sin estar autenticado
+    routes = ['/', '/login', '/register', '/how-to-play', '/team']
+
+    # Redirigir si el usuario no esta autenticado y la ruta no esta en la lista permitida
+    redirect '/' unless session[:username] || routes.include?(request.path_info)
   end
 
   # generalizacion de las rutas del modo de juego progresivo

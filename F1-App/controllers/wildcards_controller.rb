@@ -7,10 +7,19 @@ require_relative '../models/option'
 
 # Controlador que maneja la logica de los comodines
 class WildCardsController < Sinatra::Base
-  enable :sessions
-
   configure do
+    enable :sessions
+    register Sinatra::Flash
     set :views, './views'
+    set :public_folder, './public'
+  end
+
+  before do
+    # Lista de rutas a las que se puede acceder sin estar autenticado
+    routes = ['/', '/login', '/register', '/how-to-play', '/team']
+
+    # Redirigir si el usuario no esta autenticado y la ruta no esta en la lista permitida
+    redirect '/' unless session[:username] || routes.include?(request.path_info)
   end
 
   post '/use_extra_time' do

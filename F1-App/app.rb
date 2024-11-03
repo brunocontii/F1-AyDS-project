@@ -12,6 +12,7 @@ require './models/answer'
 require './models/option'
 require './models/question'
 
+require_relative './helpers/helpers'
 require_relative './controllers/users_controller'
 require_relative './controllers/profile_controller'
 require_relative './controllers/wildcards_controller'
@@ -19,24 +20,23 @@ require_relative './controllers/admin_controller'
 require_relative './controllers/grandprix_controller'
 require_relative './controllers/free_controller'
 require_relative './controllers/progressive_controller'
-require_relative './helpers/helpers'
 
 set :database_file, './config/database.yml'
 set :public_folder, "#{File.dirname(__FILE__)}/public"
-
-use UsersController
-use ProfileController
-use WildCardsController
-use AdminController
-use GrandprixController
-use FreeController
-use ProgressiveController
 
 enable :sessions
 
 # Esta clase define la aplicación principal utilizando Sinatra.
 # Controla las rutas y la lógica de la aplicación web.
 class App < Sinatra::Application
+  use UsersController
+  use ProfileController
+  use WildCardsController
+  use AdminController
+  use GrandprixController
+  use FreeController
+  use ProgressiveController
+
   configure do
     set :views, './views'
   end

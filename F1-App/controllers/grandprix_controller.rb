@@ -2,23 +2,31 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
+require_relative '../helpers/helpers'
 require_relative '../models/user'
 require_relative '../models/profile'
 require_relative '../models/question'
 require_relative '../models/answer'
 require_relative '../modules/grandprix_logic'
-require_relative '../helpers/helpers'
 
 # Controlador que maneja el modo Grand Prix
 class GrandprixController < Sinatra::Base
   include GrandPrixLogic
-
-  enable :sessions
-  register Sinatra::Flash
   helpers AppHelpers
 
   configure do
+    enable :sessions
+    register Sinatra::Flash
     set :views, './views'
+    set :public_folder, './public'
+  end
+
+  before do
+    # Lista de rutas a las que se puede acceder sin estar autenticado
+    routes = ['/', '/login', '/register', '/how-to-play', '/team']
+
+    # Redirigir si el usuario no esta autenticado y la ruta no esta en la lista permitida
+    redirect '/' unless session[:username] || routes.include?(request.path_info)
   end
 
   # Modo Grand Prix
@@ -85,13 +93,16 @@ class GrandprixController < Sinatra::Base
   def advance_difficulty
     case session[:grandprix_mode_difficulty]
     when 'easy'
-      set_difficulty_and_message('normal', "You've answered all the easy questions. Now the medium questions.")
+      set_difficulty_and_message_grandprix('normal',
+                                           "You've answered all the easy questions. Now the medium questions.")
     when 'normal'
-      set_difficulty_and_message('difficult', "You've answered all the medium questions. Now the hard questions.")
+      set_difficulty_and_message_grandprix('difficult',
+                                           "You've answered all the medium questions. Now the hard questions.")
     when 'difficult'
-      set_difficulty_and_message('impossible', "You've answered all the hard questions. Now the impossible questions.")
+      set_difficulty_and_message_grandprix('impossible',
+                                           "You've answered all the hard questions. Now the impossible questions.")
     when 'impossible'
-      set_difficulty_and_message('easy', "Congratulations! You've completed the Grand Prix Mode.")
+      set_difficulty_and_message_grandprix('easy', "Congratulations! You've completed the Grand Prix Mode.")
       session[:answered_grandprix_questions] = []
       session[:reset_grandprix_mode] = true
     end

@@ -2,15 +2,14 @@
 
 # Modulo que contiene metodos para la logica del modo de juego Progressive
 module ProgressiveLogic
+  include AppHelpers
+
   def handle_timeout
     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
     if @current_user.cant_life.zero?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
     else
-      session[:message] = "Time's up! Incorrect!"
-      session[:color] = 'red'
+      set_message("Time's up! Incorrect!", 'red')
     end
   end
 
@@ -18,31 +17,12 @@ module ProgressiveLogic
     if params[:option_id].to_i.positive?
       @option = Option.find(params[:option_id].to_i)
       @question = @option.question
-      if @option.correct
-        Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-        # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
-        @question.increment!(:correct)
-        @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * @current_user.racha)
-        @current_user.increment!(:racha)
-        session[:message] = 'Correct! Well done.'
-        session[:color] = 'green'
-      elsif session[:inmunity]
-        session[:inmunity] = false
-        session[:message] = 'Activate inmunity'
-        session[:color] = 'green'
-      else
-        handle_incorrect_answer
-      end
+      process_answer
       (session[:answered_questions] ||= []) << @question.id
     elsif session[:inmunity]
-      session[:inmunity] = false
-      session[:message] = 'Activate inmunity'
-      session[:color] = 'green'
+      set_inmunity_and_message(false, 'Activate inmunity', 'green')
     else
-      session[:message] = 'Invalid option ID'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      set_message_and_redirect('Invalid option ID', 'red')
     end
   end
 
@@ -52,12 +32,30 @@ module ProgressiveLogic
     @current_user.update(racha: 1)
     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
     if @current_user.cant_life.zero?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
     else
-      session[:message] = 'Incorrect!'
-      session[:color] = 'red'
+      set_message('Incorrect!', 'red')
     end
+  end
+
+  private
+
+  def process_answer
+    if @option.correct
+      Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+      @question.increment!(:correct)
+      update_user_stats(10, 50 * @current_user.racha)
+      set_message('Correct! Well done.', 'green')
+    elsif session[:inmunity]
+      set_inmunity_and_message(false, 'Activate inmunity', 'green')
+    else
+      handle_incorrect_answer
+    end
+  end
+
+  def update_user_stats(coins, points)
+    @current_user.increment!(:cant_coins, coins)
+    @current_user.increment!(:total_points, points)
+    @current_user.increment!(:racha)
   end
 end

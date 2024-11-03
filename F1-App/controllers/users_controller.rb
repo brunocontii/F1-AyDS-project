@@ -6,10 +6,19 @@ require_relative '../models/profile'
 
 # Controlador que maneja el login y el registro del usuario
 class UsersController < Sinatra::Base
-  enable :sessions
-
   configure do
+    enable :sessions
+    register Sinatra::Flash
     set :views, './views'
+    set :public_folder, './public'
+  end
+
+  before do
+    # Lista de rutas a las que se puede acceder sin estar autenticado
+    routes = ['/', '/login', '/register', '/how-to-play', '/team']
+
+    # Redirigir si el usuario no esta autenticado y la ruta no esta en la lista permitida
+    redirect '/' unless session[:username] || routes.include?(request.path_info)
   end
 
   # Mostrar el view del login

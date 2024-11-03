@@ -2,23 +2,31 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
+require_relative '../helpers/helpers'
 require_relative '../models/user'
 require_relative '../models/profile'
 require_relative '../models/question'
 require_relative '../models/answer'
 require_relative '../modules/free_logic'
-require_relative '../helpers/helpers'
 
 # Controlador que maneja el modo Free
 class FreeController < Sinatra::Base
   include FreeLogic
-
-  enable :sessions
-  register Sinatra::Flash
   helpers AppHelpers
 
   configure do
+    enable :sessions
+    register Sinatra::Flash
     set :views, './views'
+    set :public_folder, './public'
+  end
+
+  before do
+    # Lista de rutas a las que se puede acceder sin estar autenticado
+    routes = ['/', '/login', '/register', '/how-to-play', '/team']
+
+    # Redirigir si el usuario no esta autenticado y la ruta no esta en la lista permitida
+    redirect '/' unless session[:username] || routes.include?(request.path_info)
   end
 
   # Modo Free
@@ -26,12 +34,7 @@ class FreeController < Sinatra::Base
     @current_user = User.find_by(username: session[:username]) if session[:username]
 
     # Reinicia el modo de juego si el usuario vuelve a ingresar
-    if session[:reset_free_mode]
-      session[:reset_free_mode] = false
-      free_answers = Answer.joins(:question).where(questions: { theme: 'free' })
-
-      Answer.where(id: free_answers.pluck(:id)).destroy_all
-    end
+    reset_free_mode if session[:reset_free_mode]
 
     unless @current_user&.can_play?
       set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
@@ -70,5 +73,14 @@ class FreeController < Sinatra::Base
     end
 
     redirect '/gamemodes/free'
+  end
+
+  private
+
+  # reseteo cuando termina imposible para comenzar a jugar de nuevo si quisiera
+  def reset_free_mode
+    session[:reset_free_mode] = false
+    free_answers = Answer.joins(:question).where(questions: { theme: 'free' })
+    Answer.where(id: free_answers.pluck(:id)).destroy_all
   end
 end
