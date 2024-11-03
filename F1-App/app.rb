@@ -248,18 +248,26 @@ class App < Sinatra::Application
   end
 
   def question_image(params)
-    unless params[:question_image]&.dig(:filename)
-      flash[:error] = 'Please upload an image.' and return redirect '/profile/add-question'
-    end
+    question_image_upload unless params[:question_image]&.dig(:filename)
 
     filename = params[:question_image][:filename]
     file = params[:question_image][:tempfile]
 
     # Validación de tipo de archivo
-    unless ['.jpg', '.jpeg', '.png'].include?(File.extname(filename).downcase)
-      flash[:error] = 'Invalid image format.' and return redirect '/profile/add-question'
-    end
+    question_image_validation unless ['.jpg', '.jpeg', '.png'].include?(File.extname(filename).downcase)
 
+    question_image_add(params, filename, file)
+  end
+
+  def question_image_upload
+    flash[:error] = 'Please upload an image.' and return redirect '/profile/add-question'
+  end
+
+  def question_image_validation
+    flash[:error] = 'Invalid image format.' and return redirect '/profile/add-question'
+  end
+
+  def question_image_add(params, filename, file)
     # Guardar la imagen en la carpeta pública
     File.write(File.join('public/grandprix', filename), file.read, mode: 'wb')
 
@@ -341,55 +349,81 @@ class App < Sinatra::Application
 
   # metodo para manejar la solicitud GET de un tema del modo progresivo
   def handle_progressive_mode_request(mode)
-    # obtenemos el usuario actual de la sesion
-    @current_user = User.find_by(username: session[:username]) if session[:username]
+    # Obtiene el usuario actual de la sesión
+    find_current_user
 
-    # verificamos si tiene vidas para jugar
-    unless @current_user&.can_play?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      redirect '/gamemodes'
-    end
+    # Verifica si el usuario tiene vidas para jugar
+    redirect_if_cannot_play and return unless @current_user&.can_play?
 
+    # Inicializa preguntas respondidas
     session[:answered_questions] ||= []
     answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
 
-    # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
-    # que no haya sido respondida todavia
-    @question = Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
+    # Selecciona una pregunta sin responder relacionada al tema seleccionado
+    @question = select_question(mode, answered_by_user_ids)
 
-    if @question.nil?
-      session[:message] = '¡Congratulations, you finished this theme!'
-      session[:color] = 'green'
-      redirect '/gamemodes'
-    end
+    # Redirige si no hay preguntas disponibles
+    redirect_if_no_questions and return if @question.nil?
 
-    # ordenamos las opciones de manera random
+    # Ordena las opciones de respuesta de manera aleatoria
     @options = @question.options.to_a.shuffle
 
-    feedback_message = session.delete(:message)
-    feedback_color = session.delete(:color)
+    # Prepara los mensajes de feedback
+    feedback_message, feedback_color = clear_feedback_messages
+
+    # Configura la acción del formulario para el modo progresivo
     @form_action = "/gamemodes/progressive/#{mode}"
 
-    erb :'questions/questions',
-        locals: { current_user: @current_user, question: @question, options: @options,
-                  feedback_message:, feedback_color: }
+    # Renderiza la vista con las variables necesarias
+    erb :'questions/questions', locals: {
+      current_user: @current_user,
+      question: @question,
+      options: @options,
+      feedback_message:,
+      feedback_color:
+    }
+  end
+
+  private
+
+  def find_current_user
+    @current_user = User.find_by(username: session[:username]) if session[:username]
+  end
+
+  def redirect_if_cannot_play
+    session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
+    session[:color] = 'red'
+    redirect '/gamemodes'
+  end
+
+  def select_question(mode, answered_by_user_ids)
+    Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
+  end
+
+  def redirect_if_no_questions
+    session[:message] = '¡Congratulations, you finished this theme!'
+    session[:color] = 'green'
+    redirect '/gamemodes'
+  end
+
+  def clear_feedback_messages
+    [session.delete(:message), session.delete(:color)]
   end
 
   def handle_progressive_mode_submission(mode)
     @current_user = User.find_by(username: session[:username]) if session[:username]
 
-    unless @current_user&.can_play?
-      session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-      session[:color] = 'red'
-      return redirect '/gamemodes'
-    end
+    handle_progressive_mode_submission_session unless @current_user&.can_play?
 
     params[:timeout] == 'true' && !session[:inmunity] ? handle_timeout : handle_option_submission
     redirect "/gamemodes/progressive/#{mode}"
   end
 
-  private
+  def handle_progressive_mode_submission_session
+    session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
+    session[:color] = 'red'
+    redirect '/gamemodes'
+  end
 
   def handle_timeout
     @current_user.update(cant_life: @current_user.cant_life - 1, last_life_lost_at: Time.now)
@@ -405,34 +439,60 @@ class App < Sinatra::Application
 
   def handle_option_submission
     if params[:option_id].to_i.positive?
-      @option = Option.find(params[:option_id].to_i)
-      @question = @option.question
-      if @option.correct
-        Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-        # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
-        @question.increment!(:correct)
-        @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * $racha)
-        $racha = $racha + 1
-        session[:message] = 'Correct! Well done.'
-        session[:color] = 'green'
-      elsif session[:inmunity]
-        session[:inmunity] = false
-        session[:message] = 'Activate inmunity'
-        session[:color] = 'green'
-      else
-        handle_incorrect_answer
-      end
-      (session[:answered_questions] ||= []) << @question.id
+      option_submission_positive
     elsif session[:inmunity]
-      session[:inmunity] = false
-      session[:message] = 'Activate inmunity'
-      session[:color] = 'green'
+      option_submission_inmunity
     else
-      session[:message] = 'Invalid option ID'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      option_submission_negative
     end
+  end
+
+  def option_submission_negative
+    session[:message] = 'Invalid option ID'
+    session[:color] = 'red'
+    redirect '/gamemodes'
+  end
+
+  def option_submission_inmunity
+    session[:inmunity] = false
+    session[:message] = 'Activate inmunity'
+    session[:color] = 'green'
+  end
+
+  def option_submission_positive
+    @option = Option.find(params[:option_id].to_i)
+    @question = @option.question
+    if @option.correct
+      option_submission_positive_correct
+    elsif session[:inmunity]
+      option_submission_positive_incorrect
+    else
+      handle_incorrect_answer
+    end
+    (session[:answered_questions] ||= []) << @question.id
+  end
+
+  def option_submission_positive_correct
+    Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+
+    @question.increment!(:correct)
+    @current_user.increment!(:cant_coins, 10)
+    @current_user.increment!(:total_points, 50 * $racha)
+
+    $racha += 1
+
+    option_submission_positive_correct_session
+  end
+
+  def option_submission_positive_correct_session
+    session[:message] = 'Correct! Well done.'
+    session[:color] = 'green'
+  end
+
+  def option_submission_positive_incorrect
+    session[:inmunity] = false
+    session[:message] = 'Activate inmunity'
+    session[:color] = 'green'
   end
 
   def handle_incorrect_answer
@@ -580,24 +640,39 @@ class App < Sinatra::Application
 
     case session[:free_mode_difficulty]
     when 'easy'
-      session[:free_mode_difficulty] = 'normal'
-      session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
+      handle_difficulty_progression_easy
     when 'normal'
-      session[:free_mode_difficulty] = 'difficult'
-      session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
+      handle_difficulty_progression_normal
     when 'difficult'
-      session[:free_mode_difficulty] = 'impossible'
-      session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
+      handle_difficulty_progression_difficult
     when 'impossible'
-      session[:free_mode_difficulty] = 'easy'
-      session[:answered_free_questions] = []
-      session[:message] = "Congratulations! You've completed the Free Mode."
-      session[:reset_free_mode] = true
-      all_questions = Question.all
-
-      @question = all_questions.order('RANDOM()').first if all_questions.exists?
+      handle_difficulty_progression_impossible
       redirect '/gamemodes'
     end
+  end
+
+  def handle_difficulty_progression_easy
+    session[:free_mode_difficulty] = 'normal'
+    session[:message] = "You've answered all the easy questions. Now the medium questions will appear."
+  end
+
+  def handle_difficulty_progression_normal
+    session[:free_mode_difficulty] = 'difficult'
+    session[:message] = "You've answered all the medium questions. Now the hard questions will appear."
+  end
+
+  def handle_difficulty_progression_difficult
+    session[:free_mode_difficulty] = 'impossible'
+    session[:message] = "You've answered all the hard questions. Now the impossible questions will appear."
+  end
+
+  def handle_difficulty_progression_impossible
+    session[:free_mode_difficulty] = 'easy'
+    session[:answered_free_questions] = []
+    session[:message] = "Congratulations! You've completed the Free Mode."
+    session[:reset_free_mode] = true
+    all_questions = Question.all
+    @question = all_questions.order('RANDOM()').first if all_questions.exists?
   end
 
   post '/gamemodes/free' do
@@ -733,42 +808,68 @@ class App < Sinatra::Application
   def handle_free_option_submission
     # Si el usuario selecciono una opcion
     if params[:option_id].to_i.positive?
-      # Buscamos la opcion y su pregunta relacionada
-      @option = Option.find(params[:option_id].to_i)
-      @question = @option.question
-      # Si la opcion es correcta
-      if @option.correct
-        Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-        # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
-        @question.increment!(:correct)
-        @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * $racha)
-        $racha = $racha + 1
-        session[:message] = 'Correct! Well done.'
-        session[:color] = 'green'
-      elsif session[:inmunity]
-        # Si la opcion es incorrecta pero tiene la inmunidad activada
-        session[:inmunity] = false
-        session[:message] = 'Activate inmunity'
-        session[:color] = 'green'
-      else
-        # Si la opcion es incorrecta y no tiene la inmunidad activada llamamos
-        # al metodo que maneja la respuesta incorrecta
-        handle_free_incorrect_answer
-      end
-      # Guardamos la pregunta respondida asi no vuelve a aparecer
-      (session[:answered_free_questions] ||= []) << @question.id
+      free_option_submission_positive
     elsif session[:inmunity]
-      # Si el usuario no selecciono una opcion pero tiene la inmundad activada
-      session[:inmunity] = false
-      session[:message] = 'Activate inmunity'
-      session[:color] = 'green'
+      free_option_submission_inmunity
     else
-      # Si el usuario no selecciono ninguna opcion
-      session[:message] = 'Invalid option ID'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      free_option_submission_negative
     end
+  end
+
+  def free_option_submission_negative
+    # Si el usuario no selecciono ninguna opcion
+    session[:message] = 'Invalid option ID'
+    session[:color] = 'red'
+    redirect '/gamemodes'
+  end
+
+  def free_option_submission_inmunity
+    # Si el usuario no selecciono una opcion pero tiene la inmundad activada
+    session[:inmunity] = false
+    session[:message] = 'Activate inmunity'
+    session[:color] = 'green'
+  end
+
+  def free_option_submission_positive
+    # Buscamos la opcion y su pregunta relacionada
+    @option = Option.find(params[:option_id].to_i)
+    @question = @option.question
+    # Si la opcion es correcta
+    if @option.correct
+      free_option_submission_positive_correct
+
+    else
+      # Si la opcion es incorrecta y no tiene la inmunidad activada llamamos
+      # al metodo que maneja la respuesta incorrecta
+      handle_free_incorrect_answer
+    end
+    # Guardamos la pregunta respondida asi no vuelve a aparecer
+    (session[:answered_free_questions] ||= []) << @question.id
+  end
+
+  def free_option_submission_positive_correct
+    @option = Option.find(params[:option_id].to_i)
+    @question = @option.question
+
+    Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+    # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
+    @question.increment!(:correct)
+    @current_user.increment!(:cant_coins, 10)
+    @current_user.increment!(:total_points, 50 * $racha)
+    $racha = $racha + 1
+    free_option_submission_positive_correct_session
+  end
+
+  def free_option_submission_positive_correct_session
+    session[:message] = 'Correct! Well done.'
+    session[:color] = 'green'
+  end
+
+  def free_option_submission_positive_inmunity
+    # Si la opcion es incorrecta pero tiene la inmunidad activada
+    session[:inmunity] = false
+    session[:message] = 'Activate inmunity'
+    session[:color] = 'green'
   end
 
   # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
@@ -808,42 +909,62 @@ class App < Sinatra::Application
   def handle_grandprix_option_submission
     # Si el usuario selecciono una opcion
     if params[:option_id].to_i.positive?
-      # Buscamos la opcion y su pregunta relacionada
-      @option = Option.find(params[:option_id].to_i)
-      @question = @option.question
-      # Si la opcion es correcta
-      if @option.correct
-        Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
-        # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
-        @question.increment!(:correct)
-        @current_user.increment!(:cant_coins, 10)
-        @current_user.increment!(:total_points, 50 * $racha)
-        $racha = $racha + 1
-        session[:message] = 'Correct! Well done.'
-        session[:color] = 'green'
-      elsif session[:inmunity]
-        # Si la opcion es incorrecta pero tiene la inmunidad activada
-        session[:inmunity] = false
-        session[:message] = 'Activate inmunity'
-        session[:color] = 'green'
-      else
-        # Si la opcion es incorrecta y no tiene la inmunidad activada llamamos
-        # al metodo que maneja la respuesta incorrecta
-        handle_grandprix_incorrect_answer
-      end
-      # Guardamos la pregunta respondida asi no vuelve a aparecer
-      (session[:answered_grandprix_questions] ||= []) << @question.id
+      grandprix_submission_positive
     elsif session[:inmunity]
-      # Si el usuario no selecciono una opcion pero tiene la inmundad activada
-      session[:inmunity] = false
-      session[:message] = 'Activate inmunity'
-      session[:color] = 'green'
+      grandprix_submission_inmunity
     else
-      # Si el usuario no selecciono ninguna opcion
-      session[:message] = 'Invalid option ID'
-      session[:color] = 'red'
-      redirect '/gamemodes'
+      grandprix_submission_negative
     end
+  end
+
+  def grandprix_submission_inmunity
+    # Si el usuario no selecciono una opcion pero tiene la inmundad activada
+    session[:inmunity] = false
+    session[:message] = 'Activate inmunity'
+    session[:color] = 'green'
+  end
+
+  def grandprix_submission_negative
+    # Si el usuario no selecciono ninguna opcion
+    session[:message] = 'Invalid option ID'
+    session[:color] = 'red'
+    redirect '/gamemodes'
+  end
+
+  def grandprix_submission_positive
+    # Buscamos la opcion y su pregunta relacionada
+    @option = Option.find(params[:option_id].to_i)
+    @question = @option.question
+    # Si la opcion es correcta
+    if @option.correct
+      grandprix_submission_positive_correct
+    elsif session[:inmunity]
+      grandprix_submission_positive_inmunity
+    else
+      # Si la opcion es incorrecta y no tiene la inmunidad activada llamamos
+      # al metodo que maneja la respuesta incorrecta
+      handle_grandprix_incorrect_answer
+    end
+    # Guardamos la pregunta respondida asi no vuelve a aparecer
+    (session[:answered_grandprix_questions] ||= []) << @question.id
+  end
+
+  def grandprix_submission_positive_correct
+    Answer.create(question_id: @question.id, user_id: @current_user.id, option_id: @option.id)
+    # Incrementa la columna 'correct' en la pregunta que fue contestada correctamente
+    @question.increment!(:correct)
+    @current_user.increment!(:cant_coins, 10)
+    @current_user.increment!(:total_points, 50 * $racha)
+    $racha = $racha + 1
+    session[:message] = 'Correct! Well done.'
+    session[:color] = 'green'
+  end
+
+  def grandprix_submission_positive_inmunity
+    # Si la opcion es incorrecta pero tiene la inmunidad activada
+    session[:inmunity] = false
+    session[:message] = 'Activate inmunity'
+    session[:color] = 'green'
   end
 
   # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
