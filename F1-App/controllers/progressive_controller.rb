@@ -44,33 +44,61 @@ class ProgressiveController < Sinatra::Base
 
   # metodo para manejar la solicitud GET de un tema del modo progresivo
   def handle_progressive_mode_request(mode)
-    # obtenemos el usuario actual de la sesion
-    @current_user = User.find_by(username: session[:username]) if session[:username]
+    # Obtiene el usuario actual de la sesión
+    find_current_user
 
-    # verificamos si tiene vidas para jugar
-    unless @current_user&.can_play?
-      set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
-    end
+    # Verifica si el usuario tiene vidas para jugar
+    redirect_if_cannot_play and return unless @current_user&.can_play?
 
+    # Inicializa preguntas respondidas
     session[:answered_questions] ||= []
     answered_by_user_ids = Answer.where(user_id: @current_user.id).pluck(:question_id)
 
-    # seleccionamos una pregunta relacionada al tema seleccionado por el usuario,
-    # que no haya sido respondida todavia
-    @question = Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
+    # Selecciona una pregunta sin responder relacionada al tema seleccionado
+    @question = select_question(mode, answered_by_user_ids)
 
-    set_message_and_redirect('¡Congratulations, you finished this theme!', 'green') if @question.nil?
+    # Redirige si no hay preguntas disponibles
+    redirect_if_no_questions and return if @question.nil?
 
-    # ordenamos las opciones de manera random
+    # Ordena las opciones de respuesta de manera aleatoria
     @options = @question.options.to_a.shuffle
 
-    feedback_message = session.delete(:message)
-    feedback_color = session.delete(:color)
+    # Prepara los mensajes de feedback
+    feedback_message, feedback_color = clear_feedback_messages
+
+    # Configura la acción del formulario para el modo progresivo
     @form_action = "/gamemodes/progressive/#{mode}"
 
+    # Renderiza la vista con las variables necesarias
     erb :'questions/questions',
-        locals: { current_user: @current_user, question: @question, options: @options,
-                  feedback_message:, feedback_color: }
+        locals: { current_user: @current_user, question: @question, options: @options, feedback_message:,
+                  feedback_color: }
+  end
+
+  private
+
+  def find_current_user
+    @current_user = User.find_by(username: session[:username]) if session[:username]
+  end
+
+  def redirect_if_cannot_play
+    session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
+    session[:color] = 'red'
+    redirect '/gamemodes'
+  end
+
+  def select_question(mode, answered_by_user_ids)
+    Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
+  end
+
+  def redirect_if_no_questions
+    session[:message] = '¡Congratulations, you finished this theme!'
+    session[:color] = 'green'
+    redirect '/gamemodes'
+  end
+
+  def clear_feedback_messages
+    [session.delete(:message), session.delete(:color)]
   end
 
   # metodo para manejar la solicitud POST de un tema del modo progresivo

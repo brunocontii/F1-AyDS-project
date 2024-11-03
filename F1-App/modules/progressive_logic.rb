@@ -15,15 +15,19 @@ module ProgressiveLogic
 
   def handle_option_submission
     if params[:option_id].to_i.positive?
-      @option = Option.find(params[:option_id].to_i)
-      @question = @option.question
-      process_answer
-      (session[:answered_questions] ||= []) << @question.id
+      handle_option_submission_correct
     elsif session[:inmunity]
       set_inmunity_and_message(false, 'Activate inmunity', 'green')
     else
       set_message_and_redirect('Invalid option ID', 'red')
     end
+  end
+
+  def handle_option_submission_correct
+    @option = Option.find(params[:option_id].to_i)
+    @question = @option.question
+    process_answer
+    (session[:answered_questions] ||= []) << @question.id
   end
 
   def handle_incorrect_answer

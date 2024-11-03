@@ -87,17 +87,30 @@ class AdminController < Sinatra::Base
   end
 
   def question_image(params)
-    flash[:error] = 'Please upload an image.' and return nil unless params[:question_image]&.dig(:filename)
+    question_image_upload unless params[:question_image]&.dig(:filename)
 
     filename = params[:question_image][:filename]
     file = params[:question_image][:tempfile]
 
-    unless ['.jpg', '.jpeg', '.png'].include?(File.extname(filename).downcase)
-      flash[:error] = 'Invalid image format.' and return nil
-    end
+    # Validación de tipo de archivo
+    question_image_validation unless ['.jpg', '.jpeg', '.png'].include?(File.extname(filename).downcase)
 
+    question_image_add(params, filename, file)
+  end
+
+  def question_image_upload
+    flash[:error] = 'Please upload an image.' and return redirect '/profile/add-question'
+  end
+
+  def question_image_validation
+    flash[:error] = 'Invalid image format.' and return redirect '/profile/add-question'
+  end
+
+  def question_image_add(params, filename, file)
+    # Guardar la imagen en la carpeta pública
     File.write(File.join('public/grandprix', filename), file.read, mode: 'wb')
 
+    # Crear la pregunta con la ruta de la imagen
     Question.new(image_question: "/grandprix/#{filename}", level: params[:difficulty], theme: params[:theme])
   end
 

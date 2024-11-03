@@ -41,13 +41,7 @@ module FreeLogic
   def handle_free_option_submission
     # Si el usuario selecciono una opcion
     if params[:option_id].to_i.positive?
-      # Buscamos la opcion y su pregunta relacionada
-      @option = Option.find(params[:option_id].to_i)
-      @question = @option.question
-      # Si la opcion es correcta
-      process_answer
-      # Guardamos la pregunta respondida asi no vuelve a aparecer
-      (session[:answered_free_questions] ||= []) << @question.id
+      handle_free_option_submission_correct
     elsif session[:inmunity]
       # Si el usuario no selecciono una opcion pero tiene la inmundad activada
       set_inmunity_and_message(false, 'Activate inmunity', 'green')
@@ -55,6 +49,13 @@ module FreeLogic
       # Si el usuario no selecciono ninguna opcion
       set_message_and_redirect('Invalid option ID', 'red')
     end
+  end
+
+  def handle_free_option_submission_correct
+    @option = Option.find(params[:option_id].to_i)
+    @question = @option.question
+    process_answer
+    (session[:answered_free_questions] ||= []) << @question.id
   end
 
   # Metodo que maneja lo que pasa cuando la respuesta es incorrecta
