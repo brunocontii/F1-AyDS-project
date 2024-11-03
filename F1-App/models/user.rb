@@ -14,16 +14,13 @@ class User < ActiveRecord::Base
   def regenerate_life_if_needed
     return unless last_life_lost_at
 
-    # Calcular el numero de vidas que pueden regenerarse
     lives_to_regenerate = calculate_lives_to_regenerate
 
     if cant_life < 3 && lives_to_regenerate.positive?
-      # Regenerar vidas sin exceder el maximo de 3
       new_life_count = [cant_life + lives_to_regenerate, 3].min
       update(cant_life: new_life_count)
 
-      # Actualizar el tiempo de la ultima perdida de vida si todavia hay vidas por regenerar
-      update_lives
+      update_lives(new_life_count)
     end
 
     return unless cant_life == 3
@@ -35,7 +32,7 @@ class User < ActiveRecord::Base
     ((Time.now - last_life_lost_at) / REGENERATION_INTERVAL).floor
   end
 
-  def update_lives
+  def update_lives(new_life_count)
     if new_life_count < 3
       update(last_life_lost_at: Time.now - (Time.now - last_life_lost_at) % REGENERATION_INTERVAL)
     else
