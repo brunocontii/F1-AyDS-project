@@ -61,19 +61,9 @@ class ProgressiveController < Sinatra::Base
     # Redirige si no hay preguntas disponibles
     return set_message_and_redirect('¡Congratulations, you finished this theme!', 'green') if @question.nil?
 
-    # Ordena las opciones de respuesta de manera aleatoria
-    @options = @question.options.to_a.shuffle
+    prepare_options_and_feedback
 
-    # Prepara los mensajes de feedback
-    feedback_message, feedback_color = clear_feedback_messages
-
-    # Configura la acción del formulario para el modo progresivo
-    @form_action = "/gamemodes/progressive/#{mode}"
-
-    # Renderiza la vista con las variables necesarias
-    erb :'questions/questions',
-        locals: { current_user: @current_user, question: @question, options: @options, feedback_message:,
-                  feedback_color: }
+    render_question_view(mode)
   end
 
   # metodo para manejar la solicitud POST de un tema del modo progresivo
@@ -100,5 +90,21 @@ class ProgressiveController < Sinatra::Base
 
   def clear_feedback_messages
     [session.delete(:message), session.delete(:color)]
+  end
+
+  def prepare_options_and_feedback
+    @options = @question.options.to_a.shuffle
+    @feedback_message, @feedback_color = clear_feedback_messages
+  end
+
+  def render_question_view(mode)
+    @form_action = "/gamemodes/progressive/#{mode}"
+    erb :'questions/questions', locals: {
+      current_user: @current_user,
+      question: @question,
+      options: @options,
+      feedback_message: @feedback_message,
+      feedback_color: @feedback_color
+    }
   end
 end
