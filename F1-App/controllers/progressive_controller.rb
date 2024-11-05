@@ -47,8 +47,9 @@ class ProgressiveController < Sinatra::Base
     # Obtiene el usuario actual de la sesión
     find_current_user
 
-    # Verifica si el usuario tiene vidas para jugar
-    redirect_if_cannot_play and return unless @current_user&.can_play?
+    unless @current_user&.can_play?
+      return set_message_and_redirect('You have 0 lives. Please wait for lives to regenerate.', 'red')
+    end
 
     # Inicializa preguntas respondidas
     session[:answered_questions] ||= []
@@ -58,7 +59,7 @@ class ProgressiveController < Sinatra::Base
     @question = select_question(mode, answered_by_user_ids)
 
     # Redirige si no hay preguntas disponibles
-    redirect_if_no_questions and return if @question.nil?
+    return set_message_and_redirect('¡Congratulations, you finished this theme!', 'green') if @question.nil?
 
     # Ordena las opciones de respuesta de manera aleatoria
     @options = @question.options.to_a.shuffle
@@ -75,32 +76,6 @@ class ProgressiveController < Sinatra::Base
                   feedback_color: }
   end
 
-  private
-
-  def find_current_user
-    @current_user = User.find_by(username: session[:username]) if session[:username]
-  end
-
-  def redirect_if_cannot_play
-    session[:message] = 'You have 0 lives. Please wait for lives to regenerate.'
-    session[:color] = 'red'
-    redirect '/gamemodes'
-  end
-
-  def select_question(mode, answered_by_user_ids)
-    Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
-  end
-
-  def redirect_if_no_questions
-    session[:message] = '¡Congratulations, you finished this theme!'
-    session[:color] = 'green'
-    redirect '/gamemodes'
-  end
-
-  def clear_feedback_messages
-    [session.delete(:message), session.delete(:color)]
-  end
-
   # metodo para manejar la solicitud POST de un tema del modo progresivo
   def handle_progressive_mode_submission(mode)
     @current_user = User.find_by(username: session[:username]) if session[:username]
@@ -111,5 +86,19 @@ class ProgressiveController < Sinatra::Base
 
     params[:timeout] == 'true' && !session[:inmunity] ? handle_timeout : handle_option_submission
     redirect "/gamemodes/progressive/#{mode}"
+  end
+
+  private
+
+  def find_current_user
+    @current_user = User.find_by(username: session[:username]) if session[:username]
+  end
+
+  def select_question(mode, answered_by_user_ids)
+    Question.where(theme: mode).where.not(id: answered_by_user_ids).order('RANDOM()').first
+  end
+
+  def clear_feedback_messages
+    [session.delete(:message), session.delete(:color)]
   end
 end
