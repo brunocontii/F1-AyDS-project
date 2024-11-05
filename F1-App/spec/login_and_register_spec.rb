@@ -59,14 +59,8 @@ RSpec.describe 'The App' do
 
     it 'registers a new user with valid details' do
       post '/register', {
-        username: 'newuser',
-        password: 'password123',
-        repeat_password: 'password123',
-        name: 'First',
-        lastname: 'Last',
-        description: 'A new user',
-        age: '25',
-        profile_pic: 'profile1.png'
+        username: 'newuser', password: 'password123', repeat_password: 'password123', name: 'First',
+        lastname: 'Last', description: 'A new user', age: '25', profile_pic: 'profile1.png'
       }
       expect(last_response).to be_redirect
       follow_redirect!
@@ -76,14 +70,8 @@ RSpec.describe 'The App' do
     it 'fails to register if username already exists' do
       User.create(username: 'existinguser', password: 'password123')
       post '/register', {
-        username: 'existinguser',
-        password: 'password123',
-        repeat_password: 'password123',
-        name: 'First',
-        lastname: 'Last',
-        description: 'A new user',
-        age: '25',
-        profile_pic: 'profile1.png'
+        username: 'existinguser', password: 'password123', repeat_password: 'password123', name: 'First',
+        lastname: 'Last', description: 'A new user', age: '25', profile_pic: 'profile1.png'
       }
       expect(last_response).to be_ok
       expect(last_response.body).to include('Username already exist')
@@ -91,14 +79,8 @@ RSpec.describe 'The App' do
 
     it 'fails to register if passwords do not match' do
       post '/register', {
-        username: 'anotheruser',
-        password: 'password123',
-        repeat_password: 'differentpassword',
-        name: 'First',
-        lastname: 'Last',
-        description: 'A new user',
-        age: '25',
-        profile_pic: 'profile1.png'
+        username: 'anotheruser', password: 'password123', repeat_password: 'differentpassword',
+        name: 'First', lastname: 'Last', description: 'A new user', age: '25', profile_pic: 'profile1.png'
       }
       expect(last_response).to be_ok
       expect(last_response.body).to include('Passwords are different')
@@ -108,14 +90,8 @@ RSpec.describe 'The App' do
     it 'fails to create the user and shows an error message' do
       allow_any_instance_of(User).to receive(:save).and_return(false) # Simulamos que el guardado falla
       post '/register', {
-        username: 'invaliduser',
-        password: 'password123',
-        repeat_password: 'password123',
-        name: 'First',
-        lastname: 'Last',
-        description: 'A new user',
-        age: '25',
-        profile_pic: 'profile1.png'
+        username: 'invaliduser', password: 'password123', repeat_password: 'password123',
+        name: 'First', lastname: 'Last', description: 'A new user', age: '25', profile_pic: 'profile1.png'
       }
       expect(last_response).to be_ok
       expect(last_response.body).to include('Failed to create the account. Please try again.')

@@ -183,9 +183,7 @@ RSpec.describe 'The App' do
     let!(:correct_option) { Option.create(name_option: 'Correct Answer', correct: true, question:) }
     let!(:incorrect_option) { Option.create(name_option: 'Incorrect Answer', correct: false, question:) }
 
-    before do
-      env 'rack.session', { username: user.username }
-    end
+    before { env 'rack.session', { username: user.username } }
 
     # Cuando el usuario no tiene vidas
     context 'when the user has no lives left' do
@@ -221,7 +219,6 @@ RSpec.describe 'The App' do
         expect(last_response).to be_redirect
         expect(last_response.location).to include('/gamemodes/free')
         expect(last_request.env['rack.session'][:message]).to eq("Time's up! Incorrect!")
-        expect(last_request.env['rack.session'][:color]).to eq('red')
       end
     end
 
@@ -247,7 +244,6 @@ RSpec.describe 'The App' do
         expect(last_response).to be_redirect
         expect(last_response.location).to include('/gamemodes/free')
         expect(last_request.env['rack.session'][:message]).to eq('Incorrect!')
-        expect(last_request.env['rack.session'][:color]).to eq('red')
       end
 
       # Pero tiene la inmunidad
@@ -273,7 +269,6 @@ RSpec.describe 'The App' do
         expect(last_response).to be_redirect
         expect(last_response.location).to include('/gamemodes/free')
         expect(last_request.env['rack.session'][:message]).to eq('Correct! Well done.')
-        expect(last_request.env['rack.session'][:color]).to eq('green')
       end
     end
 

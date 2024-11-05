@@ -16,18 +16,9 @@ RSpec.describe 'The App' do
 
   describe 'GET /gamemodes/progressive' do
     context 'when user is loggen in' do
-      let(:user) do
-        User.create(
-          username: 'testuser',
-          password: 'testpassword',
-          cant_life: 2,
-          cant_coins: 130
-        )
-      end
+      let(:user) { User.create(username: 'testuser', password: 'testpassword', cant_life: 2, cant_coins: 130) }
 
-      before do
-        env 'rack.session', { username: user.username }
-      end
+      before { env 'rack.session', { username: user.username } }
 
       it 'returns JSON with lives when requested via AJAX' do
         env 'rack.session', { username: user.username }
@@ -41,9 +32,7 @@ RSpec.describe 'The App' do
 
       it 'renders gamemodes template when not requested via AJAX' do
         get '/gamemodes/progressive'
-        expect(last_response.body).to include(user.cant_life.to_s)
-        expect(last_response.body).to include(user.cant_coins.to_s)
-        expect(last_response.body).to include('Progressive')
+        expect(last_response.body).to include(user.cant_life.to_s, user.cant_coins.to_s, 'Progressive')
       end
     end
 

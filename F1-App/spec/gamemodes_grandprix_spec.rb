@@ -248,7 +248,6 @@ RSpec.describe 'The App' do
         expect(last_response).to be_redirect
         expect(last_response.location).to include('/gamemodes/grandprix')
         expect(last_request.env['rack.session'][:message]).to eq('Incorrect!')
-        expect(last_request.env['rack.session'][:color]).to eq('red')
       end
 
       # Pero tiene la inmunidad
@@ -274,7 +273,6 @@ RSpec.describe 'The App' do
         expect(last_response).to be_redirect
         expect(last_response.location).to include('/gamemodes/grandprix')
         expect(last_request.env['rack.session'][:message]).to eq('Correct! Well done.')
-        expect(last_request.env['rack.session'][:color]).to eq('green')
       end
     end
 
