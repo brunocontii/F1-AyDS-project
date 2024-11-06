@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Esta migración crea la tabla 'questions', que almacena las preguntas del juego.
+# Las preguntas pueden ser de texto o imágenes y están vinculadas a opciones y respuestas.
 class CreateQuestionTable < ActiveRecord::Migration[7.1]
   def change
     create_table :questions do |t|

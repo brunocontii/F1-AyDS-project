@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 require 'sinatra/activerecord/rake'
 require './app'
 
 namespace :db do
-  desc "Reset test database"
-  task :reset => :environment do
-    Rake::Task["db:drop"].invoke
-    Rake::Task["db:create"].invoke
-    Rake::Task["db:migrate"].invoke
+  desc 'Reset test database'
+  task reset: :environment do
+    Rake::Task['db:drop'].invoke
+    Rake::Task['db:create'].invoke
+    Rake::Task['db:migrate'].invoke
   end
 
-  desc "Prepare test database"
+  desc 'Prepare test database'
   task :prepare do
-    Rake::Task["db:migrate"].invoke
+    Rake::Task['db:migrate'].invoke
   end
 end
