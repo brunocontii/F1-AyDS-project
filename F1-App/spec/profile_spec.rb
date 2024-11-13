@@ -38,6 +38,34 @@ RSpec.describe 'The App' do
     end
   end
 
+  describe 'calculate_progress' do
+    let(:user) { User.create(username: 'testuser', password: 'testpassword', cant_life: 3, cant_coins: 0) }
+    let(:profile) do
+      Profile.create(
+        name: 'testname', lastName: 'testlastName', description: 'testdescription', age: 25,
+        profile_picture: '/profile_pictures/charles-leclerc-2024.png', user_id: user.id
+      )
+    end
+
+    before do
+      env 'rack.session', { username: user.username }
+      profile
+    end
+
+    context 'when there is a theme and there are correct answers' do
+      let!(:question) { Question.create(name_question: 'Sample Question', level: 'easy', theme: 'pilot') }
+      let!(:option) { Option.create(name_option: 'Correct Option', question_id: question.id, correct: true) }
+      # suponiendo que la opción es correcta
+      let!(:answer) do
+        Answer.create(question_id: question.id, user_id: user.id, option_id: option.id)
+      end
+      it 'calculates progress with correct answers for the specified theme' do
+        get '/profile'
+        expect(last_response.body).to include('100') # Ajusta según cómo se muestra @count_pi en la vista
+      end
+    end
+  end
+
   describe 'GET /profile (not logged in user)' do
     it 'redirects to home page' do
       get '/profile'

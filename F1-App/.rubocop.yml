@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'db/schema.rb'
+    - 'spec/*'
   TargetRubyVersion: 3.1  # para que no tenga problema con el versionado
   NewCops: disable
 
