@@ -206,4 +206,8 @@ main {
     border-radius: 10px;
 }
 
-
+.adminuser {
+    display: flex;
+    margin-right: 20px;
+    color: #ffcc00;
+}
